@@ -4,7 +4,7 @@ import { BsKeyFill } from 'react-icons/bs';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import axios from 'axios';
+import { CapacitorHttp } from '@capacitor/core';
 import Button from '../../../Button/Button';
 import Field from '../../../Field/Field';
 
@@ -16,12 +16,19 @@ function Signin({ setUser, user }) {
   const [hidden, setHidden] = useState(false);
 
   const checkLogin = async (event) => {
+    event.preventDefault();
     try {
-      event.preventDefault();
-      const result = await axios.post(`${REACT_APP_API_URL}/login`, {
-        email: email,
-        password: password,
-      });
+      const options = {
+        url: `${REACT_APP_API_URL}/login`,
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        data: {
+          email: email,
+          password: password,
+        },
+      };
+
+      const result = await CapacitorHttp.post(options);
+
       console.log('Requete LOGIN OK', result);
       setUser({
         ...user,
@@ -29,7 +36,7 @@ function Signin({ setUser, user }) {
         userid: result.data.id,
         username: result.data.username,
         email: result.data.email,
-        dark: result.data.dark,
+        colorScheme: result.data.colorScheme,
         photo_url: result.data.photo_url,
       });
       // localStorage.setItem('token', result.data.token);
@@ -44,6 +51,35 @@ function Signin({ setUser, user }) {
       console.log('Requete LOGIN NOK', error);
       setErrorMsg(true);
     }
+
+    // try {
+    //   event.preventDefault();
+    //   const result = await axios.post(`${REACT_APP_API_URL}/login`, {
+    //     email: email,
+    //     password: password,
+    //   });
+    //   console.log('Requete LOGIN OK', result);
+    //   setUser({
+    //     ...user,
+    //     token: result.data.token,
+    //     userid: result.data.id,
+    //     username: result.data.username,
+    //     email: result.data.email,
+    //     dark: result.data.dark,
+    //     photo_url: result.data.photo_url,
+    //   });
+    //   // localStorage.setItem('token', result.data.token);
+    //   // localStorage.setItem('userid', result.data.id);
+    //   // localStorage.setItem('username', result.data.username);
+    //   // localStorage.setItem('email', result.data.email);
+    //   // localStorage.setItem('dark', result.data.dark);
+    //   // localStorage.setItem('photo_url', result.data.photo_url);
+    //   // store.dispatch(actionUserLogin(result.data));
+    // }
+    // catch (error) {
+    //   console.log('Requete LOGIN NOK', error);
+    //   setErrorMsg(true);
+    // }
   };
 
   return (

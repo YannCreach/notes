@@ -4,7 +4,7 @@ import { RiCloseFill } from 'react-icons/ri';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import axios from 'axios';
+import { CapacitorHttp } from '@capacitor/core';
 import flou from '../../assets/images/blur.jpg';
 import Menu from './Menu/Menu';
 
@@ -15,12 +15,19 @@ function Header({ user, setUser }) {
   const toggleLightMode = async () => {
     try {
       const newColorScheme = user.colorScheme === 'light' ? 'dark' : 'light';
-      await axios.patch(`${REACT_APP_API_URL}/user`, { colorscheme: newColorScheme }, {
+      const options = {
+        url: `${REACT_APP_API_URL}/user`,
         headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
           Authorization: `bearer ${user.token}`,
           userid: user.userid,
         },
-      });
+        data: {
+          colorscheme: newColorScheme,
+        },
+      };
+
+      await CapacitorHttp.patch(options);
       setUser({ ...user, colorScheme: newColorScheme });
       console.log('Requete darkMode OK', newColorScheme);
     }
