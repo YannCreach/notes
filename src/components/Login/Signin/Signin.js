@@ -1,7 +1,6 @@
 import { HiOutlineUserCircle } from 'react-icons/hi';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { BsKeyFill } from 'react-icons/bs';
-import { Link } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { CapacitorHttp } from '@capacitor/core';
 import { Preferences } from '@capacitor/preferences';
@@ -103,9 +102,9 @@ function Signin() {
           </div>
         </div>
 
-        <Link to="#" className="pb-8 pt-4">
+        <div className="cursor-pointer pb-8 pt-4">
           Mot de passe oublié ?
-        </Link>
+        </div>
 
         <button
           type="submit"

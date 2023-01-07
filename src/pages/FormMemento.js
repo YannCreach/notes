@@ -1,7 +1,7 @@
 import { MdRestaurant } from 'react-icons/md';
 import { AiOutlineBell } from 'react-icons/ai';
 import { useEffect, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+
 import Field from '../components/Field/Field';
 import NavBtn from '../components/NavBtn/NavBtn';
 import Button from '../components/Button/Button';
@@ -19,9 +19,9 @@ function FormMemento() {
   const listRestaurant = useRef();
 
   // const dispatch = useDispatch();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   // Get idmemento for update memento
-  const { idmemento, source } = useParams();
+  // const { idmemento, source } = useParams();
   // Update inputs when id memento exist
   useEffect(() => {
     if (idmemento) {

@@ -1,4 +1,3 @@
-import { Route, Routes } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
 import { Preferences } from '@capacitor/preferences';
 import UserContext from '../context/UserContext';
@@ -13,10 +12,10 @@ import Restaurant from './Restaurant';
 // import NotFound from './NotFound';
 
 function App() {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({ currentPage: 'home' });
   const value = useMemo(() => ({ user, setUser }), [user, setUser]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(true);
+  // const [currentPage, setCurrentPage] = useState('home');
 
   const prefToState = async () => {
     try {
@@ -56,17 +55,13 @@ function App() {
           <div className="bg-[#fff] dark:bg-[#1E1E1E] ">
             <div className="APP bg-lightBackgroundColor dark:bg-darkBackgroundColor flex flex-col h-[100vh] w-[100vw] overflow-hidden lg:w-[60rem] m-auto shadow-[0px_0px_15px_5px_rgba(0,0,0,0.3)]">
 
-              <Routes>
-                {!loading && !user.token
-                  ? (
-                    <Route path="*" element={<LandingPage />} />
-                  )
-
-                  : (
-                    <>
-                      <Route path="/restaurant/:restaurantSlug" element={<Restaurant />} />
-                      <Route path="/" element={<Home />} />
-                      {/* <Route path="/profil" element={<Profile />} />
+              {!loading && !user.token
+                ? (<LandingPage />)
+                : (
+                  <>
+                    {user.currentPage === 'home' && <Home />}
+                    {user.currentPage === 'restaurant' && <Restaurant />}
+                    {/* <Route path="/profil" element={<Profile />} />
                   <Route path="/search" element={<Search />} />
                   <Route path="/addmemento/:source" element={<FormMemento />} />
                   <Route path="/editmemento/:idmemento" element={<FormMemento />} />
@@ -77,10 +72,9 @@ function App() {
                   <Route path="/restaurant/add" element={<EditPage type="restaurant" addOrEdit="add" />} />
                   <Route path="/meal/add/:idrestaurant" element={<EditPage type="meal" addOrEdit="add" />} />
                   <Route path="/*" element={<NotFound />} /> */}
-                    </>
-                  )}
+                  </>
+                )}
 
-              </Routes>
             </div>
           </div>
         </div>

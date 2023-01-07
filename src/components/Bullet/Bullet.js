@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from '../Button/Button';
 
@@ -16,36 +15,33 @@ function Bullet({ bullet, setBullet }) {
           && <p className="">Une notification des mémentos que je me suis laissé quand je rentre dans un restaurant</p>}
       </div>
 
-      <Link
+      <div
         onClick={() => {
           setBullet(0);
         }}
-        className="mb-8 text-darkTextColor"
+        className="mb-8 text-darkTextColor cursor-pointer"
       >
         <Button type="normal" caption="Se connecter" classes="text-lightTextColor dark:text-darkTextColor" />
-      </Link>
+      </div>
 
       <div className="w-full flex justify-center ">
-        <Link
-          to="#"
+        <div
           onClick={() => {
             setBullet(1);
           }}
-          className={`w-12 h-2 rounded-lg mr-4 ${bullet === 1 ? 'bg-lightAccentColor dark:bg-darkAccentColor' : 'bg-darkBackgroundColor dark:bg-lightBackgroundColor'}`}
+          className={`cursor-pointer w-12 h-2 rounded-lg mr-4 ${bullet === 1 ? 'bg-lightAccentColor dark:bg-darkAccentColor' : 'bg-darkBackgroundColor dark:bg-lightBackgroundColor'}`}
         />
-        <Link
-          to="#"
+        <div
           onClick={() => {
             setBullet(2);
           }}
-          className={`w-12 h-2 rounded-lg mr-4 ${bullet === 2 ? 'bg-lightAccentColor dark:bg-darkAccentColor' : 'bg-darkBackgroundColor dark:bg-lightBackgroundColor'}`}
+          className={`cursor-pointer w-12 h-2 rounded-lg mr-4 ${bullet === 2 ? 'bg-lightAccentColor dark:bg-darkAccentColor' : 'bg-darkBackgroundColor dark:bg-lightBackgroundColor'}`}
         />
-        <Link
-          to="#"
+        <div
           onClick={() => {
             setBullet(3);
           }}
-          className={`w-12 h-2 rounded-lg mr-4 ${bullet === 3 ? 'bg-lightAccentColor dark:bg-darkAccentColor' : 'bg-darkBackgroundColor dark:bg-lightBackgroundColor'}`}
+          className={`cursor-pointer w-12 h-2 rounded-lg mr-4 ${bullet === 3 ? 'bg-lightAccentColor dark:bg-darkAccentColor' : 'bg-darkBackgroundColor dark:bg-lightBackgroundColor'}`}
         />
       </div>
 

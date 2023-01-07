@@ -1,15 +1,15 @@
 import { FaBars } from 'react-icons/fa';
 import { MdLightMode, MdModeNight } from 'react-icons/md';
 import { RiCloseFill } from 'react-icons/ri';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { CapacitorHttp } from '@capacitor/core';
 import flou from '../../assets/images/blur.jpg';
 import Menu from './Menu/Menu';
+import UserContext from '../../context/UserContext';
 
-function Header({ user, setUser }) {
+function Header() {
   const { REACT_APP_API_URL } = process.env;
+  const { user, setUser } = useContext(UserContext);
   const [menuState, setMenuState] = useState(false);
 
   const toggleLightMode = async () => {
@@ -41,15 +41,13 @@ function Header({ user, setUser }) {
     <>
       <nav className="HEADER flex items-center justify-between p-8 z-30">
         <div className="flex items-center">
-          <Link to="/profil">
+          <div onClick={() => setUser({ ...user, currentPage: 'profil' })} className="cursor-pointer">
             <img className=" rounded-full object-cover h-12 w-12 mr-4" alt="logo" src={(user.photo_url && user.photo_url !== 'null') ? `${REACT_APP_API_URL}${user.photo_url}` : flou} />
-          </Link>
-          <Link to="/profil">
             <div className="text-lightTextColor dark:text-darkTextColor">
               <p className="font-semibold text-xl tracking-tight">{user.username}</p>
               <p>Bienvenue !</p>
             </div>
-          </Link>
+          </div>
         </div>
         <div className={`flex items-center ${!menuState ? 'text-lightAccentColor ' : 'text-darkTextColor '} duration-700`}>
           <div className="pr-6">
@@ -68,10 +66,5 @@ function Header({ user, setUser }) {
     </>
   );
 }
-
-Header.propTypes = {
-  user: PropTypes.object.isRequired,
-  setUser: PropTypes.func.isRequired,
-};
 
 export default Header;

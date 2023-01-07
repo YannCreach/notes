@@ -1,14 +1,16 @@
-import { Link } from 'react-router-dom';
 import { RiSearchLine } from 'react-icons/ri';
 import { BsPencilSquare } from 'react-icons/bs';
 import { MdRestaurant } from 'react-icons/md';
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
+import UserContext from '../../context/UserContext';
 
 function QuickActions({ restaurants }) {
+  const { user, setUser } = useContext(UserContext);
   return (
     <div className="QUICKACTION px-8 w-full grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-4 text-lightTextColor dark:text-darkTextColor z-0">
       {(restaurants.length > 0) && (
-        <Link to="/search">
+        <div onClick={() => setUser({ ...user, currentPage: 'search' })} className="cursor-pointer">
           <button className="w-full drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-md shadow-md border-l-4 border-l-darkAccentColor py-4 px-4 flex content-between mr-8 justify-between text-left" type="button">
             <div className="pr-8">
               <p className="pb-4 text-xl font-semibold">Chercher un restaurant</p>
@@ -18,9 +20,9 @@ function QuickActions({ restaurants }) {
               <RiSearchLine className=" text-darkAccentColor text-3xl" />
             </div>
           </button>
-        </Link>
+        </div>
       )}
-      <Link to="/restaurant/add">
+      <div onClick={() => setUser({ ...user, currentPage: 'addRestaurant' })} className="cursor-pointer">
         <button className="w-full drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-md shadow-md border-l-4 border-l-darkAccentColor py-4 px-4 flex content-between mr-8 justify-between text-left" type="button">
           <div className="pr-8">
             <p className="pb-4 text-xl font-semibold">Ajouter un restaurant</p>
@@ -30,9 +32,9 @@ function QuickActions({ restaurants }) {
             <MdRestaurant className=" text-darkAccentColor text-3xl" />
           </div>
         </button>
-      </Link>
+      </div>
 
-      <Link to="/addmemento/quickaction">
+      <div onClick={() => setUser({ ...user, currentPage: 'addMemento' })} className="cursor-pointer">
         <button className="w-full drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-md shadow-md border-l-4 border-l-darkAccentColor py-4 px-4 flex content-between justify-between text-left" type="button">
           <div className="pr-8">
             <p className="pb-4 text-xl font-semibold">Ecrire un mémento</p>
@@ -42,7 +44,7 @@ function QuickActions({ restaurants }) {
             <BsPencilSquare className=" text-darkAccentColor text-3xl" />
           </div>
         </button>
-      </Link>
+      </div>
 
     </div>
   );
