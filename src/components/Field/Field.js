@@ -1,12 +1,7 @@
 import PropTypes from 'prop-types';
 
 function Field({
-  value,
-  type,
-  name,
-  placeholder,
-  onChange,
-  classname,
+  value, type, name, placeholder, onChange, classname,
 }) {
   const handleChange = (e) => {
     onChange(e.target.value, name);

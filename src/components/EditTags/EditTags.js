@@ -1,13 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { AiOutlineTag } from 'react-icons/ai';
 import Tag from '../Tag/Tag';
-import { actionDeleteTag, actionAddNewTag, actionToggleDrawer } from '../../actions/restaurantActions';
 
 function EditTags() {
-  const editingDummy = useSelector((state) => state.restaurant.editingDummy);
-  const availableTags = useSelector((state) => state.restaurant.allTags);
-  const toggleDrawer = useSelector((state) => state.restaurant.toggleDrawer);
-  const dispatch = useDispatch();
+  // const editingDummy = useSelector((state) => state.restaurant.editingDummy);
+  // const availableTags = useSelector((state) => state.restaurant.allTags);
+  // const toggleDrawer = useSelector((state) => state.restaurant.toggleDrawer);
+  // const dispatch = useDispatch();
   return (
     <div className="relative w-full">
       <div className="flex flex-col justify-center w-full">

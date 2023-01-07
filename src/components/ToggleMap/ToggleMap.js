@@ -1,28 +1,29 @@
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { BiMap } from 'react-icons/bi';
 import { AiOutlinePicture } from 'react-icons/ai';
-import { actionToggleMap } from '../../actions/restaurantActions';
+import PropTypes from 'prop-types';
 
-function ToggleMap() {
-  const dispatch = useDispatch();
-  const switchStatus = useSelector((state) => state.restaurant.toggleMap);
-
+function ToggleMap({ toggleMap, setToggleMap }) {
   return (
     <Link
       to="#"
       className="text-2xl ease-in duration-300 hover:text-lightAccentColor"
       onClick={() => {
-        dispatch(actionToggleMap());
+        setToggleMap(!toggleMap);
       }}
     >
       {
-        switchStatus
+        toggleMap
           ? <BiMap />
           : <AiOutlinePicture />
       }
     </Link>
   );
 }
+
+ToggleMap.propTypes = {
+  toggleMap: PropTypes.bool.isRequired,
+  setToggleMap: PropTypes.func.isRequired,
+};
 
 export default ToggleMap;

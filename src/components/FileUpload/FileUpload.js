@@ -1,17 +1,15 @@
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux';
 import { MdUploadFile } from 'react-icons/md';
-import { actionSetFile, actionUploadImg, actionSetPreview } from '../../actions/upload';
 import flou from '../../assets/images/blur.jpg';
 import Button from '../Button/Button';
 
 function FileUpload({ type, uploadBtn }) {
-  const previewState = useSelector((state) => state.upload.preview);
-  const file = useSelector((state) => state.upload.file);
+  // const previewState = useSelector((state) => state.upload.preview);
+  // const file = useSelector((state) => state.upload.file);
   let data;
   let rounded;
   let preview;
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { REACT_APP_API_URL } = process.env;
 
   const handleSubmit = (event) => {
