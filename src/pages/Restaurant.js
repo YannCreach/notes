@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { BsHeartFill } from 'react-icons/bs';
 import { useContext, useEffect, useState } from 'react';
 import {
@@ -29,22 +28,23 @@ function Restaurant() {
         headers: {
           Authorization: `bearer ${user.token}`,
           userid: user.userid,
-          restaurantid: user.currentPage,
+          restaurantid: Number(user.currentPage.split('-')[1]),
         },
       };
 
       const result = await CapacitorHttp.get(options);
 
-      console.log('Requete RESTAURANTS OK', result);
-      setRestaurant(result.data);
+      console.log('Requete RESTAURANT OK', result);
+      setRestaurant(result.data[0]);
       setLoading(false);
     }
     catch (error) {
-      console.log('Requete RESTAURANTS NOK', error);
+      console.log('Requete RESTAURANT NOK', error);
     }
   };
 
   useEffect(() => {
+    getOneRestaurant();
   }, []);
 
   return (
@@ -52,8 +52,8 @@ function Restaurant() {
       <>
         <div className="text-lightTextColor dark:text-darkTextColor px-6 pb-4">
           <div className="w-full flex justify-between items-center">
-            <NavBtn caption="Précédent" type="previous" order="iconFirst" target="/" />
-            <NavBtn caption="Modifier" type="edit" order="captionFirst" target="./edit" />
+            <NavBtn caption="Précédent" type="previous" order="iconFirst" target="home" />
+            <NavBtn caption="Modifier" type="edit" order="captionFirst" target={`editRestaurant-${restaurant.id}`} />
           </div>
           <div className="topLane flex justify-left items-baseline pb-4 font-bold">
             { restaurant.favorite
@@ -62,7 +62,7 @@ function Restaurant() {
           </div>
           <p className="adress pb-6 text-sm">{restaurant.location}</p>
           <div className="pb-8 text-sm inline-flex flex-wrap">
-            { restaurant.tags.map((tag) => (
+            { restaurant.tags && restaurant.tags.map((tag) => (
               <Tag caption={tag.label} key={tag.id} type="normal" />
             ))}
           </div>
@@ -91,44 +91,42 @@ function Restaurant() {
         </div>
 
         <div className="tabs flex text-lightTextColor dark:text-darkTextColor px-6 shadow-[0_5px_5px_0px_rgba(0,0,0,0.3)] dark:shadow-card ">
-          <Link
-            to="#"
+          <div
             onClick={() => {
               setTab('mementos');
             }}
             className={`mementoTab border-lightAccentColor dark:border-darkAccentColor pb-2 mr-5 ${tab === 'mementos' ? 'border-b-2' : 'border-0'}`}
           >
             Mémentos
-          </Link>
-          <Link
-            to="#"
+          </div>
+          <div
             onClick={() => {
               setTab('meals');
             }}
             className={`mealsTab border-lightAccentColor dark:border-darkAccentColor pb-2 mr-5 ${tab === 'meals' ? 'border-b-2' : 'border-0'}`}
           >
             Plats évalués
-          </Link>
+          </div>
         </div>
 
         <div className="flex flex-col flex-grow py-8 text-lightTextColor dark:text-darkTextColor overflow-y-scroll">
           { (tab === 'mementos')
         && (
-          <div className="px-4">
-            <Link to="/addmemento/restaurant">
+          <div className="px-4 cursor-pointer">
+            <div onClick={() => setUser({ ...user, currentPage: `addMemento-${restaurant.id}` })}>
               <Button type="normal" caption="Nouveau mémento" />
-            </Link>
-            <Mementos mementos={restaurant.mementos} />
+            </div>
+            { restaurant.menentos && <Mementos mementos={restaurant.mementos} /> }
           </div>
         )}
           { (tab === 'meals')
         && (
-          <>
-            <Link to={`/meal/add/${restaurant.id}`} className="mx-4">
+          <div className="px-4 cursor-pointer">
+            <div onClick={() => setUser({ ...user, currentPage: `addMeal-${restaurant.id}` })}>
               <Button type="normal" caption="Nouveau plat" />
-            </Link>
-            <CardList type="meal" />
-          </>
+            </div>
+            { restaurant.meal && <CardList type="meal" data={restaurant.meal} /> }
+          </div>
         )}
         </div>
 

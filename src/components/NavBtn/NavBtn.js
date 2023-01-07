@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types';
+import { useContext } from 'react';
 import { BsPencilSquare, BsCheck } from 'react-icons/bs';
 import { MdArrowBackIosNew } from 'react-icons/md';
-
-import { Link } from 'react-router-dom';
+import UserContext from '../../context/UserContext';
 
 function EditBtn({
   caption, type, order, target,
 }) {
+  const { user, setUser } = useContext(UserContext);
   return (
-    <Link to={target} className="flex items-center py-8">
+    <div onClick={() => setUser({ ...user, currentPage: target })} className="flex items-center py-8 cursor-pointer">
       {(order === 'captionFirst')
       && <span className="mx-2">{caption}</span>}
 
@@ -23,7 +24,7 @@ function EditBtn({
 
       {(order === 'iconFirst')
       && <span className="mx-2">{caption}</span>}
-    </Link>
+    </div>
   );
 }
 
