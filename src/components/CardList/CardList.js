@@ -3,7 +3,7 @@ import SingleCard from './SingleCard/SingleCard';
 
 function CardList({ type, data }) {
   return (
-    <div className="text-lightTextColor dark:text-darkTextColor ">
+    <div className="text-lightTextColor dark:text-darkTextColor">
       <ul className="flex flex-wrap">
         {
         data.map((singleData) => (

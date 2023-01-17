@@ -1,5 +1,4 @@
-import { BiMap } from 'react-icons/bi';
-import { AiOutlinePicture } from 'react-icons/ai';
+import { PhotoIcon, MapIcon } from '@heroicons/react/24/outline';
 import PropTypes from 'prop-types';
 
 function ToggleMap({ toggleMap, setToggleMap }) {
@@ -12,8 +11,8 @@ function ToggleMap({ toggleMap, setToggleMap }) {
     >
       {
         toggleMap
-          ? <BiMap />
-          : <AiOutlinePicture />
+          ? <MapIcon className="h-6 w-6" />
+          : <PhotoIcon className="h-6 w-6" />
       }
     </div>
   );

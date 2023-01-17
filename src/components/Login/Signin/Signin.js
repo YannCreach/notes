@@ -1,6 +1,6 @@
-import { HiOutlineUserCircle } from 'react-icons/hi';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { BsKeyFill } from 'react-icons/bs';
+// import { HiOutlineUserCircle } from 'react-icons/hi';
+// import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+// import { BsKeyFill } from 'react-icons/bs';
 import { useContext, useState } from 'react';
 import { CapacitorHttp } from '@capacitor/core';
 import { Preferences } from '@capacitor/preferences';
@@ -14,7 +14,6 @@ function Signin() {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [errorMsg, setErrorMsg] = useState(false);
-  const [hidden, setHidden] = useState(true);
 
   const checkLogin = async (event) => {
     event.preventDefault();
@@ -75,31 +74,34 @@ function Signin() {
         }}
       >
         {errorMsg && <div className="text-[red]">Adresse email ou mot de passe incorrect</div>}
-        <div className="relative">
-          <HiOutlineUserCircle className="text-darkAccentColor text-3xl absolute left-10 z-10 h-10 top-2" />
-          <Field
-            type="email"
-            name="email"
-            classname="drop-shadow-md mb-4 bg-[white] dark:bg-darkBackgroundAltColor rounded-md shadow-md border-l-4 border-l-darkAccentColor py-4 w-80 mx-8 pl-12"
-            placeholder="Adresse Email"
-            value={email}
-            onChange={(e) => setEmail(e)}
-          />
-        </div>
+        {/* <div className="relative">
+          <HiOutlineUserCircle className="text-darkAccentColor text-3xl absolute left-10 z-10 h-10 top-2" /> */}
+
+        <Field
+          type="email"
+          name="email"
+          icon="email"
+          classname="drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-md shadow-md border-l-4 border-l-darkAccentColor py-4 pr-8 pl-12 mb-4 w-full"
+          placeholder="Adresse Email"
+          value={email}
+          onChange={(e) => setEmail(e)}
+        />
+        {/* </div> */}
 
         <div className="relative">
           <Field
-            type={hidden ? 'password' : 'text'}
+            type="password"
             name="password"
-            classname="drop-shadow-md  mb-4 bg-[white] dark:bg-darkBackgroundAltColor rounded-md shadow-md border-l-4 border-l-darkAccentColor py-4 w-80 mx-8 pl-12"
+            icon="password"
+            classname="drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-md shadow-md border-l-4 border-l-darkAccentColor py-4 pr-8 pl-12 w-full mb-4"
             placeholder="Mot de passe"
             value={password}
             onChange={(e) => setPassword(e)}
           />
-          <div className="text-darkAccentColor text-3xl pointer-events-none w-full absolute bottom-2 h-full flex justify-between items-center px-11">
+          {/* <div className="text-darkAccentColor text-3xl pointer-events-none w-full absolute bottom-2 h-full flex justify-between items-center px-11">
             <BsKeyFill className="" />
             {hidden ? <AiFillEye className="pointer-events-auto" onClick={() => setHidden(false)} /> : <AiFillEyeInvisible className="pointer-events-auto" onClick={() => setHidden(true)} />}
-          </div>
+          </div> */}
         </div>
 
         <div className="cursor-pointer pb-8 pt-4">

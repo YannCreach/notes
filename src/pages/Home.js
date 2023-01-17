@@ -4,6 +4,7 @@ import UserContext from '../context/UserContext';
 import CardList from '../components/CardList/CardList';
 import Header from '../components/Header/Header';
 import QuickActions from '../components/QuickActions/QuickActions';
+import Title from '../components/Title/Title';
 
 function Home() {
   const { user, setUser } = useContext(UserContext);
@@ -37,14 +38,15 @@ function Home() {
   }, []);
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col ">
       <div className="overflow-auto">
-        <p className="mx-8 text-2xl text-lightTextColor dark:text-darkTextColor py-4">Actions rapides</p>
-        <QuickActions restaurants={[]} />
-        <p className="mx-8 text-2xl text-lightTextColor dark:text-darkTextColor pt-4">Restaurants favoris</p>
-        <div className="mx-4">
-          {!loading
-          && <CardList data={data} type="restaurant" />}
+        <div className="mx-6">
+          <Title caption="Actions rapides" />
+          <QuickActions restaurants={[]} />
+          <Title caption="Restaurants favoris" />
+        </div>
+        <div className="mx-3">
+          {!loading && <CardList data={data} type="restaurant" />}
         </div>
       </div>
     </div>

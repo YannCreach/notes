@@ -5,7 +5,7 @@ import LandingPage from './LandingPage';
 import Home from './Home';
 import Restaurant from './Restaurant';
 import Header from '../components/Header/Header';
-// import Meal from './Meal';
+import Meal from './Meal';
 // import Search from './Search';
 // import EditPage from './EditPage';
 // import Profile from './Profile';
@@ -63,6 +63,7 @@ function App() {
                     <Header />
                     {user.currentPage === 'home' && <Home />}
                     {user.currentPage.split('-')[0] === 'restaurant' && <Restaurant />}
+                    {user.currentPage.split('-')[0] === 'meal' && <Meal />}
                     {/* <Route path="/profil" element={<Profile />} />
                   <Route path="/search" element={<Search />} />
                   <Route path="/addmemento/:source" element={<FormMemento />} />

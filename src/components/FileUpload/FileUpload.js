@@ -1,14 +1,17 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { MdUploadFile } from 'react-icons/md';
-import flou from '../../assets/images/blur.jpg';
+import placeholder from '../../assets/images/blur.jpg';
 import Button from '../Button/Button';
 
 function FileUpload({ type, uploadBtn }) {
   // const previewState = useSelector((state) => state.upload.preview);
   // const file = useSelector((state) => state.upload.file);
-  let data;
-  let rounded;
-  let preview;
+  const [file, setFile] = useState('');
+  const [preview, setPreview] = useState('');
+  // let data;
+  // let rounded;
+  // let preview;
   // const dispatch = useDispatch();
   const { REACT_APP_API_URL } = process.env;
 
@@ -17,14 +20,14 @@ function FileUpload({ type, uploadBtn }) {
     const formData = new FormData();
     if (file) {
       formData.append('file', file);
-      dispatch(actionUploadImg(formData, type));
+      // dispatch(actionUploadImg(formData, type));
     }
   };
 
   const onChange = (event) => {
-    preview = URL.createObjectURL(event.target.files[0]);
-    dispatch(actionSetPreview(preview));
-    dispatch(actionSetFile(event.target.files[0], event.target.files[0].name));
+    setPreview(URL.createObjectURL(event.target.files[0]));
+    // dispatch(actionSetPreview(preview));
+    // dispatch(actionSetFile(event.target.files[0], event.target.files[0].name));
   };
 
   const prepareImageSrc = (imageSrc) => {
@@ -35,15 +38,15 @@ function FileUpload({ type, uploadBtn }) {
     return `${REACT_APP_API_URL}${imageSrc}`;
   };
 
-  if (type === 'profile') {
-    data = useSelector((state) => state.user);
-    rounded = 'w-48 rounded-full';
-  }
-  else {
-    data = useSelector((state) => state.restaurant.editingDummy);
-    rounded = 'w-full rounded-md';
-  }
-  let imgUrl = flou;
+  // if (type === 'profile') {
+  //   data = useSelector((state) => state.user);
+  //   rounded = 'w-48 rounded-full';
+  // }
+  // else {
+  //   data = useSelector((state) => state.restaurant.editingDummy);
+  //   rounded = 'w-full rounded-md';
+  // }
+  let imgUrl = placeholder;
   if (data.photo_url && data.photo_url !== 'null') {
     imgUrl = prepareImageSrc(data.photo_url);
   }
@@ -71,7 +74,7 @@ function FileUpload({ type, uploadBtn }) {
       {uploadBtn && (
         <form
           onClick={((event) => {
-            dispatch(handleSubmit(event));
+            handleSubmit(event);
           })}
           className=""
         >
@@ -83,7 +86,7 @@ function FileUpload({ type, uploadBtn }) {
             <Button type="normal" caption="Envoyer" />
           </button>
         </form>
-      )}
+      
     </div>
   );
 }

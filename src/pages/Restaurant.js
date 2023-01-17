@@ -1,4 +1,3 @@
-import { BsHeartFill } from 'react-icons/bs';
 import { useContext, useEffect, useState } from 'react';
 import {
   MapContainer, TileLayer, Marker,
@@ -7,18 +6,27 @@ import { CapacitorHttp } from '@capacitor/core';
 import CardList from '../components/CardList/CardList';
 import Mementos from '../components/Mementos/Mementos';
 import Button from '../components/Button/Button';
-import Tag from '../components/Tag/Tag';
 import ToggleMap from '../components/ToggleMap/ToggleMap';
 import NavBtn from '../components/NavBtn/NavBtn';
-import imgPlaceholder from '../assets/images/placeholder2.jpg';
 import UserContext from '../context/UserContext';
+import EditableText from '../components/EditableText/EditableText';
+import EditablePicture from '../components/EditablePicture/EditablePicture';
+import Tab from '../components/Tab/Tab';
+import { convertDate } from '../utils/utils';
+import EditableTags from '../components/EditableTags/EditableTags';
+import EditableFavorite from '../components/EditableFavorite/EditableFavorite';
+import Title from '../components/Title/Title';
+import EditableLocation from '../components/EditableLocation/EditableLocation';
 
 function Restaurant() {
   const { user, setUser } = useContext(UserContext);
-  const [tab, setTab] = useState('mementos');
+  // const [favorite, setFavorite] = useState(false);
+  const [tab, setTab] = useState('Mementos');
   const [loading, setLoading] = useState(true);
-  const [restaurant, setRestaurant] = useState(true);
+  const [restaurant, setRestaurant] = useState({});
   const [toggleMap, setToggleMap] = useState(true);
+  const [editing, setEditing] = useState(false);
+  const [dummy, setDummy] = useState({});
   const { REACT_APP_API_URL } = process.env;
 
   const getOneRestaurant = async () => {
@@ -36,10 +44,43 @@ function Restaurant() {
 
       console.log('Requete RESTAURANT OK', result);
       setRestaurant(result.data[0]);
+      setDummy(result.data[0]);
       setLoading(false);
     }
     catch (error) {
       console.log('Requete RESTAURANT NOK', error);
+    }
+  };
+
+  const updateRestaurant = async () => {
+    try {
+      const options = {
+        url: `${REACT_APP_API_URL}/restaurant`,
+        headers: {
+          Authorization: `bearer ${user.token}`,
+          userid: user.userid,
+          id: Number(user.currentPage.split('-')[1]),
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        data: {
+          name: dummy.name,
+          location: dummy.location,
+          photo_url: dummy.photo_url,
+        },
+      };
+
+      const result = await CapacitorHttp.patch(options);
+
+      console.log('Requete UPDATE RESTAURANT OK', result);
+      setRestaurant({
+        ...restaurant,
+        name: dummy.name,
+        location: dummy.location,
+        photo_url: dummy.photo_url,
+      });
+    }
+    catch (error) {
+      console.log('Requete UPDATE RESTAURANT NOK', error);
     }
   };
 
@@ -51,31 +92,42 @@ function Restaurant() {
     (!loading && (
       <>
         <div className="text-lightTextColor dark:text-darkTextColor px-6 pb-4">
-          <div className="w-full flex justify-between items-center">
-            <NavBtn caption="Précédent" type="previous" order="iconFirst" target="home" />
-            <NavBtn caption="Modifier" type="edit" order="captionFirst" target={`editRestaurant-${restaurant.id}`} />
-          </div>
-          <div className="topLane flex justify-left items-baseline pb-4 font-bold">
-            { restaurant.favorite
-          && <BsHeartFill />}
-            <p className="text-2xl pl-4">{restaurant.name}</p>
-          </div>
-          <p className="adress pb-6 text-sm">{restaurant.location}</p>
-          <div className="pb-8 text-sm inline-flex flex-wrap">
-            { restaurant.tags && restaurant.tags.map((tag) => (
-              <Tag caption={tag.label} key={tag.id} type="normal" />
-            ))}
+          <div className="flex justify-between">
+            {editing
+              ? (
+                <>
+                  <NavBtn caption="Annuler" icon="cancel" order="iconFirst" target={user.currentPage} editing={editing} setEditing={setEditing} />
+                  <NavBtn caption="Valider" icon="check" order="captionFirst" target="" editing={editing} setEditing={setEditing} onValidation={updateRestaurant} />
+                </>
+              )
+              : (
+                <>
+                  <NavBtn caption="Précédent" icon="previous" order="iconFirst" target="home" />
+                  <NavBtn caption="Modifier" icon="edit" order="captionFirst" target="" editing={editing} setEditing={setEditing} />
+                </>
+              )}
           </div>
 
+          { editing && <Title caption="Modifier un restaurant" />}
+          <div className="flex items-center">
+            <EditableFavorite favorite={restaurant.favorite} setRestaurant={setRestaurant} restaurant={restaurant} editing={editing} />
+            <EditableText classes="text-2xl font-bold mb-2" value="name" editing={editing} setDummy={setDummy} dummy={dummy} place="name" placeholder="Nom du restaurant" icon="restaurant" />
+          </div>
+          <EditableTags data={restaurant.tags} editing={editing} />
+
+          <EditableLocation classes="mb-4" value="location" editing={editing} setDummy={setDummy} dummy={dummy} placeholder="Adresse" icon="location" />
+
+          {!editing && <p className="pb-4 text-xs">Ajouté le {convertDate(restaurant.created_at)}{restaurant.updated_at && ` - Dernière modification le ${convertDate(restaurant.updated_at)}`}</p>}
+
           <div className="relative">
-            { restaurant.photo_url
+            { (restaurant.photo_url && !editing)
               && (
               <div className="bg-[white] rounded-full absolute p-1 top-2 right-2 shadow-[0_5px_5px_0px_rgba(0,0,0,0.3)] dark:shadow-card text-2xl text-darkAccentColor z-10">
                 <ToggleMap setToggleMap={setToggleMap} toggleMap={toggleMap} />
               </div>
               )}
             { toggleMap
-              ? <img src={restaurant.photo_url ? `${REACT_APP_API_URL}${restaurant.photo_url}` : `${imgPlaceholder}`} className={restaurant.photo_url ? 'object-cover h-48 w-full rounded-md' : 'object-cover h-48 w-full rounded-md blur'} alt="mapPlaceholder" />
+              ? <EditablePicture url={`${REACT_APP_API_URL}${restaurant.photo_url}`} editing={editing} setEditing={setEditing} rounded={false} />
               : (
                 <MapContainer center={[Number(restaurant.coordinate.split(' - ')[0]), Number(restaurant.coordinate.split(' - ')[1])]} zoom={13} scrollWheelZoom={false} className="h-48 w-full rounded-md z-0">
                   <TileLayer
@@ -90,45 +142,30 @@ function Restaurant() {
 
         </div>
 
-        <div className="tabs flex text-lightTextColor dark:text-darkTextColor px-6 shadow-[0_5px_5px_0px_rgba(0,0,0,0.3)] dark:shadow-card ">
-          <div
-            onClick={() => {
-              setTab('mementos');
-            }}
-            className={`mementoTab border-lightAccentColor dark:border-darkAccentColor pb-2 mr-5 ${tab === 'mementos' ? 'border-b-2' : 'border-0'}`}
-          >
-            Mémentos
-          </div>
-          <div
-            onClick={() => {
-              setTab('meals');
-            }}
-            className={`mealsTab border-lightAccentColor dark:border-darkAccentColor pb-2 mr-5 ${tab === 'meals' ? 'border-b-2' : 'border-0'}`}
-          >
-            Plats évalués
-          </div>
-        </div>
+        {!editing && (
+        <>
+          <Tab values={['Mementos', 'Plats']} tab={tab} setTab={setTab} />
 
-        <div className="flex flex-col flex-grow py-8 text-lightTextColor dark:text-darkTextColor overflow-y-scroll">
-          { (tab === 'mementos')
-        && (
-          <div className="px-4 cursor-pointer">
-            <div onClick={() => setUser({ ...user, currentPage: `addMemento-${restaurant.id}` })}>
-              <Button type="normal" caption="Nouveau mémento" />
+          <div className="flex flex-col flex-grow py-8 text-lightTextColor dark:text-darkTextColor overflow-y-scroll">
+            { (tab === 'Mementos') && (
+            <div className="px-4 cursor-pointer">
+              <div onClick={() => setUser({ ...user, currentPage: `addMemento-${restaurant.id}` })}>
+                <Button type="normal" caption="Nouveau mémento" />
+              </div>
+              { restaurant.menentos && <Mementos mementos={restaurant.mementos} /> }
             </div>
-            { restaurant.menentos && <Mementos mementos={restaurant.mementos} /> }
+            )}
+            { (tab === 'Plats') && (
+              <>
+                <div className="px-8 cursor-pointer" onClick={() => setUser({ ...user, currentPage: `addMeal-${restaurant.id}` })}>
+                  <Button type="normal" caption="Nouveau plat" />
+                </div>
+                { restaurant.meal && <CardList type="meal" data={restaurant.meal} /> }
+              </>
+            )}
           </div>
+        </>
         )}
-          { (tab === 'meals')
-        && (
-          <div className="px-4 cursor-pointer">
-            <div onClick={() => setUser({ ...user, currentPage: `addMeal-${restaurant.id}` })}>
-              <Button type="normal" caption="Nouveau plat" />
-            </div>
-            { restaurant.meal && <CardList type="meal" data={restaurant.meal} /> }
-          </div>
-        )}
-        </div>
 
       </>
     ))

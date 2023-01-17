@@ -1,11 +1,12 @@
-import { FaBars } from 'react-icons/fa';
-import { MdLightMode, MdModeNight } from 'react-icons/md';
-import { RiCloseFill } from 'react-icons/ri';
+import {
+  SunIcon, MoonIcon, Bars3Icon, XMarkIcon,
+} from '@heroicons/react/24/outline';
 import { useContext, useState } from 'react';
 import { CapacitorHttp } from '@capacitor/core';
-import flou from '../../assets/images/blur.jpg';
+import placeholder from '../../assets/images/blur.jpg';
 import Menu from './Menu/Menu';
 import UserContext from '../../context/UserContext';
+import Field from '../Field/Field';
 
 function Header() {
   const { REACT_APP_API_URL } = process.env;
@@ -39,26 +40,28 @@ function Header() {
 
   return (
     <>
-      <nav className="HEADER flex items-center justify-between p-8 z-30">
-        <div className="flex items-center">
-          <div onClick={() => setUser({ ...user, currentPage: 'profil' })} className="cursor-pointer">
-            <img className=" rounded-full object-cover h-12 w-12 mr-4" alt="logo" src={(user.photo_url && user.photo_url !== 'null') ? `${REACT_APP_API_URL}${user.photo_url}` : flou} />
-            <div className="text-lightTextColor dark:text-darkTextColor">
-              <p className="font-semibold text-xl tracking-tight">{user.username}</p>
-              <p>Bienvenue !</p>
-            </div>
-          </div>
-        </div>
+      <nav className="HEADER flex items-center justify-between p-6">
+        <img onClick={() => setUser({ ...user, currentPage: 'profil' })} className="cursor-pointer rounded-full object-cover h-8 w-8 mr-4" alt="logo" src={(user.photo_url && user.photo_url !== 'null') ? `${REACT_APP_API_URL}${user.photo_url}` : placeholder} />
+        <Field
+          type="text"
+          name="name"
+          icon="search"
+          placeholder="Rechercher un restaurant"
+          classname="drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-md shadow-md border-l-4 border-l-darkAccentColor pr-8 pb-1 pl-12 mx-4"
+          value=""
+          onChange={() => {
+          }}
+        />
         <div className={`flex items-center ${!menuState ? 'text-lightAccentColor ' : 'text-darkTextColor '} duration-700`}>
           <div className="pr-6">
             {user.colorScheme === 'light'
-              ? <MdLightMode onClick={() => toggleLightMode()} className="mx-2 w-8 h-8 hover:w-10 hover:h-10 hover:mx-1" />
-              : <MdModeNight onClick={() => toggleLightMode()} className="mx-2 w-8 h-8 hover:w-10 hover:h-10 hover:mx-1" />}
+              ? <SunIcon onClick={() => toggleLightMode()} className="w-8 h-8 hover:text-lightTextColor duration-200 cursor-pointer" />
+              : <MoonIcon onClick={() => toggleLightMode()} className="w-8 h-8 hover:text-darkTextColor duration-200 cursor-pointer" />}
           </div>
-          <div>
+          <div className="z-30">
             {!menuState
-              ? <FaBars className="mx-2 w-8 h-8 hover:w-10 hover:h-10 hover:mx-1" onClick={() => setMenuState(true)} />
-              : <RiCloseFill className="mx-2 w-8 h-8 hover:w-10 hover:h-10 hover:mx-1" onClick={() => setMenuState(false)} />}
+              ? <Bars3Icon className="w-8 h-8 hover:text-darkTextColor duration-200 cursor-pointer" onClick={() => setMenuState(true)} />
+              : <XMarkIcon className="w-8 h-8 hover:text-darkTextColor duration-200 cursor-pointer" onClick={() => setMenuState(false)} />}
           </div>
         </div>
       </nav>

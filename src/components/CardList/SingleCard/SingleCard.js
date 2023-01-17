@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { BsStarFill } from 'react-icons/bs';
+import { StarIcon } from '@heroicons/react/24/solid';
 import { useContext } from 'react';
 import imgPlaceholder from '../../../assets/images/placeholder2.jpg';
 import UserContext from '../../../context/UserContext';
@@ -9,7 +9,7 @@ function SingleCard({ data, type }) {
   const { REACT_APP_API_URL } = process.env;
 
   return (
-    <li className={`w-full p-5 ${type === 'restaurant' ? 'sm:w-1/2 md:w-1/3 lg:w-1/4' : 'w-1/2 sm:w-1/3'} pb-1/2 overflow-hidden`}>
+    <li className={`w-full p-3 ${type === 'restaurant' ? 'sm:w-1/2 md:w-1/3 lg:w-1/4' : 'w-1/2 sm:w-1/3'} pb-1/2 overflow-hidden`}>
 
       <div
         onClick={() => {
@@ -22,10 +22,9 @@ function SingleCard({ data, type }) {
           { data.photo_url
             ? <img className="absolute h-full w-full object-cover" src={`${REACT_APP_API_URL}${data.photo_url}`} alt="food placeholder" />
             : <img className="absolute h-full w-full object-cover blur-lg" src={imgPlaceholder} alt="food placeholder" />}
-          {data.favorite
-          && (
+          {data.favorite && (
           <div className="bg-[white] rounded-full absolute p-1 top-2 right-2 shadow-[0_5px_5px_0px_rgba(0,0,0,0.3)] dark:shadow-card">
-            <BsStarFill className="text-2xl text-darkAccentColor" />
+            <StarIcon className="text-2xl text-darkAccentColor h-6 w-6" />
           </div>
           )}
         </div>

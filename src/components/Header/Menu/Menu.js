@@ -6,7 +6,7 @@ function Menu({ menuState }) {
   const { user, setUser } = useContext(UserContext);
   return (
     <div className={`MENU right-0 absolute bg-darkAccentColor text-right h-full ${menuState ? 'w-[100vw]' : 'w-[0vw]'}  duration-700 z-20 overflow-hidden`}>
-      <ul className="text-darkTextColor text-xl mt-40 absolute right-0 pr-6 w-[100vw]">
+      <ul className="text-darkTextColor text-xl mt-40 absolute right-0 pr-4 w-[100vw]">
 
         <li className="hover:border-r-4 pr-4 border-r-[white] hover:font-bold cursor-pointer">
           <div onClick={() => setUser({ ...user, currentPage: 'home' })} className="cursor-pointer">

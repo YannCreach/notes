@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
-import { BiEdit } from 'react-icons/bi';
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
 import UserContext from '../../../context/UserContext';
 
 function Memento({ memento }) {
@@ -13,7 +13,7 @@ function Memento({ memento }) {
         <p className="text-xs">Ajouté le {memento.created_at}</p>
       </div>
       <div onClick={() => setUser({ ...user, currentPage: 'formMemento' })} data={memento.id} className="flex py-4 items-center">
-        <BiEdit className="text-2xl mr-2 text-lightAccentColor dark:text-darkAccentColor " />
+        <PencilSquareIcon className="h-6 w-6 mr-2 text-lightAccentColor dark:text-darkAccentColor " />
       </div>
     </li>
   );
