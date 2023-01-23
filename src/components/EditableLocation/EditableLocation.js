@@ -1,59 +1,60 @@
 import { CapacitorHttp } from '@capacitor/core';
-import { MapPinIcon } from '@heroicons/react/24/solid';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
-function EditableLocation({
-  editing, value, classes, dummy, setDummy,
-}) {
-  const autoComplete = async (e) => {
+function EditableLocation({ classes, location, setLocation }) {
+  const [suggestions, setSuggestions] = useState([]);
+  const [displaySuggestion, setDisplaySuggestion] = useState(false);
+
+  const autoComplete = async (value) => {
+    const newLocation = value.replace(' ', '+');
+    setLocation(value);
     try {
       const options = {
-        url: `https://api-adresse.data.gouv.fr/search/?q=${e}`,
+        url: `https://api-adresse.data.gouv.fr/search/?q=${newLocation}&autocomplete=1`,
       };
 
       const dataGouv = await CapacitorHttp.get(options);
-      // const newLocation = store.getState().restaurant.editingDummy.location.replace(' ', '+');
-      const coordinatesFromAPI = dataGouv.data.features[0].geometry.coordinates;
-      setDummy({
-        ...dummy,
-        location: e,
-        coodinates: coordinatesFromAPI,
-      });
-      console.log('Requete fetch coordinates OK', dataGouv.data);
+      setSuggestions(...suggestions, dataGouv.data.features);
+      setDisplaySuggestion(true);
+      console.log('Requete fetch autocomplete OK', dataGouv.data);
     }
     catch (error) {
-      console.log('Requete fetch coordinates NOK', error);
+      console.log('Requete fetch autocomplete NOK', error);
     }
   };
 
   return (
     <div className="">
-      {!editing
-        ? <p className={classes}>{ dummy[value] }</p>
-        : (
-          <div className="dark:text-darkTextColor text-lightTextColor relative">
-            <span className="text-darkAccentColor text-2xl absolute left-3 z-10 top-4">
-              <MapPinIcon className="h-6 w-6" />
-            </span>
-            <input
-              className="drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-md shadow-md border-l-4 border-l-darkAccentColor py-4 pr-8 pl-12 w-full mb-4 focus:outline-none focus:dark:bg-[#737373]"
-              onChange={(e) => autoComplete(e)}
-              value={dummy.location}
-              placeholder="Adresse du restaurant"
-            />
-
-          </div>
-        )}
+      <input
+        className={`input-custom ${classes} mb-0`}
+        onChange={(e) => autoComplete(e.target.value)}
+        value={location}
+        placeholder="Adresse du restaurant"
+      />
+      { displaySuggestion && (
+      <ul className="dark:bg-darkBackgroundAltColor bg-lightBackgroundColor p-2 rounded">
+        {suggestions.map((suggestion) => (
+          <li
+            className="hover:dark:bg-darkBackgroundColor hover:bg-[white] hover:cursor-pointer px-2 py-1 rounded mt-2"
+            key={suggestion.properties.id}
+            onClick={() => {
+              setLocation(suggestion.properties.label);
+              setDisplaySuggestion(false);
+            }}
+          >{suggestion.properties.label}
+          </li>
+        ))}
+      </ul>
+      )}
     </div>
   );
 }
 
 EditableLocation.propTypes = {
-  editing: PropTypes.bool.isRequired,
-  value: PropTypes.string.isRequired,
   classes: PropTypes.string.isRequired,
-  dummy: PropTypes.object.isRequired,
-  setDummy: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
+  setLocation: PropTypes.func.isRequired,
 };
 
 export default EditableLocation;

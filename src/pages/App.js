@@ -54,7 +54,7 @@ function App() {
       <UserContext.Provider value={value}>
         <div className={`${user.colorScheme === 'light' ? '' : 'dark'}`}>
           <div className="bg-[#fff] dark:bg-[#1E1E1E] ">
-            <div className="APP bg-lightBackgroundColor dark:bg-darkBackgroundColor flex flex-col h-[100vh] w-[100vw] overflow-hidden lg:w-[60rem] m-auto shadow-[0px_0px_15px_5px_rgba(0,0,0,0.3)]">
+            <div className="APP bg-whiteVariantColor dark:bg-darkBackgroundColor flex flex-col h-[100vh] w-[100vw] overflow-hidden lg:w-[60rem] m-auto shadow-[0px_0px_15px_5px_rgba(0,0,0,0.3)]">
 
               {!loading && !user.token
                 ? (<LandingPage />)

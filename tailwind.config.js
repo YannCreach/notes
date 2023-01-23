@@ -7,12 +7,9 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
-      input: {
-        focus: 'outline-none focus:shadow-outline-indigo-500',
-        custom: 'font-medium rounded-md leading-5 text-gray-700 placeholder-gray-500',
-      },
     },
     colors: {
+      whiteVariantColor: '#F2F3F7',
       darkAccentColor: '#5DB35D',
       darkBackgroundColor: '#212121',
       darkBackgroundAltColor: '#474747',
