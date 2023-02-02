@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import UserContext from '../../../context/UserContext';
-import LogoutButton from '../../../logout';
-import Profile from '../../../profile';
+import LogoutButton from '../../../auth/logout';
+import Profile from '../../../auth/profile';
 
 function Menu({ menuState }) {
   const { user, setUser } = useContext(UserContext);

@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import Bullet from '../components/Bullet/Bullet';
-import Login from '../components/Login/Login';
+// import Bullet from '../components/Bullet/Bullet';
+// import Login from '../components/Login/Login';
 import splashImage from '../assets/images/splashImage.webp';
 import { ReactComponent as Logo } from '../assets/images/logo.svg';
-import LoginButton from '../login';
-import Profile from '../profile';
-import LogoutButton from '../logout';
+import LoginButton from '../auth/login';
+import Profile from '../auth/profile';
+import LogoutButton from '../auth/logout';
 
 function LandingPage() {
   const [bullet, setBullet] = useState(1);

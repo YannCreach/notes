@@ -1,38 +1,26 @@
-// import { useEffect, useMemo, useState } from 'react';
-// import { Preferences } from '@capacitor/preferences';
 import { useAuth0 } from '@auth0/auth0-react';
 import { App as CapApp } from '@capacitor/app';
 import { Browser } from '@capacitor/browser';
-// import UserContext from '../context/UserContext';
 import { useEffect } from 'react';
 import LandingPage from './LandingPage';
 import Home from './Home';
 import Restaurant from './Restaurant';
 import Header from '../components/Header/Header';
 import Meal from './Meal';
-import { callbackUri } from '../auth/auth.config';
-// import Search from './Search';
-// import EditPage from './EditPage';
-// import Profile from './Profile';
-// import FormMemento from './FormMemento';
-// import NotFound from './NotFound';
+import { callbackUri } from '../auth/auth.config.ts';
 
 function App() {
-  // const [user, setUser] = useState({ currentPage: 'home' });
-  // const value = useMemo(() => ({ user, setUser }), [user, setUser]);
-  // const [loading, setLoading] = useState(true);
   const { user, isAuthenticated, isLoading } = useAuth0();
   const { handleRedirectCallback } = useAuth0();
-  // const [currentPage, setCurrentPage] = useState('home');
 
   useEffect(() => {
-    // Handle the 'appUrlOpen' event and call `handleRedirectCallback`
     CapApp.addListener('appUrlOpen', async ({ url }) => {
-      if (url.includes('state') && (url.includes('code') || url.includes('error'))) {
-        await handleRedirectCallback(url);
+      if (url.startsWith(callbackUri)) {
+        if (url.includes('state') && (url.includes('code') || url.includes('error'))) {
+          await handleRedirectCallback(url);
+        }
+        await Browser.close();
       }
-      // No-op on Android
-      await Browser.close();
     });
   }, [handleRedirectCallback]);
 
@@ -41,7 +29,6 @@ function App() {
   }
 
   return (
-    // <UserContext.Provider value={value}>
     <div className={`${isAuthenticated && user.user_metadata.colorscheme ? '' : 'dark'}`}>
       <div className="bg-[#fff] dark:bg-[#1E1E1E] ">
         <div className="APP bg-whiteVariantColor dark:bg-darkBackgroundColor flex flex-col h-[100vh] w-[100vw] overflow-hidden lg:w-[60rem] m-auto shadow-[0px_0px_15px_5px_rgba(0,0,0,0.3)]">
