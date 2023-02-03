@@ -1,8 +1,8 @@
 // import { CapacitorPlatforms } from '@capacitor/core';
 import { Device } from '@capacitor/device';
 
-export const domain = 'dev-n0lb4ireiqf83cv2.eu.auth0.com';
-export const clientId = 'jqI3I37mU5YoeX6ebSgQCoJlOpqtQxd6';
+const { domain } = process.env.REACT_APP_AUTH0_DOMAIN;
+const { client_id } = process.env.REACT_APP_AUTH0_CLIENT_ID;
 const appId = 'notesByYc';
 
 const checkDeviceOS = async () => {
@@ -16,7 +16,11 @@ const checkDeviceOS = async () => {
   return callback;
 };
 
-export const callbackUri = checkDeviceOS();
+const callbackUri = 'http://localhost:3000';
+
+// export const callbackUri = checkDeviceOS();
+export default callbackUri;
+
 // const iosOrAndroid = (CapacitorPlatforms ==='ios') || (Platform.is('android'));
 
 // export const callbackUri = iosOrAndroid

@@ -4,14 +4,16 @@ import App from './pages/App';
 
 import './index.css';
 
+const domain = process.env.REACT_APP_AUTH0_DOMAIN;
+const client_id = process.env.REACT_APP_AUTH0_CLIENT_ID;
+
 const rootReactElement = (
   <Auth0Provider
-    domain="dev-n0lb4ireiqf83cv2.eu.auth0.com"
-    clientId="jqI3I37mU5YoeX6ebSgQCoJlOpqtQxd6"
+    domain={domain}
+    clientId={client_id}
     authorizationParams={{ redirect_uri: window.location.origin }}
-    cacheLocation="localstorage"
-    useRefreshTokens
-    // authorizationParams={{ redirect_uri: 'https://yanncrea.ch' }}
+    // cacheLocation="localstorage"
+    // useRefreshTokens
   >
     <App />
   </Auth0Provider>

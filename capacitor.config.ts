@@ -6,9 +6,9 @@ const config: CapacitorConfig = {
   webDir: 'build',
   bundledWebRuntime: false,
   server: { 
-    // allowNavigation: [ "localhost:8080" ],
+    allowNavigation: [ "localhost:8080" ],
     // url: "localhost:3000",
-		// cleartext: true,
+		cleartext: true,
     hostname: "localhost:3000",
   },
   plugins: {
