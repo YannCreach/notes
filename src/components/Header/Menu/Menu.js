@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 import { useContext } from 'react';
 import UserContext from '../../../context/UserContext';
-import LogoutButton from '../../../logout';
-import Profile from '../../../profile';
 
 function Menu({ menuState }) {
   const { user, setUser } = useContext(UserContext);
@@ -24,7 +22,7 @@ function Menu({ menuState }) {
 
         <li className="hover:border-r-4 pr-4 border-r-[white] mt-7 hover:font-bold cursor-pointer">
           <div onClick={() => setUser({ ...user, currentPage: 'profil' })} className="cursor-pointer">
-            Mon profil <Profile />
+            Mon profil
           </div>
         </li>
 
@@ -34,7 +32,7 @@ function Menu({ menuState }) {
           }}
           className="hover:border-r-4 pr-4 border-r-[white] mt-7 hover:font-bold cursor-pointer"
         >
-          Se déconnecter <LogoutButton />
+          Se déconnecter
         </li>
 
       </ul>

@@ -4,15 +4,13 @@ import {
 import { useContext, useState } from 'react';
 import { CapacitorHttp } from '@capacitor/core';
 // import placeholder from '../../assets/images/blur.jpg';
-import { useAuth0 } from '@auth0/auth0-react';
 import Menu from './Menu/Menu';
-// import UserContext from '../../context/UserContext';
+import UserContext from '../../context/UserContext';
 import Field from '../Field/Field';
 
 function Header() {
   const { REACT_APP_API_URL } = process.env;
-  const { user } = useAuth0();
-  // const { user, setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   const [menuState, setMenuState] = useState(false);
 
   const toggleLightMode = async () => {

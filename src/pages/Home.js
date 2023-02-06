@@ -2,7 +2,6 @@ import { CapacitorHttp } from '@capacitor/core';
 import { useContext, useEffect, useState } from 'react';
 import UserContext from '../context/UserContext';
 import CardList from '../components/CardList/CardList';
-import Header from '../components/Header/Header';
 import QuickActions from '../components/QuickActions/QuickActions';
 import Title from '../components/Title/Title';
 
@@ -15,17 +14,17 @@ function Home() {
   const getAllRestaurants = async () => {
     try {
       const options = {
-        url: `${REACT_APP_API_URL}/restaurants`,
+        url: `${REACT_APP_API_URL}/places`,
         headers: {
           Authorization: `bearer ${user.token}`,
-          userid: user.userid,
+          userid: 1,
         },
       };
 
       const result = await CapacitorHttp.get(options);
 
       console.log('Requete RESTAURANTS OK', result);
-      setData(result.data);
+      setData(result.data.places);
       setLoading(false);
     }
     catch (error) {
