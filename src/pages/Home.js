@@ -1,40 +1,44 @@
 import { CapacitorHttp } from '@capacitor/core';
-import { useContext, useEffect, useState } from 'react';
-import UserContext from '../context/UserContext';
+import { useEffect, useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 import CardList from '../components/CardList/CardList';
-import Header from '../components/Header/Header';
 import QuickActions from '../components/QuickActions/QuickActions';
 import Title from '../components/Title/Title';
 
 function Home() {
-  const { user, setUser } = useContext(UserContext);
+  const { user } = useAuth0();
   const { REACT_APP_API_URL } = process.env;
   const [data, setData] = useState('');
   const [loading, setLoading] = useState(true);
+  console.log('home');
+  const { getAccessTokenSilently } = useAuth0();
 
-  const getAllRestaurants = async () => {
+  const getAllPlaces = async () => {
     try {
+      const token = await getAccessTokenSilently();
+      console.log(token);
       const options = {
-        url: `${REACT_APP_API_URL}/restaurants`,
+        url: `${REACT_APP_API_URL}/places`,
         headers: {
-          Authorization: `bearer ${user.token}`,
-          userid: user.userid,
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Authorization: `Bearer ${token}`,
+          userid: 1,
         },
       };
 
       const result = await CapacitorHttp.get(options);
 
-      console.log('Requete RESTAURANTS OK', result);
+      console.log('Requete PLACES OK', result);
       setData(result.data);
       setLoading(false);
     }
     catch (error) {
-      console.log('Requete RESTAURANTS NOK', error);
+      console.log('Requete PLACES NOK', error);
     }
   };
 
   useEffect(() => {
-    getAllRestaurants();
+    getAllPlaces();
   }, []);
 
   return (
@@ -42,11 +46,11 @@ function Home() {
       <div className="overflow-auto">
         <div className="mx-6">
           <Title caption="Actions rapides" />
-          <QuickActions restaurants={[]} />
-          <Title caption="Restaurants favoris" />
+          <QuickActions places={[]} />
+          <Title caption="Places favoris" />
         </div>
         <div className="mx-3">
-          {!loading && <CardList data={data} type="restaurant" />}
+          {!loading && <CardList data={data} type="place" />}
         </div>
       </div>
     </div>

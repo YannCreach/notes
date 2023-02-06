@@ -14,10 +14,11 @@ function LoginButton() {
   //     },
   //   });
   // };
-
+  //! loginWithRedirect fail
   const login = () => loginWithRedirect({
     redirectUri: window.location.origin,
   });
+  // const login = () => loginWithRedirect();
 
   return <button type="button" onClick={login}>Log In</button>;
 }

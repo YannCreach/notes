@@ -6,13 +6,13 @@ function Bullet({ bullet, setBullet }) {
     <div className="p-8 flex flex-col justify-between items-center absolute bottom-0 text-center">
       <div className="dark:text-darkTextColor text-lightTextColor pb-12">
         {(bullet === 1)
-        && <p className="">Note To Myself permet de se laisser des notes personnelles sur un plat ou sur un restaurant</p>}
+        && <p className="">Note To Myself permet de se laisser des notes personnelles sur un plat ou sur un lieu</p>}
 
         {(bullet === 2)
         && <p className="">Une note par moi et pour moi afin de m’aider à mieux choisir lors de mon prochain passage</p>}
 
         {(bullet === 3)
-          && <p className="">Une notification des mémentos que je me suis laissé quand je rentre dans un restaurant</p>}
+          && <p className="">Une notification des mémentos que je me suis laissé quand je rentre dans un lieu</p>}
       </div>
 
       <div

@@ -20,7 +20,7 @@ function Field({
       <span className="text-darkAccentColor text-2xl absolute left-3 z-10 top-4">
         {(icon === 'comment') && <ChatBubbleLeftIcon className="h-6 w-6" />}
         {(icon === 'location') && <MapPinIcon className="h-6 w-6" />}
-        {(icon === 'restaurant') && <BuildingStorefrontIcon className="h-6 w-6" />}
+        {(icon === 'place') && <BuildingStorefrontIcon className="h-6 w-6" />}
         {(icon === 'search') && <MagnifyingGlassIcon className="h-6 w-6" />}
         {(icon === 'email') && <AtSymbolIcon className="h-6 w-6" />}
         {(icon === 'user') && <UserIcon className="h-6 w-6" />}

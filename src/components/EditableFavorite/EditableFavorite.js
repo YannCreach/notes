@@ -6,7 +6,7 @@ import { CapacitorHttp } from '@capacitor/core';
 import UserContext from '../../context/UserContext';
 
 function EditableFavorite({
-  favorite, setRestaurant, restaurant, editing,
+  favorite, setPlace, place, editing,
 }) {
   const { user, setUser } = useContext(UserContext);
   const { REACT_APP_API_URL } = process.env;
@@ -14,7 +14,7 @@ function EditableFavorite({
   const updateFavorite = async (value) => {
     try {
       const options = {
-        url: `${REACT_APP_API_URL}/restaurant`,
+        url: `${REACT_APP_API_URL}/place`,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           Authorization: `bearer ${user.token}`,
@@ -26,7 +26,7 @@ function EditableFavorite({
       };
 
       await CapacitorHttp.patch(options);
-      setRestaurant({ ...restaurant, favorite: value });
+      setPlace({ ...place, favorite: value });
       console.log('Requete UPDATE FAVORITE OK', value);
     }
     catch (error) {
@@ -56,8 +56,8 @@ function EditableFavorite({
 
 EditableFavorite.propTypes = {
   favorite: PropTypes.bool.isRequired,
-  restaurant: PropTypes.object.isRequired,
-  setRestaurant: PropTypes.func.isRequired,
+  place: PropTypes.object.isRequired,
+  setPlace: PropTypes.func.isRequired,
   editing: PropTypes.bool.isRequired,
 };
 

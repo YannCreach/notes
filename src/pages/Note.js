@@ -3,49 +3,49 @@ import { HeartIcon } from '@heroicons/react/24/solid';
 import { CapacitorHttp } from '@capacitor/core';
 import NavBtn from '../components/NavBtn/NavBtn';
 import Tag from '../components/Tag/Tag';
-import mealPhoto from '../assets/images/mealPlaceholder.jpg';
+import notePhoto from '../assets/images/notePlaceholder.jpg';
 import UserContext from '../context/UserContext';
 import EditableText from '../components/EditableText/EditableText';
 import { convertDate } from '../utils/utils';
 import EditableTags from '../components/EditableTags/EditableTags';
 
-function Meal() {
+function Note() {
   const { user, setUser } = useContext(UserContext);
   const { REACT_APP_API_URL } = process.env;
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
-  const [meal, setMeal] = useState({});
+  const [note, setNote] = useState({});
 
-  const getOneMeal = async () => {
+  const getOneNote = async () => {
     try {
       const options = {
-        url: `${REACT_APP_API_URL}/meal`,
+        url: `${REACT_APP_API_URL}/note`,
         headers: {
           Authorization: `bearer ${user.token}`,
           userid: user.userid,
-          mealid: Number(user.currentPage.split('-')[1]),
+          noteid: Number(user.currentPage.split('-')[1]),
         },
       };
 
       const result = await CapacitorHttp.get(options);
 
-      console.log('Requete MEAL OK', result);
-      setMeal(result.data[0]);
+      console.log('Requete NOTE OK', result);
+      setNote(result.data[0]);
       setLoading(false);
     }
     catch (error) {
-      console.log('Requete MEAL NOK', error);
+      console.log('Requete NOTE NOK', error);
     }
   };
 
-  const updateMeal = async () => {
+  const updateNote = async () => {
     try {
       const options = {
-        url: `${REACT_APP_API_URL}/meal`,
+        url: `${REACT_APP_API_URL}/note`,
         headers: {
           Authorization: `bearer ${user.token}`,
           userid: user.userid,
-          mealid: Number(user.currentPage.split('-')[1]),
+          noteid: Number(user.currentPage.split('-')[1]),
         },
         data: {
 
@@ -54,17 +54,17 @@ function Meal() {
 
       const result = await CapacitorHttp.patch(options);
 
-      console.log('Requete UPDATE RESTAURANT OK', result);
-      setMeal(result.data[0]);
+      console.log('Requete UPDATE PLACE OK', result);
+      setNote(result.data[0]);
       setEditing(false);
     }
     catch (error) {
-      console.log('Requete UPDATE RESTAURANT NOK', error);
+      console.log('Requete UPDATE PLACE NOK', error);
     }
   };
 
   useEffect(() => {
-    getOneMeal();
+    getOneNote();
   }, []);
 
   return (
@@ -86,25 +86,25 @@ function Meal() {
           )}
       </div>
 
-      <EditableText classes="text-2xl font-bold" value={meal.name} editing={editing} placeholder="Nom du plat" icon="information" />
+      <EditableText classes="text-2xl font-bold" value={note.name} editing={editing} placeholder="Nom du plat" icon="information" />
 
-      { meal.favorite && <HeartIcon className="mr-4" />}
+      { note.favorite && <HeartIcon className="mr-4" />}
 
-      {/* { meal.tags
-          && meal.tags.map((tag) => (
+      {/* { note.tags
+          && note.tags.map((tag) => (
             <Tag caption={tag.label} key={tag.id} type="normal" />
           ))} */}
 
-      { meal.tags && <EditableTags data={meal} editing={editing} /> }
+      { note.tags && <EditableTags data={note} editing={editing} /> }
 
-      <EditableText classes="" value={meal.review} editing={editing} placeholder="Commentaire" icon="comment" />
+      <EditableText classes="" value={note.review} editing={editing} placeholder="Commentaire" icon="comment" />
       <div className="overflow-hidden rounded-md mt-4">
-        <img src={meal.photo_url ? `${REACT_APP_API_URL}${meal.photo_url}` : `${mealPhoto}`} className={`object-cover h-48 w-full ${meal.photo_url ? '' : 'blur'}`} alt="mapPlaceholder" />
+        <img src={note.photo_url ? `${REACT_APP_API_URL}${note.photo_url}` : `${notePhoto}`} className={`object-cover h-48 w-full ${note.photo_url ? '' : 'blur'}`} alt="mapPlaceholder" />
       </div>
-      {!editing && <p className="pb-4 text-xs mt-4">Ajouté le {convertDate(meal.created_at)}{meal.updated_at && ` - Dernière modification le ${convertDate(meal.updated_at)}`}</p>}
+      {!editing && <p className="pb-4 text-xs mt-4">Ajouté le {convertDate(note.created_at)}{note.updated_at && ` - Dernière modification le ${convertDate(note.updated_at)}`}</p>}
     </div>
     ))
   );
 }
 
-export default Meal;
+export default Note;

@@ -1,17 +1,17 @@
 import { RiSearchLine } from 'react-icons/ri';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
-import { MdRestaurant } from 'react-icons/md';
+import { MdPlace } from 'react-icons/md';
 import Field from '../Field/Field';
 
 function FormSearch() {
-  // const searchRestaurant = useSelector((state) => state.field.searchRestaurant);
-  // const locationRestaurant = useSelector((state) => state.field.locationRestaurant);
+  // const searchPlace = useSelector((state) => state.field.searchPlace);
+  // const locationPlace = useSelector((state) => state.field.locationPlace);
 
   // const dispatch = useDispatch();
 
   function handleSubmit(event) {
     event.preventDefault();
-    // dispatch(actionSearchRestaurant());
+    // dispatch(actionSearchPlace());
   }
 
   return (
@@ -22,13 +22,13 @@ function FormSearch() {
     >
       <div className="relative flex justify-between w-full">
         <div className="w-full">
-          <MdRestaurant className="text-darkAccentColor text-3xl absolute left-3 z-10 h-10 top-2" />
+          <MdPlace className="text-darkAccentColor text-3xl absolute left-3 z-10 h-10 top-2" />
           <Field
             type="text"
-            name="searchRestaurant"
+            name="searchPlace"
             classname="drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-md shadow-md border-l-4 border-l-darkAccentColor py-4 w-full pl-12"
-            placeholder="Cuisine, nom du restaurant..."
-            value={searchRestaurant}
+            placeholder="Cuisine, nom du place..."
+            value={searchPlace}
             onChange={(newValue, name) => dispatch(actionChangeInputValue(newValue, name))}
           />
         </div>
@@ -45,10 +45,10 @@ function FormSearch() {
         <HiOutlineLocationMarker className=" text-darkAccentColor text-3xl absolute left-3 z-10 h-10 top-2" />
         <Field
           type="text"
-          name="locationRestaurant"
+          name="locationPlace"
           classname="drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-md shadow-md border-l-4 border-l-darkAccentColor py-4 w-full pl-12"
           placeholder="Où ?"
-          value={locationRestaurant}
+          value={locationPlace}
           onChange={(newValue, name) => dispatch(actionChangeInputValue(newValue, name))}
         />
       </div>

@@ -43,7 +43,7 @@ function FileUpload({ type, uploadBtn }) {
   //   rounded = 'w-48 rounded-full';
   // }
   // else {
-  //   data = useSelector((state) => state.restaurant.editingDummy);
+  //   data = useSelector((state) => state.place.editingDummy);
   //   rounded = 'w-full rounded-md';
   // }
   let imgUrl = placeholder;

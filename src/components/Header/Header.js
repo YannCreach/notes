@@ -48,7 +48,7 @@ function Header() {
           type="text"
           name="name"
           icon="search"
-          placeholder="Rechercher un restaurant"
+          placeholder="Rechercher un lieu"
           classname="drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-md shadow-md border-l-4 border-l-darkAccentColor pr-8 pb-1 pl-12 mx-4"
           value=""
           onChange={() => { }}

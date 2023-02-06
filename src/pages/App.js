@@ -1,12 +1,15 @@
-import { useAuth0 } from '@auth0/auth0-react';
+import { useAuth0, withAuthenticationRequired } from '@auth0/auth0-react';
 import { App as CapApp } from '@capacitor/app';
 import { Browser } from '@capacitor/browser';
 import { useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import LandingPage from './LandingPage';
 import Home from './Home';
-import Restaurant from './Restaurant';
+import Place from './Place';
 import Header from '../components/Header/Header';
-import Meal from './Meal';
+import Note from './Note';
+import Profile from '../auth/profile';
+import Loading from '../components/Loading/Loading';
 // import callbackUri from '../auth/auth.config.ts';
 
 function App() {
@@ -38,20 +41,30 @@ function App() {
             : (
               <>
                 <Header />
+                <Routes>
+                  <Route path="/" element={(<Home />)} />
+                  {/* <Route
+                    path="/"
+                    element={withAuthenticationRequired(Home)}
+                  /> */}
+                  <Route path="/profil" element={<Profile />} />
+                  <Route path="/place" element={<Place />} />
+                  <Route path="/note" element={(<Note />)} />
+                </Routes>
                 {console.log({ user })}
-                {user.currentPage === 'home' && <Home />}
-                {user.currentPage.split('-')[0] === 'restaurant' && <Restaurant />}
-                {user.currentPage.split('-')[0] === 'meal' && <Meal />}
+                {/* {user.currentPage === 'home' && <Home />}
+                {user.currentPage.split('-')[0] === 'place' && <Place />}
+                {user.currentPage.split('-')[0] === 'note' && <Note />} */}
                 {/* <Route path="/profil" element={<Profile />} />
                   <Route path="/search" element={<Search />} />
                   <Route path="/addmemento/:source" element={<FormMemento />} />
                   <Route path="/editmemento/:idmemento" element={<FormMemento />} />
 
-                  <Route path="/restaurant/:restaurantSlug/meal/:mealSlug" element={<Meal type="meal" />} />
-                  <Route path="/restaurant/:restaurantSlug/meal/:mealSlug/edit" element={<EditPage type="meal" addOrEdit="edit" />} />
-                  <Route path="/restaurant/:restaurantSlug/edit" element={<EditPage type="restaurant" addOrEdit="edit" />} />
-                  <Route path="/restaurant/add" element={<EditPage type="restaurant" addOrEdit="add" />} />
-                  <Route path="/meal/add/:idrestaurant" element={<EditPage type="meal" addOrEdit="add" />} />
+                  <Route path="/place/:placeSlug/note/:noteSlug" element={<Note type="note" />} />
+                  <Route path="/place/:placeSlug/note/:noteSlug/edit" element={<EditPage type="note" addOrEdit="edit" />} />
+                  <Route path="/place/:placeSlug/edit" element={<EditPage type="place" addOrEdit="edit" />} />
+                  <Route path="/place/add" element={<EditPage type="place" addOrEdit="add" />} />
+                  <Route path="/note/add/:idplace" element={<EditPage type="note" addOrEdit="add" />} />
                   <Route path="/*" element={<NotFound />} /> */}
               </>
             )}

@@ -15,45 +15,45 @@ import EditableTags from '../components/EditableTags/EditableTags';
 import EditableFavorite from '../components/EditableFavorite/EditableFavorite';
 import OverlayCreateEdit from '../components/OverlayCreateEdit/OverlayCreateEdit';
 
-function Restaurant() {
+function Place() {
   const { user, setUser } = useContext(UserContext);
   const [tab, setTab] = useState('Mementos');
   const [loading, setLoading] = useState(true);
-  const [restaurant, setRestaurant] = useState({});
+  const [place, setPlace] = useState({});
   const [toggleMap, setToggleMap] = useState(true);
   const [editing, setEditing] = useState(false);
   const { REACT_APP_API_URL } = process.env;
 
-  const getOneRestaurant = async () => {
+  const getOnePlace = async () => {
     try {
       const options = {
-        url: `${REACT_APP_API_URL}/restaurant`,
+        url: `${REACT_APP_API_URL}/place`,
         headers: {
           Authorization: `bearer ${user.token}`,
           userid: user.userid,
-          restaurantid: Number(user.currentPage.split('-')[1]),
+          placeid: Number(user.currentPage.split('-')[1]),
         },
       };
 
       const result = await CapacitorHttp.get(options);
 
-      console.log('Requete RESTAURANT OK', result);
-      setRestaurant(result.data[0]);
+      console.log('Requete PLACE OK', result);
+      setPlace(result.data[0]);
       setLoading(false);
     }
     catch (error) {
-      console.log('Requete RESTAURANT NOK', error);
+      console.log('Requete PLACE NOK', error);
     }
   };
 
   useEffect(() => {
-    getOneRestaurant();
+    getOnePlace();
   }, [editing]);
 
   return (
     (!loading && (
     <>
-      { editing && <OverlayCreateEdit data={restaurant} type="restaurant" editing={editing} setEditing={setEditing} /> }
+      { editing && <OverlayCreateEdit data={place} type="place" editing={editing} setEditing={setEditing} /> }
       <div className="text-lightTextColor dark:text-darkTextColor px-6 pb-4">
         <div className="flex justify-between">
           <NavBtn caption="Précédent" icon="previous" order="iconFirst" target="home" />
@@ -61,32 +61,32 @@ function Restaurant() {
         </div>
 
         <div className="flex items-center">
-          <EditableFavorite favorite={restaurant.favorite} setRestaurant={setRestaurant} restaurant={restaurant} editing={editing} />
-          <p className="text-2xl font-bold mb-2">{ restaurant.name }</p>
+          <EditableFavorite favorite={place.favorite} setPlace={setPlace} place={place} editing={editing} />
+          <p className="text-2xl font-bold mb-2">{ place.name }</p>
         </div>
-        <EditableTags data={restaurant.tags} editing={editing} />
+        <EditableTags data={place.tags} editing={editing} />
 
-        <p className="mb-4">{ restaurant.location }</p>
+        <p className="mb-4">{ place.location }</p>
 
-        <p className="mb-4">{ restaurant.comment }</p>
-        {!editing && <p className="pb-4 text-xs">Ajouté le {convertDate(restaurant.created_at)}{restaurant.updated_at && ` - Dernière modification le ${convertDate(restaurant.updated_at)}`}</p>}
+        <p className="mb-4">{ place.comment }</p>
+        {!editing && <p className="pb-4 text-xs">Ajouté le {convertDate(place.created_at)}{place.updated_at && ` - Dernière modification le ${convertDate(place.updated_at)}`}</p>}
 
         <div className="relative">
-          { (restaurant.photo_url && !editing)
+          { (place.photo_url && !editing)
               && (
               <div className="bg-[white] rounded-full absolute p-1 top-2 right-2 shadow-[0_5px_5px_0px_rgba(0,0,0,0.3)] dark:shadow-card text-2xl text-darkAccentColor z-10">
                 <ToggleMap setToggleMap={setToggleMap} toggleMap={toggleMap} />
               </div>
               )}
           { toggleMap
-            ? <EditablePicture url={`${REACT_APP_API_URL}${restaurant.photo_url}`} editing={editing} setEditing={setEditing} rounded={false} />
+            ? <EditablePicture url={`${REACT_APP_API_URL}${place.photo_url}`} editing={editing} setEditing={setEditing} rounded={false} />
             : (
-              <MapContainer center={[Number(restaurant.coordinate.split(' - ')[0]), Number(restaurant.coordinate.split(' - ')[1])]} zoom={13} scrollWheelZoom={false} className="h-48 w-full rounded-md z-0">
+              <MapContainer center={[Number(place.coordinate.split(' - ')[0]), Number(place.coordinate.split(' - ')[1])]} zoom={13} scrollWheelZoom={false} className="h-48 w-full rounded-md z-0">
                 <TileLayer
                   attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <Marker position={[Number(restaurant.coordinate.split(' - ')[0]), Number(restaurant.coordinate.split(' - ')[1])]} />
+                <Marker position={[Number(place.coordinate.split(' - ')[0]), Number(place.coordinate.split(' - ')[1])]} />
               </MapContainer>
             )}
 
@@ -101,18 +101,18 @@ function Restaurant() {
         <div className="flex flex-col flex-grow py-8 text-lightTextColor dark:text-darkTextColor overflow-y-scroll">
           { (tab === 'Mementos') && (
           <div className="px-4 cursor-pointer">
-            <div onClick={() => setUser({ ...user, currentPage: `addMemento-${restaurant.id}` })}>
+            <div onClick={() => setUser({ ...user, currentPage: `addMemento-${place.id}` })}>
               <Button type="normal" caption="Nouveau mémento" />
             </div>
-            { restaurant.menentos && <Mementos mementos={restaurant.mementos} /> }
+            { place.menentos && <Mementos mementos={place.mementos} /> }
           </div>
           )}
           { (tab === 'Plats') && (
           <>
-            <div className="px-8 cursor-pointer" onClick={() => setUser({ ...user, currentPage: `addMeal-${restaurant.id}` })}>
+            <div className="px-8 cursor-pointer" onClick={() => setUser({ ...user, currentPage: `addNote-${place.id}` })}>
               <Button type="normal" caption="Nouveau plat" />
             </div>
-            { restaurant.meal && <CardList type="meal" data={restaurant.meal} /> }
+            { place.note && <CardList type="note" data={place.note} /> }
           </>
           )}
         </div>
@@ -124,4 +124,4 @@ function Restaurant() {
     ));
 }
 
-export default Restaurant;
+export default Place;

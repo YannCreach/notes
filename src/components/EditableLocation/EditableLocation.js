@@ -30,7 +30,7 @@ function EditableLocation({ classes, location, setLocation }) {
         className={`input-custom ${classes} mb-0`}
         onChange={(e) => autoComplete(e.target.value)}
         value={location}
-        placeholder="Adresse du restaurant"
+        placeholder="Adresse du place"
       />
       { displaySuggestion && (
       <ul className="dark:bg-darkBackgroundAltColor bg-lightBackgroundColor p-2 rounded">
