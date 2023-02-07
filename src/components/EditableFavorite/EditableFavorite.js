@@ -1,26 +1,23 @@
 import PropTypes from 'prop-types';
 import { StarIcon as StarFull } from '@heroicons/react/24/solid';
 import { StarIcon as StarEmpty } from '@heroicons/react/24/outline';
-import { useContext } from 'react';
 import { CapacitorHttp } from '@capacitor/core';
-import UserContext from '../../context/UserContext';
+import { useAuth0 } from '@auth0/auth0-react';
 
 function EditableFavorite({
   favorite, setPlace, place, editing,
 }) {
-  const { user, setUser } = useContext(UserContext);
+  const { getAccessTokenSilently } = useAuth0();
   const { REACT_APP_API_URL } = process.env;
 
   const updateFavorite = async (value) => {
     try {
+      const token = await getAccessTokenSilently();
       const options = {
         url: `${REACT_APP_API_URL}/place`,
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Authorization: `bearer ${user.token}`,
-          id: Number(user.currentPage.split('-')[1]),
-        },
-        data: {
+          Authorization: `bearer ${token}`,
+          placeid: place.id,
           favorite: value,
         },
       };
@@ -39,7 +36,6 @@ function EditableFavorite({
     <div className={`ease-in duration-300 hover:text-lightAccentColor inline-flex flex-wrap ${editing ? 'hidden' : ''}`}>
       {favorite
         ? (
-      // bg-[white] rounded-full p-1 top-2 right-2 border-2 border-[white] shadow-[0_5px_5px_0px_rgba(0,0,0,0.3)] dark:shadow-card
           <div className="p-1 mr-2 mb-1" onClick={() => updateFavorite(false)}>
             <StarFull className="h-6 w-6 text-darkAccentColor" />
           </div>

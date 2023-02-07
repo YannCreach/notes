@@ -1,7 +1,23 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import PropTypes from 'prop-types';
+import { Browser } from '@capacitor/browser';
 import Button from '../Button/Button';
 
 function Bullet({ bullet, setBullet }) {
+  const { loginWithRedirect } = useAuth0();
+
+  const login = async () => {
+    await loginWithRedirect({
+      async openUrl(url) {
+        // Redirect using Capacitor's Browser plugin
+        await Browser.open({
+          url,
+          windowName: '_self',
+        });
+      },
+    });
+  };
+
   return (
     <div className="p-8 flex flex-col justify-between items-center absolute bottom-0 text-center">
       <div className="dark:text-darkTextColor text-lightTextColor pb-12">
@@ -15,12 +31,7 @@ function Bullet({ bullet, setBullet }) {
           && <p className="">Une notification des mémentos que je me suis laissé quand je rentre dans un lieu</p>}
       </div>
 
-      <div
-        onClick={() => {
-          setBullet(0);
-        }}
-        className="mb-8 text-darkTextColor cursor-pointer"
-      >
+      <div className="mb-8 text-darkTextColor cursor-pointer" onClick={login}>
         <Button type="normal" caption="Se connecter" classes="text-lightTextColor dark:text-darkTextColor" />
       </div>
 

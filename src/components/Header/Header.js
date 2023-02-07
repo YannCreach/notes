@@ -1,74 +1,38 @@
-import {
-  SunIcon, MoonIcon, Bars3Icon, XMarkIcon,
-} from '@heroicons/react/24/outline';
-import { useContext, useState } from 'react';
-import { CapacitorHttp } from '@capacitor/core';
-// import placeholder from '../../assets/images/blur.jpg';
-import { useAuth0 } from '@auth0/auth0-react';
-import Menu from './Menu/Menu';
-// import UserContext from '../../context/UserContext';
+import PropTypes from 'prop-types';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useState } from 'react';
+import Menu from '../Menu/Menu';
 import Field from '../Field/Field';
 
-function Header() {
-  const { REACT_APP_API_URL } = process.env;
-  const { user } = useAuth0();
-  // const { user, setUser } = useContext(UserContext);
+function Header({ setColorscheme, colorscheme }) {
   const [menuState, setMenuState] = useState(false);
-
-  const toggleLightMode = async () => {
-    try {
-      const newColorScheme = user.colorScheme === 'light' ? 'dark' : 'light';
-      const options = {
-        url: `${REACT_APP_API_URL}/user`,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Authorization: `bearer ${user.token}`,
-          userid: user.userid,
-        },
-        data: {
-          colorscheme: newColorScheme,
-        },
-      };
-
-      const result = await CapacitorHttp.patch(options);
-      // setUser({ ...user, colorScheme: newColorScheme });
-      console.log('Requete darkMode OK', result);
-    }
-    catch (err) {
-      console.log(err);
-      console.log('Requete darkMode NOK', err);
-    }
-  };
 
   return (
     <>
-      <nav className="HEADER flex items-center justify-between p-6">
-        {/* <img onClick={() => setUser({ ...user, currentPage: 'profil' })} className="cursor-pointer rounded-full object-cover h-8 w-8 mr-4" alt="logo" src={(user.photo_url && user.photo_url !== 'null') ? `${REACT_APP_API_URL}${user.photo_url}` : placeholder} /> */}
+      <nav className="flex items-top justify-between p-6">
         <Field
           type="text"
           name="name"
           icon="search"
+          label=""
           placeholder="Rechercher un lieu"
-          classname="drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-md shadow-md border-l-4 border-l-darkAccentColor pr-8 pb-1 pl-12 mx-4"
           value=""
           onChange={() => { }}
         />
-        <div className={`flex items-center ${!menuState ? 'text-lightAccentColor ' : 'text-darkTextColor '} duration-700`}>
-          <div className="pr-6">
-            {user.colorScheme === 'light'
-              ? <SunIcon onClick={() => toggleLightMode()} className="w-8 h-8 hover:text-lightTextColor duration-200 cursor-pointer" />
-              : <MoonIcon onClick={() => toggleLightMode()} className="w-8 h-8 hover:text-darkTextColor duration-200 cursor-pointer" />}
-          </div>
-          <div className="z-30">
-            {!menuState
-              ? <Bars3Icon className="w-8 h-8 hover:text-darkTextColor duration-200 cursor-pointer" onClick={() => setMenuState(true)} />
-              : <XMarkIcon className="w-8 h-8 hover:text-darkTextColor duration-200 cursor-pointer" onClick={() => setMenuState(false)} />}
-          </div>
+        <div className={`${!menuState ? 'text-lightAccentColor' : 'text-darkTextColor dark:text-darkBackgroundColor'} z-30 ml-6`}>
+          {!menuState
+            ? <Bars3Icon className="w-10 h-10 cursor-pointer" onClick={() => setMenuState(true)} />
+            : <XMarkIcon className="w-10 h-10 cursor-pointer" onClick={() => setMenuState(false)} />}
         </div>
       </nav>
-      <Menu menuState={menuState} />
+      <Menu menuState={menuState} colorscheme={colorscheme} setColorscheme={setColorscheme} />
     </>
   );
 }
+
+Header.propTypes = {
+  setColorscheme: PropTypes.func.isRequired,
+  colorscheme: PropTypes.bool.isRequired,
+};
 
 export default Header;

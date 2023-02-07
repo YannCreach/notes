@@ -9,19 +9,18 @@ function Auth0ProviderWithNavigate({ children }) {
   const audience = process.env.REACT_APP_AUTH0_AUDIENCE;
 
   const onRedirectCallback = (appState) => {
-    navigate(appState?.returnTo || window.location.origin);
+    navigate(appState?.returnTo || window.location.pathname);
   };
 
   return (
     <Auth0Provider
       domain={domain}
       clientId={clientId}
-      redirectUri={window.location.origin}
       onRedirectCallback={onRedirectCallback}
-      audience={audience}
-      // authorizationParams={{
-      //   redirect_uri: window.location.origin,
-      // }}
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+        audience: audience,
+      }}
     >
       {children}
     </Auth0Provider>

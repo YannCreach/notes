@@ -1,12 +1,13 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { CapacitorHttp } from '@capacitor/core';
+import { Link, useParams } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import CardList from '../components/CardList/CardList';
 import Mementos from '../components/Mementos/Mementos';
 import Button from '../components/Button/Button';
 import ToggleMap from '../components/ToggleMap/ToggleMap';
 import NavBtn from '../components/NavBtn/NavBtn';
-import UserContext from '../context/UserContext';
 // import EditableText from '../components/EditableText/EditableText';
 import EditablePicture from '../components/EditablePicture/EditablePicture';
 import Tab from '../components/Tab/Tab';
@@ -16,29 +17,32 @@ import EditableFavorite from '../components/EditableFavorite/EditableFavorite';
 import OverlayCreateEdit from '../components/OverlayCreateEdit/OverlayCreateEdit';
 
 function Place() {
-  const { user, setUser } = useContext(UserContext);
   const [tab, setTab] = useState('Mementos');
   const [loading, setLoading] = useState(true);
   const [place, setPlace] = useState({});
   const [toggleMap, setToggleMap] = useState(true);
   const [editing, setEditing] = useState(false);
   const { REACT_APP_API_URL } = process.env;
+  const params = useParams();
+  const split = params.slug.split('-');
+  const placeId = parseInt(split[split.length - 1], 10);
+  const { getAccessTokenSilently } = useAuth0();
 
   const getOnePlace = async () => {
     try {
+      const token = await getAccessTokenSilently();
       const options = {
         url: `${REACT_APP_API_URL}/place`,
         headers: {
-          Authorization: `bearer ${user.token}`,
-          userid: user.userid,
-          placeid: Number(user.currentPage.split('-')[1]),
+          Authorization: `Bearer ${token}`,
+          placeid: placeId,
         },
       };
 
       const result = await CapacitorHttp.get(options);
 
-      console.log('Requete PLACE OK', result);
-      setPlace(result.data[0]);
+      console.log('Requete PLACE OK', result.place);
+      setPlace(result.data.place);
       setLoading(false);
     }
     catch (error) {
@@ -48,7 +52,11 @@ function Place() {
 
   useEffect(() => {
     getOnePlace();
-  }, [editing]);
+  }, []);
+
+  // useEffect(() => {
+  //   getOnePlace();
+  // }, [editing]);
 
   return (
     (!loading && (
@@ -101,17 +109,17 @@ function Place() {
         <div className="flex flex-col flex-grow py-8 text-lightTextColor dark:text-darkTextColor overflow-y-scroll">
           { (tab === 'Mementos') && (
           <div className="px-4 cursor-pointer">
-            <div onClick={() => setUser({ ...user, currentPage: `addMemento-${place.id}` })}>
+            <Link to="">
               <Button type="normal" caption="Nouveau mémento" />
-            </div>
+            </Link>
             { place.menentos && <Mementos mementos={place.mementos} /> }
           </div>
           )}
           { (tab === 'Plats') && (
           <>
-            <div className="px-8 cursor-pointer" onClick={() => setUser({ ...user, currentPage: `addNote-${place.id}` })}>
+            <Link className="px-8 cursor-pointer" to="">
               <Button type="normal" caption="Nouveau plat" />
-            </div>
+            </Link>
             { place.note && <CardList type="note" data={place.note} /> }
           </>
           )}

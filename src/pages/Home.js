@@ -6,11 +6,10 @@ import QuickActions from '../components/QuickActions/QuickActions';
 import Title from '../components/Title/Title';
 
 function Home() {
-  const { user } = useAuth0();
   const { REACT_APP_API_URL } = process.env;
   const [data, setData] = useState('');
   const [loading, setLoading] = useState(true);
-  console.log('home');
+
   const { getAccessTokenSilently } = useAuth0();
 
   const getAllPlaces = async () => {
@@ -20,16 +19,14 @@ function Home() {
       const options = {
         url: `${REACT_APP_API_URL}/places`,
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
           Authorization: `Bearer ${token}`,
-          userid: 1,
         },
       };
 
       const result = await CapacitorHttp.get(options);
 
       console.log('Requete PLACES OK', result);
-      setData(result.data);
+      setData(result.data.places);
       setLoading(false);
     }
     catch (error) {

@@ -1,25 +1,24 @@
 import PropTypes from 'prop-types';
-import { useContext } from 'react';
 import {
   PencilSquareIcon, ArrowLeftIcon, CheckIcon, XMarkIcon,
 } from '@heroicons/react/24/outline';
-import UserContext from '../../context/UserContext';
+import { Link } from 'react-router-dom';
 
 function NavBtn({
-  caption, icon, order, target, editing, setEditing, onValidation,
+  caption, icon, order, target,
 }) {
-  const { user, setUser } = useContext(UserContext);
+  // onClick={() => {
+  //   if (target) {
+  //     setUser({ ...user, currentPage: target });
+  //   }
+  //   else {
+  //     onValidation();
+  //     setEditing(!editing);
+  //   }
+  // }}
   return (
-    <div
-      onClick={() => {
-        if (target) {
-          setUser({ ...user, currentPage: target });
-        }
-        else {
-          onValidation();
-          setEditing(!editing);
-        }
-      }}
+    <Link
+      to={target}
       className="flex items-center py-8 cursor-pointer"
     >
 
@@ -34,7 +33,7 @@ function NavBtn({
 
       {(order === 'iconFirst') && <span className="mx-2">{caption}</span>}
 
-    </div>
+    </Link>
   );
 }
 
@@ -43,15 +42,6 @@ NavBtn.propTypes = {
   icon: PropTypes.string.isRequired,
   order: PropTypes.string.isRequired,
   target: PropTypes.string.isRequired,
-  editing: PropTypes.bool,
-  setEditing: PropTypes.func,
-  onValidation: PropTypes.func,
-};
-
-NavBtn.defaultProps = {
-  editing: false,
-  setEditing: () => {},
-  onValidation: () => {},
 };
 
 export default NavBtn;

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import SingleCard from './SingleCard/SingleCard';
+import SingleCard from '../SingleCard/SingleCard';
 
 function CardList({ type, data }) {
   return (
