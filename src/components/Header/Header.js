@@ -9,20 +9,22 @@ function Header({ setColorscheme, colorscheme }) {
 
   return (
     <>
-      <nav className="flex items-top justify-between p-6">
-        <Field
-          type="text"
-          name="name"
-          icon="search"
-          label=""
-          placeholder="Rechercher un lieu"
-          value=""
-          onChange={() => { }}
-        />
-        <div className={`${!menuState ? 'text-lightAccentColor' : 'text-darkTextColor dark:text-darkBackgroundColor'} z-30 ml-6`}>
+      <nav className="flex items-top justify-between p-6 absolute w-full">
+        <div className="z-10 w-full">
+          <Field
+            type="text"
+            name="name"
+            icon="search"
+            label=""
+            placeholder="Rechercher un lieu"
+            value=""
+            onChange={() => { }}
+          />
+        </div>
+        <div className="text-lightAccentColor z-30 ml-6 drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-xl py-1 px-1 mb-4">
           {!menuState
-            ? <Bars3Icon className="w-10 h-10 cursor-pointer" onClick={() => setMenuState(true)} />
-            : <XMarkIcon className="w-10 h-10 cursor-pointer" onClick={() => setMenuState(false)} />}
+            ? <Bars3Icon className="w-8 h-8 cursor-pointer" onClick={() => setMenuState(true)} />
+            : <XMarkIcon className="w-8 h-8 cursor-pointer" onClick={() => setMenuState(false)} />}
         </div>
       </nav>
       <Menu menuState={menuState} colorscheme={colorscheme} setColorscheme={setColorscheme} />

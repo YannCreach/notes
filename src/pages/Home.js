@@ -39,7 +39,7 @@ function Home() {
   }, []);
 
   return (
-    <div className="h-full flex flex-col ">
+    <div className="h-full flex flex-col mt-20">
       <div className="overflow-auto">
         <div className="mx-6">
           <Title caption="Actions rapides" />

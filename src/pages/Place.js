@@ -15,6 +15,7 @@ import { convertDate } from '../utils/utils';
 import EditableTags from '../components/EditableTags/EditableTags';
 import EditableFavorite from '../components/EditableFavorite/EditableFavorite';
 import OverlayCreateEdit from '../components/OverlayCreateEdit/OverlayCreateEdit';
+import Map from '../components/Map/Map';
 
 function Place() {
   const [tab, setTab] = useState('Mementos');
@@ -41,7 +42,7 @@ function Place() {
 
       const result = await CapacitorHttp.get(options);
 
-      console.log('Requete PLACE OK', result.place);
+      console.log('Requete PLACE OK', result.data.place);
       setPlace(result.data.place);
       setLoading(false);
     }
@@ -61,6 +62,9 @@ function Place() {
   return (
     (!loading && (
     <>
+      <div className="relative">
+        <Map place={place} />
+      </div>
       { editing && <OverlayCreateEdit data={place} type="place" editing={editing} setEditing={setEditing} /> }
       <div className="text-lightTextColor dark:text-darkTextColor px-6 pb-4">
         <div className="flex justify-between">
@@ -72,7 +76,7 @@ function Place() {
           <EditableFavorite favorite={place.favorite} setPlace={setPlace} place={place} editing={editing} />
           <p className="text-2xl font-bold mb-2">{ place.name }</p>
         </div>
-        <EditableTags data={place.tags} editing={editing} />
+        {/* <EditableTags data={place.tags} editing={editing} /> */}
 
         <p className="mb-4">{ place.location }</p>
 
