@@ -2,22 +2,47 @@ import { CapacitorHttp } from '@capacitor/core';
 import { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import CardList from '../components/CardList/CardList';
-import QuickActions from '../components/QuickActions/QuickActions';
 import Title from '../components/Title/Title';
+import Map from '../components/Map/Map';
+import Button from '../components/Button/Button';
 
 function Home() {
   const { REACT_APP_API_URL } = process.env;
-  const [data, setData] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState('');
+  const [latest, setLatest] = useState('');
+  const [expendCategory, setExpendCategory] = useState(true);
+  const [expendLatest, setExpendLatest] = useState(true);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [loadingLatest, setLoadingLatest] = useState(true);
 
   const { getAccessTokenSilently } = useAuth0();
 
-  const getAllPlaces = async () => {
+  // const getAllPlaces = async () => {
+  //   try {
+  //     const token = await getAccessTokenSilently();
+  //     const options = {
+  //       url: `${REACT_APP_API_URL}/places`,
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     };
+
+  //     const result = await CapacitorHttp.get(options);
+
+  //     console.log('Requete PLACES OK', result);
+  //     setData(result.data.places);
+  //     setLoading(loading + 1);
+  //   }
+  //   catch (error) {
+  //     console.log('Requete PLACES NOK', error);
+  //   }
+  // };
+
+  const getAllCategories = async () => {
     try {
       const token = await getAccessTokenSilently();
-      console.log(token);
       const options = {
-        url: `${REACT_APP_API_URL}/places`,
+        url: `${REACT_APP_API_URL}/categories`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -25,29 +50,57 @@ function Home() {
 
       const result = await CapacitorHttp.get(options);
 
-      console.log('Requete PLACES OK', result);
-      setData(result.data.places);
-      setLoading(false);
+      console.log('Requete CATEGORIES OK', result);
+      setCategories(result.data.categories);
+      setLoadingCategories(false);
     }
     catch (error) {
-      console.log('Requete PLACES NOK', error);
+      console.log('Requete CATEGORIES NOK', error);
+    }
+  };
+
+  const getLatestplaces = async () => {
+    try {
+      const token = await getAccessTokenSilently();
+      const options = {
+        url: `${REACT_APP_API_URL}/latestplaces`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const result = await CapacitorHttp.get(options);
+
+      console.log('Requete LATETEST OK', result);
+      setLatest(result.data.places);
+      setLoadingLatest(false);
+    }
+    catch (error) {
+      console.log('Requete LATETEST NOK', error);
     }
   };
 
   useEffect(() => {
-    getAllPlaces();
+    getAllCategories();
+    getLatestplaces();
   }, []);
 
   return (
-    <div className="h-full flex flex-col mt-20">
-      <div className="overflow-auto">
-        <div className="mx-6">
-          <Title caption="Actions rapides" />
-          <QuickActions places={[]} />
-          <Title caption="Places favoris" />
+    <div className="h-full flex flex-col">
+
+      <Map zoom={12} />
+      <div className="overflow-scroll">
+        <div className="">
+          <Title caption="Catégories" seeAll="Categories" classes="mt-8 mb-4" expend={expendCategory} setExpend={setExpendCategory} />
+          {!loadingCategories && <CardList data={categories} type="Categories" limit={3} expend={expendCategory} />}
         </div>
-        <div className="mx-3">
-          {!loading && <CardList data={data} type="place" />}
+
+        <div className="">
+          <Title caption="Dernier ajouts" seeAll="lastest" classes="mt-12 mb-4" expend={expendLatest} setExpend={setExpendLatest} />
+          {!loadingLatest && <CardList data={latest} type="latest" limit={2} expend={expendLatest} />}
+        </div>
+        <div className="relative p-6">
+          <Button type="accent" caption="Ajouter une note" classes="mt-8" />
         </div>
       </div>
     </div>

@@ -1,31 +1,38 @@
 import PropTypes from 'prop-types';
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
 import Menu from '../Menu/Menu';
-import Field from '../Field/Field';
+import Icons from '../Icons/Icons';
 
 function Header({ setColorscheme, colorscheme }) {
   const [menuState, setMenuState] = useState(false);
+  const [searchLabel, setSearchLabel] = useState('');
+  const handleChange = (e) => {
+    setSearchLabel(e.target.value, name);
+  };
 
   return (
     <>
-      <nav className="flex items-top justify-between p-6 absolute w-full">
-        <div className="z-10 w-full">
-          <Field
+      <nav className="absolute flex justify-between w-full p-6">
+        <div className="z-20 w-full flex">
+          <Icons icon="Glass" classes="h-5 text-lightAccentColor absolute z-20 mt-4 ml-3" />
+          <input
+            className="drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-lg py-3 pl-11 pr-4 mb-4 w-full"
+            onChange={handleChange}
             type="text"
-            name="name"
-            icon="search"
-            label=""
             placeholder="Rechercher un lieu"
-            value=""
-            onChange={() => { }}
+            value={searchLabel}
           />
         </div>
-        <div className="text-lightAccentColor z-30 ml-6 drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-xl py-1 px-1 mb-4">
+        <div className={`absolute flex items-center h-12 pt-2 ${!menuState ? 'text-lightAccentColor' : 'text-[white]'} z-30 right-6 px-4 cursor-pointer`}>
           {!menuState
-            ? <Bars3Icon className="w-8 h-8 cursor-pointer" onClick={() => setMenuState(true)} />
-            : <XMarkIcon className="w-8 h-8 cursor-pointer" onClick={() => setMenuState(false)} />}
+            ? <div onClick={() => setMenuState(true)}><Icons icon="MenuOpen" classes="h-6" /></div>
+            : <div onClick={() => setMenuState(false)}><Icons icon="MenuClose" classes="h-6" /></div>}
         </div>
+        {/* <div className="flex items-center justify-center h-12 w-16 pt-1 text-lightAccentColor z-30 ml-6 drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-lg">
+          {!menuState
+            ? <div onClick={() => setMenuState(true)}><Icons icon="MenuOpen" classes="h-6" /></div>
+            : <div onClick={() => setMenuState(false)}><Icons icon="MenuClose" classes="h-6" /></div>}
+        </div> */}
       </nav>
       <Menu menuState={menuState} colorscheme={colorscheme} setColorscheme={setColorscheme} />
     </>

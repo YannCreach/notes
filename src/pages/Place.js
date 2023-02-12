@@ -63,7 +63,7 @@ function Place() {
     (!loading && (
     <>
       <div className="relative">
-        <Map place={place} />
+        <Map place={place} zoom={17} />
       </div>
       { editing && <OverlayCreateEdit data={place} type="place" editing={editing} setEditing={setEditing} /> }
       <div className="text-lightTextColor dark:text-darkTextColor px-6 pb-4">
@@ -83,7 +83,7 @@ function Place() {
         <p className="mb-4">{ place.comment }</p>
         {!editing && <p className="pb-4 text-xs">Ajouté le {convertDate(place.created_at)}{place.updated_at && ` - Dernière modification le ${convertDate(place.updated_at)}`}</p>}
 
-        <div className="relative">
+        {/* <div className="relative">
           { (place.photo_url && !editing)
               && (
               <div className="bg-[white] rounded-full absolute p-1 top-2 right-2 shadow-[0_5px_5px_0px_rgba(0,0,0,0.3)] dark:shadow-card text-2xl text-darkAccentColor z-10">
@@ -102,11 +102,11 @@ function Place() {
               </MapContainer>
             )}
 
-        </div>
+        </div> */}
 
       </div>
 
-      {!editing && (
+      {/* {!editing && (
       <>
         <Tab values={['Mementos', 'Plats']} tab={tab} setTab={setTab} />
 
@@ -129,7 +129,7 @@ function Place() {
           )}
         </div>
       </>
-      )}
+      )} */}
 
     </>
     )

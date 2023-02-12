@@ -13,3 +13,12 @@
 .button-custom {
   @apply drop-shadow w-full m-2 h-10 rounded;
 }
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

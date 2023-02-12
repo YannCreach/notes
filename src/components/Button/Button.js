@@ -2,9 +2,7 @@ import PropTypes from 'prop-types';
 
 function Button({ caption, type, classes }) {
   return (
-    <div
-      className={`${classes} mb-4 w-full relative px-2 py-1 box-border text-center border-2 text-lightTextColor dark:text-darkTextColor rounded-md hover:shadow-button ease-in duration-300  ${type === 'normal' ? 'border-lightAccentColor hover:shadow-lightAccentColor' : 'border-lightDangerColor hover:shadow-lightDangerColor'}`}
-    >
+    <div className={`cursor-pointer p-3 text-center rounded-md drop-shadow-md ${type === 'accent' ? 'bg-lightAccentColor text-darkTextColor' : 'bg-lightBackgroundAltColor dark:bg-darkBackgroundAltColor text-lightTextColor dark:text-darkTextColor'} ${classes}`}>
       {caption}
     </div>
   );

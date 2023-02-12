@@ -13,6 +13,7 @@ module.exports = {
       darkAccentColor: '#5DB35D',
       darkBackgroundColor: '#212121',
       darkBackgroundAltColor: '#474747',
+      darkTextsubColor: '#858991',
       darkTextColor: '#fff',
       darkTextAltColor: '#383838',
       darkDangerColor: '#D93400',

@@ -9,6 +9,7 @@ import Place from './Place';
 import Header from '../components/Header/Header';
 import Note from './Note';
 import Loading from '../components/Loading/Loading';
+import Category from './Category';
 
 function App() {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -32,8 +33,8 @@ function App() {
 
   return (
     <div className={`${colorscheme ? '' : 'dark'}`}>
-      <div className="bg-[#fff] dark:bg-[#1E1E1E] ">
-        <div className="APP bg-whiteVariantColor dark:bg-darkBackgroundColor flex flex-col h-[100vh] w-[100vw] overflow-hidden lg:w-[60rem] m-auto shadow-[0px_0px_15px_5px_rgba(0,0,0,0.3)]">
+      <div className="bg-[#fff] dark:bg-[#1E1E1E] h-[100vh]">
+        <div className="APP bg-whiteVariantColor dark:bg-darkBackgroundColor flex flex-col lg:w-[60rem] h-full m-auto">
           { !isAuthenticated
             ? (<LandingPage />)
             : (
@@ -43,6 +44,7 @@ function App() {
                   <Route path="/" element={(<Home />)} />
                   <Route path="/place/:slug" element={(<Place />)} />
                   <Route path="/note/:slug" element={(<Note />)} />
+                  <Route path="/category/:category" element={(<Category />)} />
                 </Routes>
               </>
             )}
