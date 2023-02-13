@@ -1,12 +1,14 @@
 import { CapacitorHttp } from '@capacitor/core';
 import { useEffect, useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useTranslation } from 'react-i18next';
 import CardList from '../components/CardList/CardList';
 import Title from '../components/Title/Title';
 import Map from '../components/Map/Map';
 import Button from '../components/Button/Button';
 
 function Home() {
+  const { t } = useTranslation();
   const { REACT_APP_API_URL } = process.env;
   const [categories, setCategories] = useState('');
   const [latest, setLatest] = useState('');
@@ -91,16 +93,16 @@ function Home() {
       <Map zoom={12} />
       <div className="overflow-scroll">
         <div className="">
-          <Title caption="Catégories" seeAll="Categories" classes="mt-8 mb-4" expend={expendCategory} setExpend={setExpendCategory} />
+          <Title caption={t('title_categories')} seeAll="Categories" classes="mt-8 mb-4" expend={expendCategory} setExpend={setExpendCategory} />
           {!loadingCategories && <CardList data={categories} type="Categories" limit={3} expend={expendCategory} />}
         </div>
 
         <div className="">
-          <Title caption="Dernier ajouts" seeAll="lastest" classes="mt-12 mb-4" expend={expendLatest} setExpend={setExpendLatest} />
+          <Title caption={t('title_last_added')} seeAll="lastest" classes="mt-12 mb-4" expend={expendLatest} setExpend={setExpendLatest} />
           {!loadingLatest && <CardList data={latest} type="latest" limit={2} expend={expendLatest} />}
         </div>
         <div className="relative p-6">
-          <Button type="accent" caption="Ajouter une note" classes="mt-8" />
+          <Button type="accent" caption={t('button_add_note')} classes="mt-8" />
         </div>
       </div>
     </div>

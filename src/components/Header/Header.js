@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Menu from '../Menu/Menu';
 import Icons from '../Icons/Icons';
 
 function Header({ setColorscheme, colorscheme }) {
   const [menuState, setMenuState] = useState(false);
   const [searchLabel, setSearchLabel] = useState('');
+  const { t } = useTranslation();
   const handleChange = (e) => {
     setSearchLabel(e.target.value, name);
   };
@@ -19,7 +21,7 @@ function Header({ setColorscheme, colorscheme }) {
             className="drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-lg py-3 pl-11 pr-4 mb-4 w-full"
             onChange={handleChange}
             type="text"
-            placeholder="Rechercher un lieu"
+            placeholder={t('menu_item_search')}
             value={searchLabel}
           />
         </div>
@@ -34,7 +36,7 @@ function Header({ setColorscheme, colorscheme }) {
             : <div onClick={() => setMenuState(false)}><Icons icon="MenuClose" classes="h-6" /></div>}
         </div> */}
       </nav>
-      <Menu menuState={menuState} colorscheme={colorscheme} setColorscheme={setColorscheme} />
+      <Menu menuState={menuState} setMenuState={setMenuState} colorscheme={colorscheme} setColorscheme={setColorscheme} />
     </>
   );
 }

@@ -1,0 +1,17 @@
+{
+  "menu_item_home": "--Accueil",
+  "menu_item_search": "--Rechercher un lieu",
+  "menu_item_profile": "--Mon profile",
+  "menu_item_colorscheme_light": "--Thème clair",
+  "menu_item_colorscheme_dark": "--Thème sombre",
+  "menu_item_disconnect": "--Se déconnecter",
+  "title_categories": "--Catégories",
+  "title_last_added": "--Derniers ajouts",
+  "show_more": "--Afficher plus",
+  "show_less": "--Afficher moins",
+  "button_add_note": "--Ajouter une note",
+  "button_previous": "Précédent",
+  "button_modify": "Modifier",
+  "description_added_date": "Ajouté le ",
+  "description_modification_date": " - Dernière modification le "
+}

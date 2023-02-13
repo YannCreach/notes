@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
+import { useTranslation } from 'react-i18next';
 
 function Title({
   caption, classes, seeAll, expend, setExpend,
 }) {
+  const { t } = useTranslation();
   return (
     <div className={`flex relative items-end px-6 ${classes}`}>
       <p className="text-xl font-semibold text-lightTextColor dark:text-darkTextColor grow">
@@ -10,7 +12,7 @@ function Title({
       </p>
       {seeAll && (
       <p onClick={() => setExpend(!expend)} className="cursor-pointer text-lightAccentColor">
-        {expend ? 'Afficher plus' : 'Afficher moins'}
+        {expend ? t('show_more') : t('show_less')}
       </p>
       )}
     </div>

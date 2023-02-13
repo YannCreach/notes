@@ -10,7 +10,7 @@ function CategoryCard({ data }) {
           <Icons icon={data.label} classes="h-1/4" />
           <div className="flex flex-col justify-between break-all w-full">
             <h4 className="text-base sm:text-lg lg:text-2xl font-semibold truncate">{data.label}</h4>
-            <h5 className="text-xs sm:text-sm lg:text-base text-darkTextsubColor dark:text-lightBackgroundColor">{data.category_place.length} notes</h5>
+            <h5 className="text-xs sm:text-sm lg:text-base text-darkTextsubColor dark:text-lightBackgroundColor">{`${data.category_place.length} note${data.category_place.length > 1 ? 's' : ''}`}</h5>
           </div>
         </div>
       </Link>
