@@ -6,12 +6,14 @@ import { useTranslation } from 'react-i18next';
 import NavBtn from '../components/NavBtn/NavBtn';
 import { convertDate } from '../utils/utils';
 import EditableFavorite from '../components/EditableFavorite/EditableFavorite';
+import EditableTags from '../components/EditableTags/EditableTags';
 import OverlayCreateEdit from '../components/OverlayCreateEdit/OverlayCreateEdit';
 import Map from '../components/Map/Map';
 import Title from '../components/Title/Title';
 import Button from '../components/Button/Button';
 import CardList from '../components/CardList/CardList';
 import Icons from '../components/Icons/Icons';
+import Tag from '../components/Tag/Tag';
 
 function Place() {
   const { t } = useTranslation();
@@ -24,7 +26,6 @@ function Place() {
   const split = params.slug.split('-');
   const placeId = parseInt(split[split.length - 1], 10);
   const { getAccessTokenSilently } = useAuth0();
-  const fullStars = [];
 
   const getOnePlace = async () => {
     try {
@@ -41,10 +42,6 @@ function Place() {
 
       console.log('Requete PLACE OK', result.data.place);
       setPlace(result.data.place);
-      for (let i = 0; i < result.data.place.rating; i + 1) {
-        fullStars.push('full');
-      }
-      console.log(fullStars);
       setLoading(false);
     }
     catch (error) {
@@ -69,20 +66,23 @@ function Place() {
           <NavBtn caption={t('button_modify')} icon="edit" order="captionFirst" target="" editing={editing} setEditing={setEditing} />
         </div> */}
 
-        <div className="flex items-center">
+        <div className="flex items-end justify-between mt-6">
           <p className="text-2xl font-bold mb-2">{ place.name }</p>
-          {fullStars.map(() => (<Icons icon="StarFull" classes="h-3 ml-1 text-lightAccentColor" />))}
+          <div className="">
+            {Array(place.rating).fill().map(() => (<Icons icon="StarFull" classes="h-3 ml-1 text-lightAccentColor" />))}
+          </div>
 
         </div>
-        {/* <EditableTags data={place.tags} editing={editing} /> */}
-
-        <p className="mb-4">{ place.adress }</p>
-
-        <p className="mb-4">{ place.comment }</p>
+        <p className="mt-1 text-sm text-darkTextsubColor">{ place.adress }</p>
+        <div className="flex mt-4">
+          {place.place_tag?.map((tag) => <Tag caption={tag.label} />)}
+        </div>
+        <p className="mt-6">{ place.comment }</p>
         {!editing && (
-        <p className="pb-4 text-xs">
-          {t('description_added_date')} {convertDate(place.created_at)}
-          {place.updated_at && t('description_modification_date')}{convertDate(place.updated_at)}
+        <p className="pb-4 text-xs text-darkTextsubColor">
+          {/* {t('description_added_date')} {convertDate(place.created_at)} */}
+          {place.updated_at && t('description_modification_date')}
+          {place.updated_at && convertDate(place.updated_at)}
         </p>
         )}
       </div>

@@ -1,17 +1,10 @@
 import PropTypes from 'prop-types';
-import { TrashIcon } from '@heroicons/react/24/outline';
 
-function Tag({ caption, type }) {
+function Tag({ caption }) {
   return (
-    <div
-      className="m-1 font-bold text-xs flex whitespace-nowrap items-center relative px-2 box-border text-center border-2 text-lightTextColor dark:text-darkTextColor rounded-full border-lightAccentColor bg-lightAccentColor"
-    >
+    <div className="px-2 py-1 text-xs flex items-center relative mr-2 text-center text-lightTextColor dark:text-darkTextColor drop-shadow-lg rounded-full bg-[white] dark:bg-darkBackgroundAltColor">
       <span>
-        {caption.toUpperCase()}
-      </span>
-      <span>
-        {(type === 'edit')
-        && <TrashIcon className="h-4 w-4" />}
+        {caption}
       </span>
     </div>
   );
@@ -19,7 +12,6 @@ function Tag({ caption, type }) {
 
 Tag.propTypes = {
   caption: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
 };
 
 export default Tag;

@@ -11,7 +11,7 @@ function CardList({
 
   return (
     <div className="text-lightTextColor w-full dark:text-darkTextColor px-6">
-      <ul className={`grid gap-3 grid-cols-${limit}`}>
+      <ul className={`grid gap-3 ${limit === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
         {
           filteredData?.map((singleData) => (
             <>
