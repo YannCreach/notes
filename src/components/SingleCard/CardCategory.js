@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Icons from '../Icons/Icons';
 
-function CategoryCard({ data }) {
+function CardCategory({ data }) {
   return (
     <li className="aspect-square">
       <Link to={`category/${data.label}`}>
@@ -18,8 +18,8 @@ function CategoryCard({ data }) {
   );
 }
 
-CategoryCard.propTypes = {
+CardCategory.propTypes = {
   data: PropTypes.object.isRequired,
 };
 
-export default CategoryCard;
+export default CardCategory;

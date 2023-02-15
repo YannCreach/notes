@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import imgPlaceholder from '../../assets/images/placeholder2.jpg';
 import Icons from '../Icons/Icons';
 
-function SingleCard({ data }) {
+function CardPlace({ data }) {
   const { REACT_APP_API_URL } = process.env;
 
   const star = () => {
@@ -40,8 +40,8 @@ function SingleCard({ data }) {
   );
 }
 
-SingleCard.propTypes = {
+CardPlace.propTypes = {
   data: PropTypes.object.isRequired,
 };
 
-export default SingleCard;
+export default CardPlace;

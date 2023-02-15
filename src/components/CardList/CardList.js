@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
-import CategoryCard from '../CategoryCard/CategoryCard';
-import SingleCard from '../SingleCard/SingleCard';
+import CardCategory from '../SingleCard/CardCategory';
+import CardMeal from '../SingleCard/CardMeal';
+import CardPlace from '../SingleCard/CardPlace';
 
 function CardList({
   type, data, limit, expend,
@@ -10,12 +11,14 @@ function CardList({
 
   return (
     <div className="text-lightTextColor w-full dark:text-darkTextColor px-6">
-      <ul className={`grid gap-3 ${type === 'latest' ? 'grid-cols-2 ' : 'grid-cols-3 '}`}>
+      <ul className={`grid gap-3 grid-cols-${limit}`}>
         {
           filteredData?.map((singleData) => (
-            (type === 'Categories')
-              ? <CategoryCard data={singleData} key={singleData.id} type={type} />
-              : <SingleCard data={singleData} key={singleData.id} type={type} />
+            <>
+              {(type === 'Categories') && (<CardCategory data={singleData} key={singleData.id} type={type} />)}
+              {(type === 'Meals') && (<CardMeal data={singleData} key={singleData.id} type={type} />)}
+              {(type === 'Place') && (<CardPlace data={singleData} key={singleData.id} type={type} />)}
+            </>
           ))
         }
       </ul>

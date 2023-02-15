@@ -73,12 +73,12 @@ function Home() {
 
       const result = await CapacitorHttp.get(options);
 
-      console.log('Requete LATETEST OK', result);
+      console.log('Requete LATEST OK', result);
       setLatest(result.data.places);
       setLoadingLatest(false);
     }
     catch (error) {
-      console.log('Requete LATETEST NOK', error);
+      console.log('Requete LATEST NOK', error);
     }
   };
 
@@ -99,7 +99,7 @@ function Home() {
 
         <div className="">
           <Title caption={t('title_last_added')} seeAll="lastest" classes="mt-12 mb-4" expend={expendLatest} setExpend={setExpendLatest} />
-          {!loadingLatest && <CardList data={latest} type="latest" limit={2} expend={expendLatest} />}
+          {!loadingLatest && <CardList data={latest} type="Place" limit={2} expend={expendLatest} />}
         </div>
         <div className="relative p-6">
           <Button type="accent" caption={t('button_add_note')} classes="mt-8" />
