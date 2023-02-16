@@ -25,7 +25,6 @@ function Map({ place, zoom }) {
   return (
     <div
       className={`w-full ${fullSize ? 'h-[80%]' : 'h-[30%]'} overflow-hidden relative flex items-center justify-center drop-shadow-md duration-700 cursor-pointer z-10`}
-      onClick={() => (fullSize ? setFullSize(false) : setFullSize(true))}
     >
       <div className="flex items-center justify-center h-12 w-12 pt-1 text-lightAccentColor z-30 ml-6 drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-full absolute right-6 bottom-6">
         {fullSize

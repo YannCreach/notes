@@ -45,7 +45,8 @@
     "no-console": "off",
     "no-alert": "off",
     "no-restricted-globals": "off",
-    "camelcase": "off"
+    "camelcase": "off",
+    "no-plusplus": "off"
   },
   "settings": {
     "import/resolver": {

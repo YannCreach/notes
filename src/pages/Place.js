@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { CapacitorHttp } from '@capacitor/core';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useTranslation } from 'react-i18next';
-import NavBtn from '../components/NavBtn/NavBtn';
+// import NavBtn from '../components/NavBtn/NavBtn';
+import { Icon } from 'leaflet';
 import { convertDate } from '../utils/utils';
-import EditableFavorite from '../components/EditableFavorite/EditableFavorite';
-import EditableTags from '../components/EditableTags/EditableTags';
+// import EditableFavorite from '../components/EditableFavorite/EditableFavorite';
 import OverlayCreateEdit from '../components/OverlayCreateEdit/OverlayCreateEdit';
 import Map from '../components/Map/Map';
 import Title from '../components/Title/Title';
@@ -14,11 +14,13 @@ import Button from '../components/Button/Button';
 import CardList from '../components/CardList/CardList';
 import Icons from '../components/Icons/Icons';
 import Tag from '../components/Tag/Tag';
+import OverlayYelp from '../components/OverlayYelp/OverlayYelp';
 
 function Place() {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [place, setPlace] = useState({});
+  const [yelp, setYelp] = useState(false);
   const [editing, setEditing] = useState(false);
   const [expendLatest, setExpendLatest] = useState(true);
   const { REACT_APP_API_URL } = process.env;
@@ -40,8 +42,8 @@ function Place() {
 
       const result = await CapacitorHttp.get(options);
 
-      console.log('Requete PLACE OK', result.data.place);
-      setPlace(result.data.place);
+      console.log('Requete PLACE OK', result.data);
+      setPlace(result.data);
       setLoading(false);
     }
     catch (error) {
@@ -57,26 +59,36 @@ function Place() {
     (!loading && (
     <>
 
-      <Map place={place} zoom={17} />
+      <Map place={place.yelp ? place.yelp.coordinates : place} zoom={17} />
 
       { editing && <OverlayCreateEdit data={place} type="place" editing={editing} setEditing={setEditing} /> }
+      { yelp && <OverlayYelp data={place.yelp} editing={yelp} setEditing={setYelp} /> }
       <div className="text-lightTextColor dark:text-darkTextColor px-6 pb-4">
         {/* <div className="flex justify-between">
           <NavBtn caption={t('button_previous')} icon="previous" order="iconFirst" target="home" />
           <NavBtn caption={t('button_modify')} icon="edit" order="captionFirst" target="" editing={editing} setEditing={setEditing} />
         </div> */}
-
-        <div className="flex items-end justify-between mt-6">
-          <p className="text-2xl font-bold mb-2">{ place.name }</p>
+        <div className="flex mt-6">
+          {place.yelp.categories?.map((tag) => <Tag caption={tag.title} />)}
+        </div>
+        <div className="flex items-center justify-between mt-4">
+          <p className="text-2xl font-bold mb-2">{ place.yelp ? place.yelp.name : place.name }</p>
           <div className="">
             {Array(place.rating).fill().map(() => (<Icons icon="StarFull" classes="h-3 ml-1 text-lightAccentColor" />))}
           </div>
+        </div>
+        <div className="flex justify-between w-full mt-4 items-center">
+          <p className=" text-sm text-darkTextsubColor">
+            { place.yelp ? `${place.yelp.location.address1}, ${place.yelp.location.zip_code} ${place.yelp.location.city}` : place.adress }
+          </p>
+          {place.yelp && (
+            <div onClick={() => setYelp(true)} className="cursor-pointer">
+              <Icons icon="Yelp" classes="h-6 text-lightAccentColor" />
+            </div>
+          )}
 
         </div>
-        <p className="mt-1 text-sm text-darkTextsubColor">{ place.adress }</p>
-        <div className="flex mt-4">
-          {place.place_tag?.map((tag) => <Tag caption={tag.label} />)}
-        </div>
+
         <p className="mt-6">{ place.comment }</p>
         {!editing && (
         <p className="pb-4 text-xs text-darkTextsubColor">

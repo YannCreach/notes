@@ -6,6 +6,9 @@ import {
 import {
   faStar as faStarEmpty,
 } from '@fortawesome/free-regular-svg-icons';
+import {
+  faYelp,
+} from '@fortawesome/free-brands-svg-icons';
 
 function Icons({ icon, classes }) {
   return (
@@ -29,6 +32,7 @@ function Icons({ icon, classes }) {
       {(icon === 'MenuClose') && (<FontAwesomeIcon icon={faXmark} className={classes} />)}
       {(icon === 'ExpendMap') && (<FontAwesomeIcon icon={faDownLeftAndUpRightToCenter} className={classes} />)}
       {(icon === 'RetractMap') && (<FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className={classes} />)}
+      {(icon === 'Yelp') && (<FontAwesomeIcon icon={faYelp} className={classes} />)}
     </>
   );
 }
