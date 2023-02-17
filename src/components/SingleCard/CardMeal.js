@@ -6,15 +6,15 @@ function CardMeal({ data }) {
   const { REACT_APP_API_URL } = process.env;
 
   return (
-    <div onClick={() => {}} className="cursor-pointer">
-      <div className="relative p-3 pb-[66%] rounded-t-lg  overflow-hidden">
+    <div onClick={() => {}} className="cursor-pointer drop-shadow-lg">
+      <div className="relative p-3 pb-[66%] rounded-t-md overflow-hidden">
         { data.cover
           ? <img className="absolute object-cover" src={`${REACT_APP_API_URL}${data.cover}`} alt="food placeholder" />
           : <img className="absolute object-cover blur-lg" src={imgPlaceholder} alt="food placeholder" />}
         {data.favorite
           && (
-          <div className="flex items-center justify-center h-8 w-8 text-lightAccentColor z-30 ml-6 drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-full absolute right-3 top-3">
-            <Icons icon="StarFull" classes="text-lightAccentColor h-4" />
+          <div className="flex items-center justify-center h-8 w-8 text-lightAccentColor z-10 ml-6 bg-[white] dark:bg-darkBackgroundAltColor rounded-full absolute right-3 top-3 drop-shadow-md">
+            <Icons icon="Heart" classes="text-lightAccentColor h-4" />
           </div>
           )}
       </div>

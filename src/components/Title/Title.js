@@ -6,12 +6,12 @@ function Title({
 }) {
   const { t } = useTranslation();
   return (
-    <div className={`flex relative items-end px-6 ${classes}`}>
-      <p className="text-xl font-semibold text-lightTextColor dark:text-darkTextColor grow">
+    <div className={`flex relative justify-between items-baseline px-6 ${classes}`}>
+      <p className="text-xl font-semibold text-lightTextColor dark:text-darkTextColor">
         {caption}
       </p>
       {seeAll && (
-      <p onClick={() => setExpend(!expend)} className="cursor-pointer text-lightAccentColor">
+      <p onClick={() => setExpend(!expend)} className="text-xs cursor-pointer text-lightAccentColor">
         {expend ? t('show_more') : t('show_less')}
       </p>
       )}

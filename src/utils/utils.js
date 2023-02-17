@@ -30,37 +30,63 @@ export function convertDate(inputFormat) {
   return `${day}/${month}/${year}`;
 }
 
-function convertirHeure(chaineHeure) {
-  const heures = chaineHeure.slice(0, 2);
-  const minutes = chaineHeure.slice(2);
-  const date = new Date();
-  date.setHours(heures);
-  date.setMinutes(minutes);
-  const heureFormatee = date.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-  return heureFormatee;
+// export function genererTableauHoraires(openingHours) {
+//   const weekdays = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+
+//   const formattedHours = [];
+
+//   for (let i = 0; i < weekdays.length; i++) {
+//     const dayHours = openingHours.filter((o) => o.day === i + 1);
+
+//     if (dayHours.length === 1) {
+//       const { start, end } = dayHours[0];
+//       formattedHours.push(`${weekdays[i]} ${start.slice(0, 2)}h${start.slice(2)} : ${end.slice(0, 2)}h${end.slice(2)}`);
+//     }
+//     else if (dayHours.length === 2) {
+//       const { start, end } = dayHours[0];
+//       const { start: start2, end: end2 } = dayHours[1];
+//       formattedHours.push(`${weekdays[i]} ${start.slice(0, 2)}h${start.slice(2)} : ${end.slice(0, 2)}h${end.slice(2)} / ${start2.slice(0, 2)}h${start2.slice(2)} : ${end2.slice(0, 2)}h${end2.slice(2)}`);
+//     }
+//     else {
+//       formattedHours.push(`${weekdays[i]} Fermé`);
+//     }
+//   }
+
+//   return formattedHours;
+// }
+
+export function genererTableauHoraires(openingHours) {
+  const weekdays = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+
+  const formattedHours = [];
+
+  for (let i = 0; i < weekdays.length; i++) {
+    const dayHours = openingHours.filter((o) => o.day === i + 1);
+
+    if (dayHours.length === 1) {
+      const { start, end } = dayHours[0];
+      formattedHours.push({
+        day: weekdays[i],
+        start: `${start.slice(0, 2)}:${start.slice(2)}`,
+        end: `${end.slice(0, 2)}:${end.slice(2)}`,
+      });
+    }
+    if (dayHours.length === 2) {
+      const { start, end } = dayHours[0];
+      const { start: start2, end: end2 } = dayHours[1];
+      formattedHours.push({
+        day: weekdays[i],
+        start: `${start.slice(0, 2)}:${start.slice(2)}`,
+        end: `${end.slice(0, 2)}:${end.slice(2)}`,
+        start2: `${start2.slice(0, 2)}:${start2.slice(2)}`,
+        end2: `${end2.slice(0, 2)}:${end2.slice(2)}`,
+      });
+    }
+  }
+  return formattedHours;
 }
 
-export function genererTableauHoraires(horaires) {
-  let html = '<table className=""><tbody className="">';
-  console.log(horaires);
-  const day = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
-  for (let i = 0; i < 7; i++) {
-    html += `<tr className="">
-              <th className="">${day[i]}</th>
-              <td className="">
-                <div className="">`;
-
-    horaires.map((hour) => {
-      if (hour.day === (i + 1)) {
-        html += `<p className="">${convertirHeure(hour.start)} - ${convertirHeure(hour.end)}</p>`;
-      }
-    });
-
-    html += `</div>
-          </td>
-        </tr>`;
-  }
-
-  html += '</tbody></table>';
-  return html;
+export function hasDecimal(number) {
+  const test = /[.,]\d+/.test(number.toString());
+  return test;
 }

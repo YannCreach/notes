@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faFilm, faBurger, faBed, faBreadSlice, faMusic, faCampground, faMugHot, faFishFins, faCarrot, faScissors, faFolderOpen, faStarHalfStroke, faStar, faMagnifyingGlass, faBars, faXmark, faUpRightAndDownLeftFromCenter, faDownLeftAndUpRightToCenter,
+  faFilm, faBurger, faBed, faBreadSlice, faMusic, faCampground, faMugHot, faFishFins, faCarrot, faScissors, faFolderOpen, faStarHalfStroke, faStar, faMagnifyingGlass, faBars, faXmark, faUpRightAndDownLeftFromCenter, faDownLeftAndUpRightToCenter, faArrowLeft, faArrowRight, faHeart,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faStar as faStarEmpty,
@@ -33,6 +33,9 @@ function Icons({ icon, classes }) {
       {(icon === 'ExpendMap') && (<FontAwesomeIcon icon={faDownLeftAndUpRightToCenter} className={classes} />)}
       {(icon === 'RetractMap') && (<FontAwesomeIcon icon={faUpRightAndDownLeftFromCenter} className={classes} />)}
       {(icon === 'Yelp') && (<FontAwesomeIcon icon={faYelp} className={classes} />)}
+      {(icon === 'ArrowLeft') && (<FontAwesomeIcon icon={faArrowLeft} className={classes} />)}
+      {(icon === 'ArrowRight') && (<FontAwesomeIcon icon={faArrowRight} className={classes} />)}
+      {(icon === 'Heart') && (<FontAwesomeIcon icon={faHeart} className={classes} />)}
     </>
   );
 }
