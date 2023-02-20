@@ -33,8 +33,8 @@ function App() {
 
   return (
     <div className={`${colorscheme ? '' : 'dark'}`}>
-      <div className="h-[100vh] bg-whiteVariantColor dark:bg-darkBackgroundColor ">
-        <div className="APP flex flex-col lg:w-[60rem] h-full m-auto relative">
+      <div className="bg-whiteVariantColor dark:bg-darkBackgroundColor ">
+        <div className="APP flex flex-col lg:w-[60rem] h-[100vh] overflow-hidden">
           { !isAuthenticated
             ? (<LandingPage />)
             : (

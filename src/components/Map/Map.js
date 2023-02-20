@@ -4,9 +4,11 @@ import { useEffect, useState } from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import Icons from '../Icons/Icons';
 
-function Map({ place, zoom }) {
+function Map({
+  place, zoom, fullSize, setFullSize,
+}) {
   const { user } = useAuth0();
-  const [fullSize, setFullSize] = useState(false);
+  // const [fullSize, setFullSize] = useState(false);
   const [loadingGeoloc, setLoadingGeoloc] = useState(true);
   const [location, setLocation] = useState({ lat: place.lat, lng: place.lng });
 
@@ -24,14 +26,14 @@ function Map({ place, zoom }) {
 
   return (
     <div
-      className={`w-full ${fullSize ? 'h-[80vh]' : 'h-[30vh]'} overflow-hidden relative flex items-center justify-center drop-shadow-lg duration-700 cursor-pointer z-10`}
+      className="w-full h-[100vh] flex-grow overflow-hidden relative top-0 flex items-center justify-center drop-shadow-lg cursor-pointer z-10"
     >
-      <div className="flex items-center justify-center h-12 w-12 pt-1 text-lightAccentColor z-30 ml-6 drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-full absolute right-6 bottom-6">
+      <div onClick={() => setFullSize(!fullSize)} className="flex items-center justify-center h-12 w-12 pt-1 text-lightAccentColor z-30 ml-6 drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-full absolute right-6 bottom-6">
         {fullSize
-          ? <div onClick={() => setFullSize(false)}><Icons icon="ExpendMap" classes="h-5" /></div>
-          : <div onClick={() => setFullSize(true)}><Icons icon="RetractMap" classes="h-5" /></div>}
+          ? <Icons icon="ExpendMap" classes="h-5" />
+          : <Icons icon="RetractMap" classes="h-5" />}
       </div>
-      <div className={`absolute ${fullSize ? 'top-[-20vh]' : 'top-[-35vh]'} h-[105vh] z-0 duration-700`}>
+      <div className={`absolute ${fullSize ? 'top-[-10vh]' : 'top-[-35vh]'} h-[105vh] z-0 duration-700`}>
         {(place.lat || !loadingGeoloc)
         && (
           <MapContainer center={[location.lat, location.lng]} zoom={zoom} zoomControl={false} className="w-[100vw] h-[105vh] ">
@@ -50,6 +52,8 @@ function Map({ place, zoom }) {
 Map.propTypes = {
   place: PropTypes.object,
   zoom: PropTypes.number.isRequired,
+  fullSize: PropTypes.bool.isRequired,
+  setFullSize: PropTypes.func.isRequired,
 };
 
 Map.defaultProps = {

@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
-import { StarIcon as StarFull } from '@heroicons/react/24/solid';
-import { StarIcon as StarEmpty } from '@heroicons/react/24/outline';
 import { CapacitorHttp } from '@capacitor/core';
 import { useAuth0 } from '@auth0/auth0-react';
+import Icons from '../Icons/Icons';
 
 function EditableFavorite({
-  favorite, setPlace, place, editing,
+  favorite, currentNote, setFavorite, type,
 }) {
   const { getAccessTokenSilently } = useAuth0();
   const { REACT_APP_API_URL } = process.env;
@@ -14,16 +13,16 @@ function EditableFavorite({
     try {
       const token = await getAccessTokenSilently();
       const options = {
-        url: `${REACT_APP_API_URL}/place`,
+        url: `${REACT_APP_API_URL}/${type}`,
         headers: {
-          Authorization: `bearer ${token}`,
-          placeid: place.id,
+          Authorization: `Bearer ${token}`,
+          noteid: currentNote.id,
           favorite: value,
         },
       };
 
       await CapacitorHttp.patch(options);
-      setPlace({ ...place, favorite: value });
+      setFavorite(value);
       console.log('Requete UPDATE FAVORITE OK', value);
     }
     catch (error) {
@@ -33,16 +32,16 @@ function EditableFavorite({
 
   return (
 
-    <div className={`ease-in duration-300 hover:text-lightAccentColor inline-flex flex-wrap ${editing ? 'hidden' : ''}`}>
+    <div className="duration-300 ml-3 cursor-pointer">
       {favorite
         ? (
-          <div className="p-1 mr-2 mb-1" onClick={() => updateFavorite(false)}>
-            <StarFull className="h-6 w-6 text-darkAccentColor" />
+          <div className="px-2 py-1 bg-[white] drop-shadow-md rounded-full" onClick={() => updateFavorite(false)}>
+            <Icons icon="StarFull" classes="h-4 w-4 text-darkAccentColor" />
           </div>
         )
         : (
-          <div className="p-1 mr-2 mb-1" onClick={() => updateFavorite(true)}>
-            <StarEmpty className="h-6 w-6 text-darkAccentColor" />
+          <div className="px-2 py-1 bg-[white] drop-shadow-md rounded-full" onClick={() => updateFavorite(true)}>
+            <Icons icon="StarEmpty" classes="h-4 w-4 text-darkAccentColor" />
           </div>
         )}
     </div>
@@ -52,9 +51,9 @@ function EditableFavorite({
 
 EditableFavorite.propTypes = {
   favorite: PropTypes.bool.isRequired,
-  place: PropTypes.object.isRequired,
-  setPlace: PropTypes.func.isRequired,
-  editing: PropTypes.bool.isRequired,
+  currentNote: PropTypes.object.isRequired,
+  setFavorite: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default EditableFavorite;

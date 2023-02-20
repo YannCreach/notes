@@ -16,6 +16,7 @@ function Home() {
   const [expendLatest, setExpendLatest] = useState(true);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [loadingLatest, setLoadingLatest] = useState(true);
+  const [fullSize, setFullSize] = useState(false);
 
   const { getAccessTokenSilently } = useAuth0();
 
@@ -88,24 +89,28 @@ function Home() {
   }, []);
 
   return (
-    <div className="h-full flex flex-col">
+    <>
+      <Map zoom={12} fullSize={fullSize} setFullSize={setFullSize} />
 
-      <Map zoom={12} />
-      <div className="overflow-scroll">
-        <div className="">
-          <Title caption={t('title_categories')} seeAll="Categories" classes="mt-8 mb-4" expend={expendCategory} setExpend={setExpendCategory} />
-          {!loadingCategories && <CardList data={categories} type="Categories" limit={3} expend={expendCategory} />}
-        </div>
+      {!fullSize && (
+        <>
+          <div className="">
+            <Title caption={t('title_categories')} seeAll="Categories" classes="mt-8 mb-4" expend={expendCategory} setExpend={setExpendCategory} />
+            {!loadingCategories && <CardList data={categories} type="Categories" limit={3} expend={expendCategory} />}
+          </div>
 
-        <div className="">
-          <Title caption={t('title_last_added')} seeAll="lastest" classes="mt-12 mb-4" expend={expendLatest} setExpend={setExpendLatest} />
-          {!loadingLatest && <CardList data={latest} type="Place" limit={2} expend={expendLatest} />}
-        </div>
-        <div className="relative p-6">
-          <Button type="accent" caption={t('button_add_note')} classes="mt-8" />
-        </div>
+          <div className="">
+            <Title caption={t('title_last_added')} seeAll="lastest" classes="mt-12 mb-4" expend={expendLatest} setExpend={setExpendLatest} />
+            {!loadingLatest && <CardList data={latest} type="Place" limit={2} expend={expendLatest} />}
+          </div>
+        </>
+      )}
+
+      <div className="relative p-6">
+        <Button type="accent" caption={t('button_add_note')} classes="mt-8" />
       </div>
-    </div>
+
+    </>
   );
 }
 
