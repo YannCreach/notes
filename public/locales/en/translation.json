@@ -13,6 +13,7 @@
   "button_add_note": "Add a note",
   "dont_need_it": "Don't need it anymore? ",
   "button_delete_place": "Delete place",
+  "button_delete_note": "Delete this note",
   "button_previous": "Previous",
   "button_modify": "Modify",
   "button_done": "Done",
@@ -26,5 +27,6 @@
   "Telephone": "Phone number",
   "Close": "Close",
   "Open": "Open",
-  "My_Comment": "My comment"
+  "My_Comment": "Comment",
+  "Option": "Details, sidings..."
 }

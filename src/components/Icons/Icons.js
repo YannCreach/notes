@@ -4,7 +4,7 @@ import {
   faFilm, faBurger, faBed, faBreadSlice, faMusic, faCampground, faMugHot, faFishFins, faCarrot, faScissors, faFolderOpen, faStarHalfStroke, faStar, faMagnifyingGlass, faBars, faXmark, faUpRightAndDownLeftFromCenter, faDownLeftAndUpRightToCenter, faArrowLeft, faArrowRight, faHeart,
 } from '@fortawesome/free-solid-svg-icons';
 import {
-  faStar as faStarEmpty,
+  faStar as faStarEmpty, faHeart as faHeartEmpty,
 } from '@fortawesome/free-regular-svg-icons';
 import {
   faYelp,
@@ -36,6 +36,7 @@ function Icons({ icon, classes }) {
       {(icon === 'ArrowLeft') && (<FontAwesomeIcon icon={faArrowLeft} className={classes} />)}
       {(icon === 'ArrowRight') && (<FontAwesomeIcon icon={faArrowRight} className={classes} />)}
       {(icon === 'Heart') && (<FontAwesomeIcon icon={faHeart} className={classes} />)}
+      {(icon === 'HeartEmpty') && (<FontAwesomeIcon icon={faHeartEmpty} className={classes} />)}
     </>
   );
 }

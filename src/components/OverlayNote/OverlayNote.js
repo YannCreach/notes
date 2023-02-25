@@ -12,6 +12,7 @@ function OverlayNote({ note, setNoteIndex }) {
   const { getAccessTokenSilently } = useAuth0();
   const [name, setName] = useState(currentNote.name);
   const [price, setPrice] = useState(currentNote.price);
+  const [option, setOption] = useState(currentNote.option);
   const [favorite, setFavorite] = useState(currentNote.favorite);
   const [comment, setComment] = useState(currentNote.comment);
   const [cover, setCover] = useState(currentNote.cover);
@@ -53,13 +54,13 @@ function OverlayNote({ note, setNoteIndex }) {
   };
 
   return (
-    <div className="w-full h-full absolute left-0 flex justify-center items-center bg-[black]/75 z-40">
+    <div className="w-full h-full absolute left-0 flex justify-center items-center bg-[black]/75 z-40" onClick={() => setNoteIndex(-1)}>
+      <div className="bg-whiteVariantColor dark:bg-darkBackgroundColor rounded-lg w-64 md:w-80 lg:w-96">
 
-      <div className="bg-whiteVariantColor dark:bg-darkBackgroundColor rounded-lg">
-        {cover && (
-          <ImageCarousel imageUrls={cover} />
-        )}
+        {cover && (<ImageCarousel imageUrls={cover} />)}
+
         <div className="p-6">
+
           <div className="flex items-center justify-between">
             <div className="text-lightTextColor dark:text-darkTextColor font-bold text-xl">
               {name}
@@ -67,21 +68,46 @@ function OverlayNote({ note, setNoteIndex }) {
             <EditableFavorite favorite={favorite} setFavorite={setFavorite} currentNote={currentNote} type="note" />
           </div>
 
-          <div className="flex">
-            {price && (<p className="mr-3">{price}</p>)}
-          </div>
+          {/* <div className="flex">
+            {price && (<p className="mr-3">{`${t('Price')}: ${price}`}</p>)}
+          </div> */}
 
-          {comment && (
+          {option && (
           <>
-            <p className="text-xs mb-2 mt-6" />
-            <div className="text-sm text-darkTextsubColor bg-[white] drop-shadow-lg p-3 rounded-lg">
-              {comment}
+            <p className="text-xs text-darkTextsubColor mb-2 mt-6">{t('Option')}</p>
+            <div className="text-sm  bg-[white] drop-shadow-lg p-3 rounded-lg">
+              {option}
             </div>
           </>
           )}
 
+          {price && (
+            <>
+              <p className="text-xs text-darkTextsubColor mb-2 mt-6">{t('Price')}</p>
+              <div className="text-sm  bg-[white] drop-shadow-lg p-3 rounded-lg">
+                {price}
+              </div>
+            </>
+          )}
+
+          {comment && (
+            <>
+              <p className="text-xs text-darkTextsubColor mb-2 mt-6">{t('My_Comment')}</p>
+              <div className="text-sm  bg-[white] drop-shadow-lg p-3 rounded-lg">
+                {comment}
+              </div>
+            </>
+          )}
+
           <div className="relative" onClick={() => setNoteIndex(-1)}>
             <Button type="accent" caption={t('button_previous')} classes="mt-8" />
+          </div>
+          <div className="relative" onClick={() => setNoteIndex(-1)}>
+            <Button type="normal" caption={t('button_modify')} classes="mt-2" />
+          </div>
+
+          <div className="flex justify-center text-sm mt-4">
+            <p className="text-[red] cursor-pointer mb-4" onClick={() => {}}>{t('button_delete_note')}</p>
           </div>
 
         </div>

@@ -13,6 +13,7 @@
   "button_add_note": "Ajouter une note",
   "dont_need_it": "Ce lieu n'est plus utile? ",
   "button_delete_place": "Supprimer un lieu",
+  "button_delete_note": "Supprimer cette note",
   "button_previous": "Retour",
   "button_modify": "Modifier",
   "button_done": "Accepter",
@@ -23,8 +24,9 @@
   "Opening": "Horaires",
   "yelp_data": "Fiche établissement ",
   "yelp_view": "Voir la fiche",
-  "Telephone": "Télèphoner",
+  "Telephone": "Téléphoner",
   "Open": "Ouvert",
   "Close": "Fermé",
-  "My_Comment": "Mon commentaire"
+  "My_Comment": "Commentaire",
+  "Option": "Détails, accompagnement, cuisson..."
 }

@@ -9,7 +9,8 @@ function EditableFavorite({
   const { getAccessTokenSilently } = useAuth0();
   const { REACT_APP_API_URL } = process.env;
 
-  const updateFavorite = async (value) => {
+  const updateFavorite = async (e, value) => {
+    e.stopPropagation();
     try {
       const token = await getAccessTokenSilently();
       const options = {
@@ -35,13 +36,13 @@ function EditableFavorite({
     <div className="duration-300 ml-3 cursor-pointer">
       {favorite
         ? (
-          <div className="px-2 py-1 bg-[white] drop-shadow-md rounded-full" onClick={() => updateFavorite(false)}>
-            <Icons icon="StarFull" classes="h-4 w-4 text-darkAccentColor" />
+          <div className="px-2 py-1 bg-[white] drop-shadow-md rounded-full" onClick={(e) => updateFavorite(e, false)}>
+            <Icons icon="Heart" classes="h-4 w-4 text-darkAccentColor" />
           </div>
         )
         : (
-          <div className="px-2 py-1 bg-[white] drop-shadow-md rounded-full" onClick={() => updateFavorite(true)}>
-            <Icons icon="StarEmpty" classes="h-4 w-4 text-darkAccentColor" />
+          <div className="px-2 py-1 bg-[white] drop-shadow-md rounded-full" onClick={(e) => updateFavorite(e, true)}>
+            <Icons icon="HeartEmpty" classes="h-4 w-4 text-darkAccentColor" />
           </div>
         )}
     </div>
