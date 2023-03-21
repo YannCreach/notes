@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { t } from 'i18next';
 import Icons from '../Icons/Icons';
 import { genererTableauHoraires, hasDecimal } from '../../utils/utils';
 import Button from '../Button/Button';
 import ImageCarousel from '../ImageCarousel/ImageCarousel';
+import Tag from '../Tag/Tag';
 
 function OverlayYelp({ data, setYelp }) {
   const [hours, setHours] = useState('');
@@ -14,12 +14,16 @@ function OverlayYelp({ data, setYelp }) {
     if (data.hours) setHours(genererTableauHoraires(data.hours[0].open));
   }, []);
   return (
-    <div className="w-full h-full absolute left-0 flex justify-center items-center bg-[black]/75 z-40" onClick={() => setYelp(false)}>
-      <div className="bg-whiteVariantColor dark:bg-darkBackgroundColor rounded-lg w-[80%] sm:w-100">
+    <div className="w-full h-full absolute left-0 flex justify-center items-center bg-[black]/75 z-40">
+      <div className="bg-whiteVariantColor dark:bg-darkBackgroundColor rounded-lg w-[80%] sm:w-100 z-10">
 
-        {data.photos && (<ImageCarousel imageUrls={data.photos} />)}
+        {data.photos && (<ImageCarousel imageUrls={data.photos} source="yelp" />)}
 
         <div className="p-6">
+
+          <div className="flex mb-4">
+            {data.categories?.map((tag) => <Tag caption={tag.title} key={tag.id} />)}
+          </div>
 
           <div className="flex items-center justify-between">
             <div className="text-lightTextColor dark:text-darkTextColor font-bold text-xl">
@@ -105,6 +109,7 @@ function OverlayYelp({ data, setYelp }) {
         </div>
 
       </div>
+      <div className="w-full h-full absolute z-0" onClick={() => setYelp(false)} />
     </div>
   );
 }

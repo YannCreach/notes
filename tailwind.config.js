@@ -17,6 +17,7 @@ module.exports = {
       darkTextColor: '#fff',
       darkTextAltColor: '#383838',
       darkDangerColor: '#D93400',
+      lightGrey: '#eaeaea',
       lightAccentColor: '#5DB35D',
       lightBackgroundColor: '#E4E4E4',
       lightBackgroundAltColor: '#fff',

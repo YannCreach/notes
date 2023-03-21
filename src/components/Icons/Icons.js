@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faFilm, faBurger, faBed, faBreadSlice, faMusic, faCampground, faMugHot, faFishFins, faCarrot, faScissors, faFolderOpen, faStarHalfStroke, faStar, faMagnifyingGlass, faBars, faXmark, faUpRightAndDownLeftFromCenter, faDownLeftAndUpRightToCenter, faArrowLeft, faArrowRight, faHeart,
+  faFilm, faBurger, faBed, faBreadSlice, faMusic, faCampground, faMugHot, faFishFins, faCarrot, faScissors, faFolderOpen, faStarHalfStroke, faStar, faMagnifyingGlass, faBars, faXmark, faUpRightAndDownLeftFromCenter, faDownLeftAndUpRightToCenter, faArrowLeft, faArrowRight, faHeart, faEuroSign, faTag, faPenToSquare, faChevronLeft, faCheck, faLocationDot, faToggleOn, faToggleOff,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   faStar as faStarEmpty, faHeart as faHeartEmpty,
 } from '@fortawesome/free-regular-svg-icons';
 import {
-  faYelp,
+  faYelp, faGoogle,
 } from '@fortawesome/free-brands-svg-icons';
 
 function Icons({ icon, classes }) {
@@ -37,6 +37,15 @@ function Icons({ icon, classes }) {
       {(icon === 'ArrowRight') && (<FontAwesomeIcon icon={faArrowRight} className={classes} />)}
       {(icon === 'Heart') && (<FontAwesomeIcon icon={faHeart} className={classes} />)}
       {(icon === 'HeartEmpty') && (<FontAwesomeIcon icon={faHeartEmpty} className={classes} />)}
+      {(icon === 'Google') && (<FontAwesomeIcon icon={faGoogle} className={classes} />)}
+      {(icon === 'Euro') && (<FontAwesomeIcon icon={faEuroSign} className={classes} />)}
+      {(icon === 'Tag') && (<FontAwesomeIcon icon={faTag} className={classes} />)}
+      {(icon === 'Edit') && (<FontAwesomeIcon icon={faPenToSquare} className={classes} />)}
+      {(icon === 'Previous') && (<FontAwesomeIcon icon={faChevronLeft} className={classes} />)}
+      {(icon === 'Check') && (<FontAwesomeIcon icon={faCheck} className={classes} />)}
+      {(icon === 'Pin') && (<FontAwesomeIcon icon={faLocationDot} className={classes} />)}
+      {(icon === 'SwitchOn') && (<FontAwesomeIcon icon={faToggleOn} className={classes} />)}
+      {(icon === 'SwitchOff') && (<FontAwesomeIcon icon={faToggleOff} className={classes} />)}
     </>
   );
 }

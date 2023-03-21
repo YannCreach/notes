@@ -86,6 +86,40 @@ export function genererTableauHoraires(openingHours) {
   return formattedHours;
 }
 
+export function genererTableauHorairesGoogle(openingHours) {
+  const weekdays = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+
+  const formattedHours = [];
+
+  for (let i = 0; i < weekdays.length; i++) {
+    const dayHours = openingHours.periods.filter((o) => o.open.day === i);
+
+    if (dayHours.length === 1) {
+      const { time: start } = dayHours[0].open;
+      const { time: end } = dayHours[0].close;
+      formattedHours.push({
+        day: weekdays[i],
+        start: start,
+        end: end,
+      });
+    }
+    else if (dayHours.length === 2) {
+      const { time: start1 } = dayHours[0].open;
+      const { time: end1 } = dayHours[0].close;
+      const { time: start2 } = dayHours[1].open;
+      const { time: end2 } = dayHours[1].close;
+      formattedHours.push({
+        day: weekdays[i],
+        start: start1,
+        end: end1,
+        start2: start2,
+        end2: end2,
+      });
+    }
+  }
+  return formattedHours;
+}
+
 export function hasDecimal(number) {
   const test = /[.,]\d+/.test(number.toString());
   return test;

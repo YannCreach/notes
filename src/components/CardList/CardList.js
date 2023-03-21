@@ -11,16 +11,16 @@ function CardList({
 
   return (
     <div className="text-lightTextColor w-full dark:text-darkTextColor px-6">
-      <ul className={`grid gap-3 ${limit === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
-        {
-          filteredData?.map((singleData) => (
-            <>
-              {(type === 'Categories') && (<CardCategory data={singleData} key={singleData.id} type={type} />)}
-              {(type === 'Meals') && (<CardMeal data={singleData} key={singleData.id} type={type} />)}
-              {(type === 'Place') && (<CardPlace data={singleData} key={singleData.id} type={type} />)}
-            </>
+      <ul className={`grid gap-2 ${limit === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
+        {filteredData.length > 0
+          ? filteredData.map((singleData) => (
+            <div key={singleData.id}>
+              {(type === 'Categories') && (<CardCategory data={singleData} type={type} />)}
+              {(type === 'Meals') && (<CardMeal data={singleData} type={type} />)}
+              {(type === 'Place') && (<CardPlace data={singleData} type={type} />)}
+            </div>
           ))
-        }
+          : 'C\'est vide ici!'}
       </ul>
     </div>
   );

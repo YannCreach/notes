@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import Icons from '../Icons/Icons';
 
-function ImageCarousel({ imageUrls }) {
+function ImageCarousel({ imageUrls, source }) {
   const [currentImg, setCurrentImg] = useState(0);
 
   useEffect(() => {
@@ -14,7 +14,8 @@ function ImageCarousel({ imageUrls }) {
       <div className="relative h-56 overflow-hidden rounded-t-lg md:h-96">
         {/* { imageUrls.map((image) => ( */}
         <div className="duration-700 ease-in-out">
-          <img src={imageUrls[currentImg]} className="absolute block w-full h-full object-cover " alt="..." />
+          {source === 'google' && <img src={imageUrls[currentImg].html_attributions[0].split('"')[1]} className="absolute block w-full h-full object-cover " alt="..." />}
+          {source === 'yelp' && <img src={imageUrls[currentImg]} className="absolute block w-full h-full object-cover " alt="..." />}
         </div>
         {/* ))} */}
       </div>
@@ -34,6 +35,7 @@ function ImageCarousel({ imageUrls }) {
 
 ImageCarousel.propTypes = {
   imageUrls: PropTypes.array.isRequired,
+  source: PropTypes.string.isRequired,
 };
 
 export default ImageCarousel;

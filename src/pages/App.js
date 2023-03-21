@@ -1,13 +1,12 @@
 import { useAuth0 } from '@auth0/auth0-react';
 // import { App as CapApp } from '@capacitor/app';
 // import { Browser } from '@capacitor/browser';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import LandingPage from './LandingPage';
 import Home from './Home';
 import Place from './Place';
 import Header from '../components/Header/Header';
-import Note from './Note';
 import Loading from '../components/Loading/Loading';
 import Category from './Category';
 
@@ -25,11 +24,32 @@ function App() {
   //   });
   // }, [handleRedirectCallback]);
 
+  // ! mettre l'ancienne geoloc en cache
+
   if (isLoading) {
     return <Loading />;
   }
+
   const [colorscheme, setColorscheme] = useState(user?.colorscheme);
+  const [lng, setLng] = useState(2.3120158);
+  const [lat, setLat] = useState(48.8588495);
+
   console.log(user);
+
+  const getGeoloc = async () => {
+    await navigator.geolocation.getCurrentPosition((position) => {
+      setLat(position.coords.latitude);
+      setLng(position.coords.longitude);
+    });
+  };
+
+  useEffect(() => {
+    getGeoloc();
+  }, []);
+
+  useEffect(() => {
+    console.log(lat, lng);
+  }, [lat]);
 
   return (
     <div className={`${colorscheme ? '' : 'dark'}`}>
@@ -41,10 +61,9 @@ function App() {
               <>
                 <Header colorscheme={colorscheme} setColorscheme={setColorscheme} />
                 <Routes>
-                  <Route path="/" element={(<Home />)} />
+                  <Route path="/" element={(<Home lat={lat} lng={lng} />)} />
                   <Route path="/place/:slug" element={(<Place />)} />
-                  <Route path="/note/:slug" element={(<Note />)} />
-                  <Route path="/category/:category" element={(<Category />)} />
+                  <Route path="/category/:categorylabel" element={(<Category lat={lat} lng={lng} />)} />
                 </Routes>
               </>
             )}

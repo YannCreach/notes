@@ -54,8 +54,8 @@ function OverlayNote({ note, setNoteIndex }) {
   };
 
   return (
-    <div className="w-full h-full absolute left-0 flex justify-center items-center bg-[black]/75 z-40" onClick={() => setNoteIndex(-1)}>
-      <div className="bg-whiteVariantColor dark:bg-darkBackgroundColor rounded-lg w-64 md:w-80 lg:w-96">
+    <div className="w-full h-full absolute left-0 flex justify-center items-center bg-[black]/75 z-40">
+      <div className="bg-whiteVariantColor dark:bg-darkBackgroundColor rounded-lg w-64 md:w-80 lg:w-96 z-10">
 
         {cover && (<ImageCarousel imageUrls={cover} />)}
 
@@ -113,6 +113,7 @@ function OverlayNote({ note, setNoteIndex }) {
         </div>
 
       </div>
+      <div className="w-full h-full absolute z-0" onClick={() => setNoteIndex(-1)} />
     </div>
   );
 }
