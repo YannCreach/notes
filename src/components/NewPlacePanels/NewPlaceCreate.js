@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { CapacitorHttp } from '@capacitor/core';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from '../Button/Button';
 import Icons from '../Icons/Icons';
 import EditableTags from '../EditableTags/EditableTags';
@@ -11,6 +12,7 @@ import { slugify } from '../../utils/utils';
 function OverlayNewPlaceCreate({ validId, setPanel }) {
   const { getAccessTokenSilently } = useAuth0();
   const { REACT_APP_API_URL } = process.env;
+  const navigate = useNavigate();
 
   const [place, setPlace] = useState({});
   const [name, setName] = useState('');
@@ -19,20 +21,17 @@ function OverlayNewPlaceCreate({ validId, setPanel }) {
   const [allCats, setAllCats] = useState([]);
   const [loadCat, setLoadCat] = useState(true);
   const [address, setAddress] = useState('');
-  // const [streetNumber, setStreetNumber] = useState('');
-  // const [route, setRoute] = useState('');
-  // const [city, setCity] = useState('');
-  // const [zip, setZip] = useState('');
   const [slug, setSlug] = useState('');
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
   const [cover, setCover] = useState('');
   const [favorite, setFavorite] = useState(false);
-  const [rating, setRating] = useState('');
+  const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [googleid, setGoogleid] = useState('');
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [newPlace, setNewPlace] = useState({});
 
   const createPlace = async () => {
     try {
@@ -53,27 +52,52 @@ function OverlayNewPlaceCreate({ validId, setPanel }) {
           longitude: longitude,
           rating: rating,
           slug: slug,
-          // street_number: streetNumber,
-          // route: route,
-          // city: city,
-          // zip: zip,
           favorite: favorite,
           googleid: googleid,
+          tags: tags,
         },
       };
-
       const result = await CapacitorHttp.post(options);
-
       console.log('Requete CREATE PLACE OK', result);
+      setNewPlace(result.data.place);
     }
     catch (error) {
       console.log('Requete CREATE PLACE NOK', error);
     }
   };
 
+  // const createPlace = async () => {
+  //   const token = await getAccessTokenSilently();
+  //   const options = {
+  //     url: `${REACT_APP_API_URL}/place`,
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //       'Content-Type': 'application/json',
+  //     },
+  //     data: {
+  //       name: name,
+  //       address: address,
+  //       comment: comment,
+  //       cover: cover,
+  //       category_id: catId,
+  //       latitude: latitude,
+  //       longitude: longitude,
+  //       rating: rating,
+  //       slug: slug,
+  //       favorite: favorite,
+  //       googleid: googleid,
+  //       tags: tags,
+  //     },
+  //   };
+
+  //   CapacitorHttp.post(options)
+  //     .then((result) => setNewPlace(result.data.place))
+  //     .then(() => console.log('Requete CREATE PLACE OK', newPlace))
+  //     .catch((error) => console.log('Requete CREATE PLACE NOK', error));
+  //   // .finally(() => navigate(`/place/${newPlace.slug}-${newPlace.id}`));
+  // };
+
   const getActualCategory = async () => {
-    // const actualCat = result.data.categories.find((category) => category.label.toLowerCase() === validId.types[0].toLowerCase());
-    // const actualCategory = allCats.find((objet) => place.types.includes(objet.label));
     const actualCategory = allCats.find((objet) => place.types.some((str) => str.toLowerCase() === objet.label.toLowerCase()));
     setCat(actualCategory.label);
     setCatId(actualCategory.id);
@@ -114,10 +138,6 @@ function OverlayNewPlaceCreate({ validId, setPanel }) {
       setPlace(result.data);
       setName(result.data.name);
       setAddress(result.data.formatted_address);
-      // setStreetNumber(result.data.address_components.find((obj) => obj.types.includes('street_number')).long_name);
-      // setRoute(result.data.address_components.find((obj) => obj.types.includes('route')).long_name);
-      // setCity(result.data.address_components.find((obj) => obj.types.includes('locality')).long_name);
-      // setZip(result.data.address_components.find((obj) => obj.types.includes('postal_code')).long_name);
       setLatitude(result.data.geometry.location.lat);
       setLongitude(result.data.geometry.location.lng);
       setCover('');
@@ -136,6 +156,11 @@ function OverlayNewPlaceCreate({ validId, setPanel }) {
     setCatId(allCats.find((element) => element.label === event).id);
   };
 
+  const handleCreatePlace = async () => {
+    createPlace();
+    // ! ferme la popup et refresh la page en arrière plan
+  };
+
   useEffect(() => {
     getPlaceDetails();
   }, []);
@@ -143,6 +168,10 @@ function OverlayNewPlaceCreate({ validId, setPanel }) {
   useEffect(() => {
     getActualCategory();
   }, [allCats]);
+
+  useEffect(() => {
+    if (newPlace.id) navigate(`/place/${newPlace.slug}-${newPlace.id}`);
+  }, [newPlace]);
 
   return (
     !loading && (
@@ -197,7 +226,7 @@ function OverlayNewPlaceCreate({ validId, setPanel }) {
 
       </div>
 
-      <div className="relative" onClick={() => createPlace()}>
+      <div className="relative" onClick={() => handleCreatePlace()}>
         <Button type="accent" caption={t('button_done')} classes="mt-8" />
       </div>
       <div className="relative" onClick={() => setPanel(0)}>

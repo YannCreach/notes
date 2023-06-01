@@ -17,49 +17,100 @@ function NewPlaceAddress({
   const [existingLocation, setExistingLocation] = useState([]);
   const [locationSuggestions, setLocationSuggestions] = useState([]);
 
-  const fetchLocationExisting = async () => {
-    if (searchLocation !== '') {
-      const token = await getAccessTokenSilently();
-      const options = {
-        url: `${REACT_APP_API_URL}/locationexisting`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          location: searchLocation,
-        },
-      };
-      const response = await CapacitorHttp.get(options);
-      console.log(response);
-      setExistingLocation(response.data.existingPlaces);
-    }
-  };
+  // const fetchLocationExisting = async () => {
+  //   if (searchLocation !== '') {
+  //     const token = await getAccessTokenSilently();
+  //     const options = {
+  //       url: `${REACT_APP_API_URL}/locationexisting`,
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         location: searchLocation,
+  //       },
+  //     };
+  //     const response = await CapacitorHttp.get(options);
+  //     console.log(response);
+  //     setExistingLocation(response.data.existingPlaces);
+  //   }
+  // };
+
+  // const fetchLocationSuggestions = async (event) => {
+  //   setSearchLocation(event);
+  //   setValidId('');
+  //   if (searchLocation !== '') {
+  //     fetchLocationExisting();
+  //     const token = await getAccessTokenSilently();
+  //     const options = {
+  //       url: `${REACT_APP_API_URL}/locationgoogle`,
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         location: searchLocation,
+  //         lat: lat,
+  //         lng: lng,
+  //       },
+  //     };
+  //     const response = await CapacitorHttp.get(options);
+  //     console.log(response);
+  //     const filteredResponse = response.data.filter((item) => existingLocation.some((existingItem) => existingItem.googleid === item.place_id) === false);
+  //     setLocationSuggestions(filteredResponse);
+  //   }
+  //   setToggleSuggestions(true);
+  // };
+
+  // const fetchLocationExisting = async () => {
+  //   try {
+  //     const token = await getAccessTokenSilently();
+  //     const options = {
+  //       url: `${REACT_APP_API_URL}/locationexisting`,
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //         location: searchLocation,
+  //       },
+  //     };
+  //     const response = await CapacitorHttp.get(options);
+  //     console.log(response);
+  //     setExistingLocation(response.data.existingPlaces);
+  //   }
+  //   catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const fetchLocationSuggestions = async (event) => {
     setSearchLocation(event);
     setValidId('');
-    if (searchLocation !== '') {
-      fetchLocationExisting();
-      const token = await getAccessTokenSilently();
-      const options = {
-        url: `${REACT_APP_API_URL}/locationgoogle`,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          location: searchLocation,
-          lat: lat,
-          lng: lng,
-        },
-      };
-      const response = await CapacitorHttp.get(options);
-      console.log(response);
-      const filteredResponse = response.data.filter((item) => existingLocation.some((existingItem) => existingItem.googleid === item.place_id) === false);
-      setLocationSuggestions(filteredResponse);
-    }
-    setToggleSuggestions(true);
-  };
+    const token = await getAccessTokenSilently();
 
+    const optionsExisting = {
+      url: `${REACT_APP_API_URL}/locationexisting`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        location: searchLocation,
+      },
+    };
+    const optionsGoogle = {
+      url: `${REACT_APP_API_URL}/locationgoogle`,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        location: searchLocation,
+        lat: lat,
+        lng: lng,
+      },
+    };
+
+    if (searchLocation !== '') {
+      CapacitorHttp.get(optionsExisting)
+        .then((existing) => setExistingLocation(existing.data.existingPlaces))
+        .then(() => CapacitorHttp.get(optionsGoogle))
+        .then((google) => google.data.filter((item) => existingLocation.some((existingItem) => existingItem.googleid === item.place_id) === false))
+        .then((filteredResponse) => setLocationSuggestions(filteredResponse))
+        .finally(setToggleSuggestions(true));
+    }
+  };
+  // ! supprimer le lieu déjà ajouté de la liste dès son apparition
+  // ! augmenter de 1 la limite de suggestions google quand on supprime un résultat (sinon quand les 5 recu sont existant il n'y a plus de propositions)
   const handleSuggestions = async (suggestion, dataSource) => {
     if (dataSource === 'existing') navigate(`/place/${suggestion.slug}-${suggestion.id}`);
     // ! route to place url with "new note" popup open
-
     setSearchLocation(suggestion.description);
     setValidId(suggestion.place_id);
     console.log(suggestion);
@@ -67,7 +118,7 @@ function NewPlaceAddress({
   };
 
   return (
-    <div className="FIRSTPANEL p-6 w-full">
+    <>
       <div className="w-full relative z-30">
         <label htmlFor="location-input" className="label-custom">{t('search_by')}
           <input
@@ -82,21 +133,21 @@ function NewPlaceAddress({
         <ul className="rounded-lg bg-[white] dark:bg-darkBackgroundColor drop-shadow-md mt-2 overflow-hidden absolute">
 
           {existingLocation.length > 0
-        && (
-          <>
-            <p className="text-xs text-darkTextsubColor ml-2 mt-2">{existingLocation.length > 1 ? t('existing_places') : t('existing_place')}</p>
-            {existingLocation?.map((suggestion) => (
-              <li
-                key={suggestion.id}
-                onClick={() => handleSuggestions(suggestion, 'existing')}
-                className="hover:bg-lightGrey cursor-pointer text-sm text-darkAccentColor px-2 mb-2"
-              >
-                {`${suggestion.name}, ${suggestion.address}`}
-                {/* {`${suggestion.name}, ${suggestion.address} (${suggestion.place_note.length} note${suggestion.place_note.length > 1 ? 's' : ''})`} */}
-              </li>
-            ))}
-          </>
-        )}
+            && (
+              <>
+                <p className="text-xs text-darkTextsubColor ml-2 mt-2">{existingLocation.length > 1 ? t('existing_places') : t('existing_place')}</p>
+                {existingLocation?.map((suggestion) => (
+                  <li
+                    key={suggestion.id}
+                    onClick={() => handleSuggestions(suggestion, 'existing')}
+                    className="hover:bg-lightGrey cursor-pointer text-sm text-darkAccentColor px-2 mb-2"
+                  >
+                    {`${suggestion.name}, ${suggestion.address}`}
+                    {/* {`${suggestion.name}, ${suggestion.address} (${suggestion.place_note.length} note${suggestion.place_note.length > 1 ? 's' : ''})`} */}
+                  </li>
+                ))}
+              </>
+            )}
           {locationSuggestions
         && (
           <>
@@ -127,8 +178,7 @@ function NewPlaceAddress({
         <p className="mr-2">{t('place_doesnt_exist')}</p>
         <p className="text-lightAccentColor cursor-pointer mb-4" onClick={() => {}}>{t('create_custom_place')}</p>
       </div>
-
-    </div>
+    </>
   );
 }
 

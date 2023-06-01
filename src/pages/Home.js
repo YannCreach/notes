@@ -15,7 +15,7 @@ function Home({
   const { t } = useTranslation();
   const { REACT_APP_API_URL } = process.env;
   const [categories, setCategories] = useState('');
-  const [latest, setLatest] = useState('');
+  const [latest, setLatest] = useState([]);
   const [expendCategory, setExpendCategory] = useState(true);
   const [expendLatest, setExpendLatest] = useState(true);
   const [loadingCategories, setLoadingCategories] = useState(true);
@@ -97,7 +97,7 @@ function Home({
     <>
       { newPlace && <OverlayNewPlace setNewPlace={setNewPlace} lat={lat} lng={lng} /> }
 
-      {lng && <Map key={lat} zoomLevel={10} lat={lat} lng={lng} fullSize={fullSize} setFullSize={setFullSize} />}
+      {lng && <Map key={lat} zoomLevel={10} lat={lat} lng={lng} fullSize={fullSize} setFullSize={setFullSize} pins={latest} />}
 
       {!fullSize && (
         <>

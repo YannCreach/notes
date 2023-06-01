@@ -74,7 +74,7 @@ function Category({
     getCategory();
     getPlacesByCategory();
   }, []);
-
+  // ! supprimer majuscule ?
   return (
     (!loading && (
     <>

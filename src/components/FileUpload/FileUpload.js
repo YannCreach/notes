@@ -86,7 +86,8 @@ function FileUpload({ type, uploadBtn }) {
             <Button type="normal" caption="Envoyer" />
           </button>
         </form>
-      
+      )}
+
     </div>
   );
 }

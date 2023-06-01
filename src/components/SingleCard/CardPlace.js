@@ -18,7 +18,7 @@ function CardPlace({ data }) {
   return (
     <li className="aspect-square drop-shadow-md">
 
-      <Link to={`place/${data.slug}-${data.id}`}>
+      <Link to={`../../place/${data.slug}-${data.id}`}>
         <div className="relative p-3 pb-[66%] rounded-t-lg  overflow-hidden">
           { data.cover
             ? <img className="absolute object-cover" src={`${REACT_APP_API_URL}${data.cover}`} alt="food placeholder" />

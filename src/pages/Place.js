@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { CapacitorHttp } from '@capacitor/core';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { useTranslation } from 'react-i18next';
 import { convertDate } from '../utils/utils';
-import OverlayCreateEdit from '../components/Overlay/OverlayCreateEdit';
+import OverlayEditPlace from '../components/Overlay/OverlayEditPlace';
 import Map from '../components/Map/Map';
 import Title from '../components/Title/Title';
 import Button from '../components/Button/Button';
@@ -13,22 +13,27 @@ import Icons from '../components/Icons/Icons';
 import OverlayYelp from '../components/Overlay/OverlayYelp';
 import OverlayNote from '../components/Overlay/OverlayNote';
 import OverlayGoogle from '../components/Overlay/OverlayGoogle';
+import Tag from '../components/Tag/Tag';
 
 function Place() {
   const { t } = useTranslation();
+  const { getAccessTokenSilently } = useAuth0();
+  const navigate = useNavigate();
+  const { REACT_APP_API_URL } = process.env;
+  const params = useParams();
+  const split = params.slug.split('-');
+  const placeId = parseInt(split[split.length - 1], 10);
+
   const [loading, setLoading] = useState(true);
   const [place, setPlace] = useState({});
+  const [dummyPlace, setDummyPlace] = useState({});
   const [yelp, setYelp] = useState(false);
   const [google, setGoogle] = useState(false);
   const [noteIndex, setNoteIndex] = useState(-1);
   const [editing, setEditing] = useState(false);
   const [expendLatest, setExpendLatest] = useState(true);
   const [fullSize, setFullSize] = useState(false);
-  const { REACT_APP_API_URL } = process.env;
-  const params = useParams();
-  const split = params.slug.split('-');
-  const placeId = parseInt(split[split.length - 1], 10);
-  const { getAccessTokenSilently } = useAuth0();
+  const [dummyTags, setDummyTags] = useState([]);
 
   const getOnePlace = async () => {
     try {
@@ -42,13 +47,34 @@ function Place() {
       };
 
       const result = await CapacitorHttp.get(options);
-
       console.log('Requete PLACE OK', result.data);
       setPlace(result.data);
+      setDummyPlace(result.data);
+      setDummyTags(result.data.Tags);
       setLoading(false);
     }
     catch (error) {
       console.log('Requete PLACE NOK', error);
+    }
+  };
+
+  const deletePlace = async () => {
+    try {
+      const token = await getAccessTokenSilently();
+      const options = {
+        url: `${REACT_APP_API_URL}/place`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          placeid: placeId,
+        },
+      };
+
+      const deleted = await CapacitorHttp.delete(options);
+      console.log('Requete DELETE PLACE OK', deleted);
+      if (deleted.status === 200) navigate('/');
+    }
+    catch (error) {
+      console.log('Requete DELETE PLACE NOK', error);
     }
   };
 
@@ -59,7 +85,14 @@ function Place() {
   return (
     (!loading && (
       <>
-        { editing && <OverlayCreateEdit data={place} type="place" editing={editing} setEditing={setEditing} /> }
+        { editing && (
+          <div className="inset-0 fixed flex justify-center items-center bg-[black]/75 z-40">
+            <div className="bg-whiteVariantColor dark:bg-darkBackgroundColor rounded-lg w-4/5 md:w-3/5 lg:w-1/2 z-50 p-6">
+              <OverlayEditPlace dummyPlace={dummyPlace} setDummyPlace={setDummyPlace} setEditing={setEditing} dummyTags={dummyTags} setDummyTags={setDummyTags} />
+            </div>
+            <div className="w-full h-full absolute z-0" onClick={() => setEditing(false)} />
+          </div>
+        )}
         { yelp && <OverlayYelp data={place.yelp} setYelp={setYelp} /> }
         { google && <OverlayGoogle data={place.google} setGoogle={setGoogle} /> }
         { noteIndex > -1 && <OverlayNote note={place.place_note[noteIndex]} setNoteIndex={setNoteIndex} /> }
@@ -70,6 +103,9 @@ function Place() {
           {/* <div className="flex mt-4">
             {place.yelp.categories?.map((tag) => <Tag caption={tag.title} key={tag.id} />)}
           </div> */}
+          <div className="flex mt-4">
+            {place.Tags?.map((tag) => <Tag caption={tag.label.toUpperCase()} key={tag.id} />)}
+          </div>
 
           <div className="flex items-center justify-between mt-2">
             <p className="text-2xl font-bold mb-2">{ place.name }</p>
@@ -98,16 +134,18 @@ function Place() {
         </div>
 
         <div className={`w-full ${fullSize ? 'h-0' : 'h-fit'} flex flex-col duration-700`}>
-          <div className="mt-6 mx-6 flex flex-col items-end">
-            <p className="flex text-lightTextColor dark:text-darkTextColor bg-[white] dark:bg-darkBackgroundAltColor drop-shadow-lg p-3 rounded-lg w-full mb-2">
-              { place.comment }
-            </p>
-            <p className="text-xs text-darkTextsubColor">
-              {place.updated_at
-                ? `${t('description_modification_date')} ${convertDate(place.updated_at)}`
-                : `${t('description_added_date')} ${convertDate(place.created_at)}`}
-            </p>
-          </div>
+          {place.comment && (
+            <div className="mt-6 mx-6 flex flex-col items-end">
+              <p className="flex text-lightTextColor dark:text-darkTextColor bg-[white] dark:bg-darkBackgroundAltColor drop-shadow-lg p-3 rounded-lg w-full mb-2">
+                { place.comment }
+              </p>
+              <p className="text-xs text-darkTextsubColor">
+                {place.updated_at
+                  ? `${t('description_modification_date')} ${convertDate(place.updated_at)}`
+                  : `${t('description_added_date')} ${convertDate(place.created_at)}`}
+              </p>
+            </div>
+          )}
 
           {place.place_note?.length > 0 && (
             <div className="">
@@ -130,12 +168,16 @@ function Place() {
           <div className="px-6">
             <Button type="accent" caption={t('button_add_note')} classes="mt-8" />
           </div>
-          <div className="px-6">
+          <div className="px-6" onClick={() => setEditing(true)}>
             <Button type="normal" caption={t('button_modify')} classes="mt-2" />
           </div>
           <div className="flex justify-center text-sm mt-4">
             <p className="mr-2">{t('dont_need_it')}</p>
-            <p className="text-[red] cursor-pointer mb-4" onClick={() => {}}>{t('button_delete_place')}</p>
+            <p
+              className="text-[red] cursor-pointer mb-4"
+              onClick={() => confirm(t('confirm_delete_place')) && deletePlace()}
+            >{t('button_delete_place')}
+            </p>
           </div>
         </div>
 
