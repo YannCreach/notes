@@ -91,6 +91,10 @@ export function genererTableauHorairesGoogle(openingHours) {
 
   const formattedHours = [];
 
+  if (openingHours.periods[0].close === undefined) {
+    return '';
+  }
+
   for (let i = 0; i < weekdays.length; i++) {
     const dayHours = openingHours.periods.filter((o) => o.open.day === i);
 
@@ -117,6 +121,7 @@ export function genererTableauHorairesGoogle(openingHours) {
       });
     }
   }
+
   return formattedHours;
 }
 

@@ -11,8 +11,10 @@ function OverlayGoogle({ data, setGoogle }) {
   const [hours, setHours] = useState('');
 
   useEffect(() => {
+    console.log(`data ${data}`);
     if (data.opening_hours.periods) setHours(genererTableauHorairesGoogle(data.opening_hours));
   }, []);
+
   return (
     <div className="w-full h-full absolute left-0 flex justify-center items-center bg-[black]/75 z-40">
       <div className="bg-whiteVariantColor dark:bg-darkBackgroundColor rounded-lg w-[80%] sm:w-100 z-10">

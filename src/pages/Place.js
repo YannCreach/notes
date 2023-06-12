@@ -97,7 +97,7 @@ function Place() {
         { google && <OverlayGoogle data={place.google} setGoogle={setGoogle} /> }
         { noteIndex > -1 && <OverlayNote note={place.place_note[noteIndex]} setNoteIndex={setNoteIndex} /> }
 
-        <Map zoomLevel={17} fullSize={fullSize} setFullSize={setFullSize} lat={place.latitude} lng={place.longitude} />
+        <Map zoomLevel={17} fullSize={fullSize} setFullSize={setFullSize} lat={place.latitude} lng={place.longitude} pins={[place]} />
 
         <div className="text-lightTextColor dark:text-darkTextColor px-6 pb-4 flex flex-col">
           {/* <div className="flex mt-4">

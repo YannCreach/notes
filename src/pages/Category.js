@@ -80,7 +80,7 @@ function Category({
     <>
       { newPlace && <OverlayNewPlace newPlace={newPlace} setNewPlace={setNewPlace} lat={lat} lng={lng} /> }
 
-      <Map key={lat} zoomLevel={10} fullSize={fullSize} setFullSize={setFullSize} lat={lat} lng={lng} />
+      <Map key={lat} zoomLevel={10} fullSize={fullSize} setFullSize={setFullSize} lat={lat} lng={lng} pins={places} />
 
       <div className="mt-8 mb-8">
         <Title caption={categorylabel.charAt(0).toUpperCase() + categorylabel.slice(1)} seeAll="places" classes="mb-4" expend={expendLatest} setExpend={setExpendLatest} />
@@ -90,7 +90,7 @@ function Category({
       && (
       <div className="relative p-6">
         <div onClick={() => setNewPlace(true)}>
-          <Button type="accent" caption={`${t('add')} ${i18next.language === 'fr' ? `${category.label_fr}` : category.label_en}`} classes="mt-8" />
+          <Button type="accent" caption={`${t('add')} ${i18next.language === 'fr' ? category.label_fr : category.label_en}`} classes="mt-8" />
         </div>
       </div>
       )}
