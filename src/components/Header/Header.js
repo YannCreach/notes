@@ -18,23 +18,29 @@ function Header({ setColorscheme, colorscheme }) {
   const isHomePage = location.pathname === '/';
 
   return (
-    <>
-      <nav className="absolute flex justify-between w-full p-6">
-        <div className="z-20 w-full flex">
+    <div className="relative w-[100vw]">
+      <nav className="absolute flex justify-between w-full left-0 top-0 h-20 bg-darkDangerColor p-6">
+        <div className="z-20 w-full flex relative h-20">
           {isHomePage
-            ? <Icons icon="Glass" classes="h-5 text-lightAccentColor absolute z-20 mt-4 ml-3" />
-            : <div onClick={() => navigate(-1)}><Icons icon="Previous" classes="h-5 text-lightAccentColor absolute z-20 mt-4 ml-3" /></div>}
+            ? (
+              <>
+                <Icons icon="Glass" classes="h-5 text-lightAccentColor absolute z-20 mt-4 ml-3" />
+                <input
+                  className="drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-lg py-3 pl-11 pr-14 mb-4 w-full"
+                  onChange={handleChange}
+                  type="text"
+                  placeholder={t('menu_item_search')}
+                  value={searchLabel}
+                />
+              </>
+            )
+            : (
 
-          {isHomePage
-          && (
-          <input
-            className="drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-lg py-3 pl-11 pr-14 mb-4 w-full"
-            onChange={handleChange}
-            type="text"
-            placeholder={t('menu_item_search')}
-            value={searchLabel}
-          />
-          )}
+              <div onClick={() => navigate(-1)}>
+                <Icons icon="ArrowLeft" classes="h-5 text-lightAccentColor absolute z-20 mt-4 ml-3" />
+              </div>
+
+            )}
         </div>
         <div className={`absolute flex items-center h-12 pt-2 ${!menuState ? 'text-lightAccentColor' : 'text-[white]'} z-30 right-6 px-4 cursor-pointer`}>
           {!menuState
@@ -48,7 +54,7 @@ function Header({ setColorscheme, colorscheme }) {
         </div> */}
       </nav>
       <Menu menuState={menuState} setMenuState={setMenuState} colorscheme={colorscheme} setColorscheme={setColorscheme} />
-    </>
+    </div>
   );
 }
 

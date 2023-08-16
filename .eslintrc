@@ -9,7 +9,7 @@
   },
   "rules": {
     "linebreak-style": "off",
-    "brace-style": ["error", "stroustrup"],
+    "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
     "no-param-reassign": [
       "error",
       {
@@ -47,7 +47,7 @@
     "no-alert": "off",
     "no-restricted-globals": "off",
     "camelcase": "off",
-    "no-plusplus": "off"
+    "no-plusplus": "off",
   },
   "settings": {
     "import/resolver": {

@@ -109,7 +109,7 @@ function Map({
       }
     });
   };
-
+  //! créer un pin de ma position
   useEffect(() => {
     createMap();
     if (pins.length > 0) addMarkers();
@@ -128,7 +128,7 @@ function Map({
   return (
 
     <div className="relative w-full h-full overflow-hidden drop-shadow-lg bg-darkDangerColor">
-      <div onClick={() => setFullSize(!fullSize)} className="flex items-center justify-center h-12 w-12 pt-1 text-lightAccentColor z-30 ml-6 drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-full absolute right-6 bottom-6">
+      <div onClick={() => setFullSize(!fullSize)} className="flex items-center justify-center h-10 w-10 pt-1 text-lightAccentColor z-30 ml-6 drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-lg aspect-square absolute right-6 bottom-6">
         <Icons icon={fullSize ? 'ExpendMap' : 'RetractMap'} classes="h-5 aspect-square" />
       </div>
       {/* <div ref={mapContainer} className={`absolute w-full ${fullSize ? 'top-[-10vh]' : 'top-[-35vh]'} h-[105vh] z-0 duration-700`} /> */}
@@ -140,13 +140,17 @@ function Map({
   );
 }
 
+Map.defaultProps = {
+  pins: [],
+};
+
 Map.propTypes = {
   zoomLevel: PropTypes.number.isRequired,
   fullSize: PropTypes.bool.isRequired,
   setFullSize: PropTypes.func.isRequired,
   lat: PropTypes.number.isRequired,
   lng: PropTypes.number.isRequired,
-  pins: PropTypes.array.isRequired,
+  pins: PropTypes.array,
 };
 
 export default Map;

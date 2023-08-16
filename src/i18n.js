@@ -10,9 +10,11 @@ i18n.use(Backend)
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
+    load: 'languageOnly',
     fallbackLng,
     detection: {
       checkWhitelist: true,
+      lowerCaseLng: true,
     },
     debug: false,
     whitelist: availableLanguages,

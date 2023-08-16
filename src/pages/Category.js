@@ -71,6 +71,7 @@ function Category({
   };
 
   useEffect(() => {
+    console.log(i18next.language);
     getCategory();
     getPlacesByCategory();
   }, []);
@@ -90,7 +91,7 @@ function Category({
       && (
       <div className="relative p-6">
         <div onClick={() => setNewPlace(true)}>
-          <Button type="accent" caption={`${t('add')} ${i18next.language === 'fr' ? category.label_fr : category.label_en}`} classes="mt-8" />
+          <Button type="accent" caption={`${t('add')} ${i18next.language === 'fr' || i18next.language === 'fr-FR' ? category.label_fr : category.label_en}`} classes="mt-8" />
         </div>
       </div>
       )}

@@ -38,6 +38,7 @@ function Place() {
   const getOnePlace = async () => {
     try {
       const token = await getAccessTokenSilently();
+      console.log(token);
       const options = {
         url: `${REACT_APP_API_URL}/place`,
         headers: {
@@ -136,9 +137,10 @@ function Place() {
         <div className={`w-full ${fullSize ? 'h-0' : 'h-fit'} flex flex-col duration-700`}>
           {place.comment && (
             <div className="mt-6 mx-6 flex flex-col items-end">
-              <p className="flex text-lightTextColor dark:text-darkTextColor bg-[white] dark:bg-darkBackgroundAltColor drop-shadow-lg p-3 rounded-lg w-full mb-2">
+              <p className="flex text-lightTextColor dark:text-darkTextColor bg-[white] dark:bg-darkBackgroundAltColor drop-shadow-lg p-3 rounded-lg rounded-br-none w-full mb-2">
                 { place.comment }
               </p>
+
               <p className="text-xs text-darkTextsubColor">
                 {place.updated_at
                   ? `${t('description_modification_date')} ${convertDate(place.updated_at)}`

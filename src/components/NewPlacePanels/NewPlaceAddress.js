@@ -92,6 +92,7 @@ function NewPlaceAddress({
       headers: {
         Authorization: `Bearer ${token}`,
         location: searchLocation,
+        types: 'lodging',
         lat: lat,
         lng: lng,
       },
@@ -99,7 +100,9 @@ function NewPlaceAddress({
 
     if (searchLocation !== '') {
       CapacitorHttp.get(optionsExisting)
-        .then((existing) => setExistingLocation(existing.data.existingPlaces))
+        .then((existing) => {
+          if (existing.data.existingPlaces) setExistingLocation(existing.data.existingPlaces);
+        })
         .then(() => CapacitorHttp.get(optionsGoogle))
         .then((google) => google.data.filter((item) => existingLocation.some((existingItem) => existingItem.googleid === item.place_id) === false))
         .then((filteredResponse) => setLocationSuggestions(filteredResponse))
@@ -136,7 +139,7 @@ function NewPlaceAddress({
             && (
               <>
                 <p className="text-xs text-darkTextsubColor ml-2 mt-2">{existingLocation.length > 1 ? t('existing_places') : t('existing_place')}</p>
-                {existingLocation?.map((suggestion) => (
+                {existingLocation.map((suggestion) => (
                   <li
                     key={suggestion.id}
                     onClick={() => handleSuggestions(suggestion, 'existing')}
