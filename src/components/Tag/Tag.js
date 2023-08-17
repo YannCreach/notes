@@ -1,17 +1,10 @@
 import PropTypes from 'prop-types';
-import { BsFillTrashFill } from 'react-icons/bs';
 
-function Tag({ caption, type }) {
+function Tag({ caption }) {
   return (
-    <div
-      className="m-1 w-min flex whitespace-nowrap items-center relative p-1 box-border text-center border-2 text-lightTextColor dark:text-darkTextColor rounded-md border-lightAccentColor bg-lightAccentColor"
-    >
+    <div className="px-2 py-1 text-xs flex items-center relative mr-2 text-center text-lightTextColor dark:text-darkTextColor drop-shadow-lg rounded-lg bg-[white] dark:bg-darkBackgroundAltColor">
       <span>
         {caption}
-      </span>
-      <span>
-        {(type === 'edit')
-        && <BsFillTrashFill className="ml-4" />}
       </span>
     </div>
   );
@@ -19,7 +12,6 @@ function Tag({ caption, type }) {
 
 Tag.propTypes = {
   caption: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
 };
 
 export default Tag;

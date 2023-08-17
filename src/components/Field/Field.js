@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 function Field({
-  value, type, name, placeholder, onChange, classname,
+  value, type, name, placeholder, onChange, label,
 }) {
+  const [hidden, setHidden] = useState(true);
   const handleChange = (e) => {
     onChange(e.target.value, name);
   };
@@ -10,13 +12,19 @@ function Field({
   const inputId = `field-${name}`;
 
   return (
-    <div className={`${value.length > 0 ? 'field field--has-content' : 'field'} dark:text-darkTextColor text-lightTextColor`}>
+    <div className="dark:text-darkTextColor text-lightTextColor w-full">
+      { label
+        && (
+        <label htmlFor={name} className="">
+          {label}
+        </label>
+        )}
       <input
-        className={classname}
+        className="drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-xl py-2 px-4 mb-4 w-full"
         value={value}
         onChange={handleChange}
         id={inputId}
-        type={type}
+        type={type === 'password' && hidden ? 'password' : 'text'}
         placeholder={placeholder}
         name={name}
       />
@@ -30,17 +38,16 @@ Field.propTypes = {
   name: PropTypes.string,
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
-  classname: PropTypes.string,
+  label: PropTypes.string,
 };
 
 Field.defaultProps = {
   value: '',
   type: 'text',
-  classname: '',
   placeholder: '',
   name: '',
   onChange: () => {},
-
+  label: '',
 };
 
 export default Field;

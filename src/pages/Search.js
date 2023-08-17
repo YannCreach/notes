@@ -4,12 +4,12 @@ import FormSearch from '../components/FormSearch/FormSearch';
 import NavBtn from '../components/NavBtn/NavBtn';
 
 function Search() {
-  // const fetchingAllRestaurants = useSelector((state) => state.restaurant.fetchingAllRestaurants);
-  // const messageSearchRestaurant = useSelector((state) => state.restaurant.messageSearchRestaurant);
+  // const fetchingAllPlaces = useSelector((state) => state.place.fetchingAllPlaces);
+  // const messageSearchPlace = useSelector((state) => state.place.messageSearchPlace);
   // const dispatch = useDispatch();
 
   useEffect(() => {
-    // if (!fetchingAllRestaurants) {
+    // if (!fetchingAllPlaces) {
     //   dispatch(actionInitSearch());
     // }
   }, []);
@@ -17,11 +17,11 @@ function Search() {
   return (
     <div className="text-lightTextColor dark:text-darkTextColor w-full px-6 pb-4 flex flex-col overflow-hidden">
       <NavBtn caption="Précédent" type="previous" order="iconFirst" target="/" />
-      <p className="text-2xl text-lightTextColor dark:text-darkTextColor pb-4">Chercher un restaurant</p>
+      <p className="text-2xl text-lightTextColor dark:text-darkTextColor pb-4">Chercher un lieu</p>
       <FormSearch />
-      <p className="text-2xl text-lightTextColor dark:text-darkTextColor pb-4">{messageSearchRestaurant}</p>
+      <p className="text-2xl text-lightTextColor dark:text-darkTextColor pb-4">{messageSearchPlace}</p>
       <div className="h-full overflow-y-scroll">
-        <CardList type="restaurantSearch" />
+        <CardList type="placeSearch" />
       </div>
     </div>
   );

@@ -1,23 +1,20 @@
-import { Link } from 'react-router-dom';
-import { BiMap } from 'react-icons/bi';
-import { AiOutlinePicture } from 'react-icons/ai';
+import { PhotoIcon, MapIcon } from '@heroicons/react/24/outline';
 import PropTypes from 'prop-types';
 
 function ToggleMap({ toggleMap, setToggleMap }) {
   return (
-    <Link
-      to="#"
-      className="text-2xl ease-in duration-300 hover:text-lightAccentColor"
+    <div
+      className="text-2xl ease-in duration-300 hover:text-lightAccentColor cursor-pointer"
       onClick={() => {
         setToggleMap(!toggleMap);
       }}
     >
       {
         toggleMap
-          ? <BiMap />
-          : <AiOutlinePicture />
+          ? <MapIcon className="h-6 w-6" />
+          : <PhotoIcon className="h-6 w-6" />
       }
-    </Link>
+    </div>
   );
 }
 

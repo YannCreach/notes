@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 
-function Button({ caption, type, classes }) {
+function Button({
+  caption, type, classes, disabled,
+}) {
   return (
-    <div
-      className={`${classes} mb-4 w-full relative px-2 py-1 box-border text-center border-2 text-lightTextColor dark:text-darkTextColor rounded-md hover:shadow-button ease-in duration-300  ${type === 'normal' ? 'border-lightAccentColor hover:shadow-lightAccentColor' : 'border-lightDangerColor hover:shadow-lightDangerColor'}`}
-    >
+    <div className={`cursor-pointer p-3 text-center rounded-md drop-shadow-lg ${type === 'accent' ? 'bg-lightAccentColor text-darkTextColor' : 'bg-lightBackgroundAltColor dark:bg-darkBackgroundAltColor text-lightTextColor dark:text-darkTextColor'} ${classes} ${disabled && 'cursor-default bg-darkTextsubColor text-darkBackgroundAltColor'}`}>
       {caption}
     </div>
   );
@@ -12,12 +12,14 @@ function Button({ caption, type, classes }) {
 
 Button.defaultProps = {
   classes: '',
+  disabled: false,
 };
 
 Button.propTypes = {
   caption: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   classes: PropTypes.string,
+  disabled: PropTypes.bool,
 };
 
 export default Button;

@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.input-custom {
+  @apply bg-[white] dark:bg-darkBackgroundAltColor rounded drop-shadow-md py-2 px-2 w-full mt-1 focus:outline-none outline-none border-none;
+}
+
+.label-custom {
+  @apply text-lightTextColor dark:text-darkTextColor w-full mb-2 ;
+}
+
+.button-custom {
+  @apply drop-shadow w-full m-2 h-10 rounded;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

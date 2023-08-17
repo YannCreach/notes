@@ -1,55 +1,170 @@
+import PropTypes from 'prop-types';
 import { CapacitorHttp } from '@capacitor/core';
-import { useContext, useEffect, useState } from 'react';
-import UserContext from '../context/UserContext';
+import { useEffect, useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useTranslation } from 'react-i18next';
 import CardList from '../components/CardList/CardList';
-import Header from '../components/Header/Header';
-import QuickActions from '../components/QuickActions/QuickActions';
+import Title from '../components/Title/Title';
+import Map from '../components/Map/Map';
+import Button from '../components/Button/Button';
+import OverlayNewPlace from '../components/Overlay/OverlayNewPlace';
 
-function Home() {
-  const { user, setUser } = useContext(UserContext);
+// 16/08/2021 - GONZALO - Added the new place overlay
+
+function Home({ lat, lng }) {
+  const { t } = useTranslation();
   const { REACT_APP_API_URL } = process.env;
-  const [data, setData] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState('');
+  const [latest, setLatest] = useState([]);
+  const [expendCategory, setExpendCategory] = useState(true);
+  const [expendLatest, setExpendLatest] = useState(true);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [loadingLatest, setLoadingLatest] = useState(true);
+  const [fullSize, setFullSize] = useState(false);
+  const [newPlace, setNewPlace] = useState(false);
 
-  const getAllRestaurants = async () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  // const getAllPlaces = async () => {
+  //   try {
+  //     const token = await getAccessTokenSilently();
+  //     const options = {
+  //       url: `${REACT_APP_API_URL}/places`,
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     };
+
+  //     const result = await CapacitorHttp.get(options);
+
+  //     console.log('Requete PLACES OK', result);
+  //     setData(result.data.places);
+  //     setLoading(loading + 1);
+  //   }
+  //   catch (error) {
+  //     console.log('Requete PLACES NOK', error);
+  //   }
+  // };
+
+  const getAllCategories = async () => {
     try {
+      const token = await getAccessTokenSilently();
       const options = {
-        url: `${REACT_APP_API_URL}/restaurants`,
+        url: `${REACT_APP_API_URL}/categories`,
         headers: {
-          Authorization: `bearer ${user.token}`,
-          userid: user.userid,
+          Authorization: `Bearer ${token}`,
         },
       };
 
       const result = await CapacitorHttp.get(options);
 
-      console.log('Requete RESTAURANTS OK', result);
-      setData(result.data);
-      setLoading(false);
+      console.log('Requete CATEGORIES OK', result);
+      setCategories(result.data.categories);
+      setLoadingCategories(false);
+    } catch (error) {
+      console.log('Requete CATEGORIES NOK', error);
     }
-    catch (error) {
-      console.log('Requete RESTAURANTS NOK', error);
+  };
+
+  const getLatestplaces = async () => {
+    try {
+      const token = await getAccessTokenSilently();
+      const options = {
+        url: `${REACT_APP_API_URL}/latestplaces`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const result = await CapacitorHttp.get(options);
+
+      console.log('Requete LATEST OK', result);
+      setLatest(result.data.places);
+      setLoadingLatest(false);
+    } catch (error) {
+      console.log('Requete LATEST NOK', error);
     }
   };
 
   useEffect(() => {
-    getAllRestaurants();
+    getAllCategories();
+    getLatestplaces();
   }, []);
 
   return (
-    <div className="h-full flex flex-col">
-      <Header user={user} setUser={setUser} />
-      <div className="overflow-auto">
-        <p className="mx-8 text-2xl text-lightTextColor dark:text-darkTextColor py-4">Actions rapides</p>
-        <QuickActions restaurants={[]} />
-        <p className="mx-8 text-2xl text-lightTextColor dark:text-darkTextColor pt-4">Restaurants favoris</p>
-        <div className="mx-4">
-          {!loading
-          && <CardList data={data} type="restaurant" />}
+    <>
+      {newPlace && (
+        <OverlayNewPlace setNewPlace={setNewPlace} lat={lat} lng={lng} />
+      )}
+
+      {lng && (
+        <Map
+          key={lat}
+          zoomLevel={10}
+          lat={lat}
+          lng={lng}
+          fullSize={fullSize}
+          setFullSize={setFullSize}
+          pins={latest}
+        />
+      )}
+
+      {!fullSize && (
+        <>
+          <div className="">
+            <Title
+              caption={t('title_categories')}
+              seeAll="Categories"
+              classes="mt-8 mb-4"
+              expend={expendCategory}
+              setExpend={setExpendCategory}
+            />
+            {!loadingCategories && (
+              <CardList
+                data={categories}
+                type="Categories"
+                limit={3}
+                expend={expendCategory}
+              />
+            )}
+          </div>
+
+          <div className="">
+            <Title
+              caption={t('title_last_added')}
+              seeAll="lastest"
+              classes="mt-12 mb-4"
+              expend={expendLatest}
+              setExpend={setExpendLatest}
+            />
+            {!loadingLatest && (
+              <CardList
+                data={latest}
+                type="Place"
+                limit={2}
+                expend={expendLatest}
+              />
+            )}
+          </div>
+        </>
+      )}
+
+      <div className="relative p-6">
+        <div onClick={() => setNewPlace(true)}>
+          <Button
+            type="accent"
+            caption={t('button_add_place')}
+            classes="mt-8"
+          />
         </div>
       </div>
-    </div>
+    </>
   );
 }
+
+Home.propTypes = {
+  lat: PropTypes.number.isRequired,
+  lng: PropTypes.number.isRequired,
+};
 
 export default Home;

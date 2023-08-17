@@ -1,15 +1,15 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.example.app',
+  appId: 'notesByYc',
   appName: 'notetm',
   webDir: 'build',
   bundledWebRuntime: false,
   server: { 
     allowNavigation: [ "localhost:8080" ],
-    url: "http://192.168.1.37:3000",
+    // url: "localhost:3000",
 		cleartext: true,
-    hostname: "localhost:3000"
+    hostname: "localhost:3000",
   },
   plugins: {
     CapacitorHttp: {

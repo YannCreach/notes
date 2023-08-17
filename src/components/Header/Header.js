@@ -1,77 +1,66 @@
-import { FaBars } from 'react-icons/fa';
-import { MdLightMode, MdModeNight } from 'react-icons/md';
-import { RiCloseFill } from 'react-icons/ri';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { CapacitorHttp } from '@capacitor/core';
-import flou from '../../assets/images/blur.jpg';
-import Menu from './Menu/Menu';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useLocation } from 'react-router-dom';
+import Menu from '../Menu/Menu';
+import Icons from '../Icons/Icons';
 
-function Header({ user, setUser }) {
-  const { REACT_APP_API_URL } = process.env;
+function Header({ setColorscheme, colorscheme }) {
   const [menuState, setMenuState] = useState(false);
-
-  const toggleLightMode = async () => {
-    try {
-      const newColorScheme = user.colorScheme === 'light' ? 'dark' : 'light';
-      const options = {
-        url: `${REACT_APP_API_URL}/user`,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          Authorization: `bearer ${user.token}`,
-          userid: user.userid,
-        },
-        data: {
-          colorscheme: newColorScheme,
-        },
-      };
-
-      await CapacitorHttp.patch(options);
-      setUser({ ...user, colorScheme: newColorScheme });
-      console.log('Requete darkMode OK', newColorScheme);
-    }
-    catch (err) {
-      console.log(err);
-      console.log('Requete darkMode NOK', err);
-    }
+  const [searchLabel, setSearchLabel] = useState('');
+  const { t } = useTranslation();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const handleChange = (e) => {
+    setSearchLabel(e.target.value, name);
   };
 
+  const isHomePage = location.pathname === '/';
+
   return (
-    <>
-      <nav className="HEADER flex items-center justify-between p-8 z-30">
-        <div className="flex items-center">
-          <Link to="/profil">
-            <img className=" rounded-full object-cover h-12 w-12 mr-4" alt="logo" src={(user.photo_url && user.photo_url !== 'null') ? `${REACT_APP_API_URL}${user.photo_url}` : flou} />
-          </Link>
-          <Link to="/profil">
-            <div className="text-lightTextColor dark:text-darkTextColor">
-              <p className="font-semibold text-xl tracking-tight">{user.username}</p>
-              <p>Bienvenue !</p>
-            </div>
-          </Link>
+    <div className="relative w-[100vw]">
+      <nav className="absolute flex justify-between w-full left-0 top-0 h-20 bg-darkDangerColor p-6">
+        <div className="z-20 w-full flex relative h-20">
+          {isHomePage
+            ? (
+              <>
+                <Icons icon="Glass" classes="h-5 text-lightAccentColor absolute z-20 mt-4 ml-3" />
+                <input
+                  className="drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-lg py-3 pl-11 pr-14 mb-4 w-full"
+                  onChange={handleChange}
+                  type="text"
+                  placeholder={t('menu_item_search')}
+                  value={searchLabel}
+                />
+              </>
+            )
+            : (
+
+              <div onClick={() => navigate(-1)}>
+                <Icons icon="ArrowLeft" classes="h-5 text-lightAccentColor absolute z-20 mt-4 ml-3" />
+              </div>
+
+            )}
         </div>
-        <div className={`flex items-center ${!menuState ? 'text-lightAccentColor ' : 'text-darkTextColor '} duration-700`}>
-          <div className="pr-6">
-            {user.colorScheme === 'light'
-              ? <MdLightMode onClick={() => toggleLightMode()} className="mx-2 w-8 h-8 hover:w-10 hover:h-10 hover:mx-1" />
-              : <MdModeNight onClick={() => toggleLightMode()} className="mx-2 w-8 h-8 hover:w-10 hover:h-10 hover:mx-1" />}
-          </div>
-          <div>
-            {!menuState
-              ? <FaBars className="mx-2 w-8 h-8 hover:w-10 hover:h-10 hover:mx-1" onClick={() => setMenuState(true)} />
-              : <RiCloseFill className="mx-2 w-8 h-8 hover:w-10 hover:h-10 hover:mx-1" onClick={() => setMenuState(false)} />}
-          </div>
+        <div className={`absolute flex items-center h-12 pt-2 ${!menuState ? 'text-lightAccentColor' : 'text-[white]'} z-30 right-6 px-4 cursor-pointer`}>
+          {!menuState
+            ? <div onClick={() => setMenuState(true)}><Icons icon="MenuOpen" classes="h-6" /></div>
+            : <div onClick={() => setMenuState(false)}><Icons icon="MenuClose" classes="h-6" /></div>}
         </div>
+        {/* <div className="flex items-center justify-center h-12 w-16 pt-1 text-lightAccentColor z-30 ml-6 drop-shadow-md bg-[white] dark:bg-darkBackgroundAltColor rounded-lg">
+          {!menuState
+            ? <div onClick={() => setMenuState(true)}><Icons icon="MenuOpen" classes="h-6" /></div>
+            : <div onClick={() => setMenuState(false)}><Icons icon="MenuClose" classes="h-6" /></div>}
+        </div> */}
       </nav>
-      <Menu menuState={menuState} />
-    </>
+      <Menu menuState={menuState} setMenuState={setMenuState} colorscheme={colorscheme} setColorscheme={setColorscheme} />
+    </div>
   );
 }
 
 Header.propTypes = {
-  user: PropTypes.object.isRequired,
-  setUser: PropTypes.func.isRequired,
+  setColorscheme: PropTypes.func.isRequired,
+  colorscheme: PropTypes.bool.isRequired,
 };
 
 export default Header;
