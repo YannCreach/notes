@@ -1,15 +1,24 @@
 {
-  "extends": "airbnb",
+  "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:import/typescript"
+  ],
   "env": {
     "browser": true,
     "es2021": true
   },
   "parserOptions": {
-    "ecmaVersion": 2020
+    "ecmaVersion": 2023,
+    "project": "./tsconfig.json"
   },
   "rules": {
     "linebreak-style": "off",
-    "brace-style": ["error", "1tbs", { "allowSingleLine": true }],
+    "brace-style": ["error", "1tbs", {
+      "allowSingleLine": true
+    }],
     "no-param-reassign": [
       "error",
       {
@@ -39,6 +48,7 @@
     "react/state-in-constructor": "off",
     "func-names": "off",
     "object-shorthand": "off",
+    "object-curly-newline": "off",
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
     "no-unused-vars": "warn",
@@ -48,14 +58,19 @@
     "no-restricted-globals": "off",
     "camelcase": "off",
     "no-plusplus": "off",
+    "import/extensions": "off",
+    "import/no-cycle": "off",
+    "react/no-unstable-nested-components": "off"
   },
   "settings": {
     "import/resolver": {
       "alias": {
-        "extensions": [".js"],
+        "extensions": [".js, .ts, .tsx"],
         "map": [
-          ["src", "./src"],
-          ["app", "./src"]
+          ["screens", "./screens"],
+          ["navigator", "./navigator"],
+          ["components", "./components"],
+          ["utils", "./utils"]
         ]
       }
     }
